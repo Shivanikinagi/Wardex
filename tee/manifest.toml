@@ -1,0 +1,92 @@
+# DarkAgent Gramine SGX Manifest
+# ================================
+# Configuration for running the DarkAgent inside Intel SGX
+# using the Gramine Library OS.
+#
+# Gramine allows running unmodified applications inside SGX enclaves.
+# This manifest tells Gramine:
+#   - What files to include in the enclave
+#   - What resources the enclave can access
+#   - Security settings and attestation configuration
+
+# Gramine loader configuration
+loader.entrypoint = "file:{{ gramine.libos }}"
+libos.entrypoint = "/usr/bin/python3"
+
+# Loader log level (error/warning/debug/trace/all)
+loader.log_level = "error"
+
+# Environment variables inside the enclave
+loader.env.LD_LIBRARY_PATH = "/lib:/usr/lib:/usr/lib/python3/lib"
+loader.env.HOME = "/home/darkagent"
+loader.env.PYTHONPATH = "/app"
+
+# Arguments to Python
+loader.argv = ["python3", "/app/agent.py"]
+
+# ═══════════════════════════════════════════════════════════════
+# Trusted files — these are measured (hashed) at load time.
+# Any modification to these files will change MRENCLAVE.
+# This is what makes the kill demo work!
+# ═══════════════════════════════════════════════════════════════
+
+# Python runtime
+fs.mounts = [
+  { path = "/lib",                uri = "file:{{ gramine.runtimedir() }}" },
+  { path = "/usr/lib/python3",    uri = "file:/usr/lib/python3" },
+  { path = "/usr/bin/python3",    uri = "file:/usr/bin/python3" },
+  # DarkAgent application code (TRUSTED — any change breaks attestation)
+  { path = "/app/agent.py",       uri = "file:agent.py",        type = "encrypted" },
+  { path = "/app/attestation.py", uri = "file:attestation.py",  type = "encrypted" },
+]
+
+# ═══════════════════════════════════════════════════════════════
+# SGX Configuration
+# ═══════════════════════════════════════════════════════════════
+
+# Enable SGX
+sgx.enclave_size = "256M"
+sgx.max_threads = 4
+
+# Enable remote attestation (DCAP)
+sgx.remote_attestation = "dcap"
+
+# ISV Product ID and Security Version Number
+sgx.isvprodid = 1
+sgx.isvsvn = 1
+
+# Debug mode (set to false for production)
+sgx.debug = true
+
+# ═══════════════════════════════════════════════════════════════
+# Allowed files (not measured, but accessible)
+# ═══════════════════════════════════════════════════════════════
+
+sgx.allowed_files = [
+  "file:/tmp/darkagent/logs/",
+  "file:/tmp/darkagent/proofs/",
+]
+
+# ═══════════════════════════════════════════════════════════════
+# Trusted files (explicitly measured at build time)
+# These files' hashes become part of MRENCLAVE
+# ═══════════════════════════════════════════════════════════════
+
+sgx.trusted_files = [
+  "file:agent.py",
+  "file:attestation.py",
+  "file:{{ gramine.libos }}",
+  "file:{{ gramine.runtimedir() }}/",
+  "file:/usr/bin/python3",
+  "file:/usr/lib/python3/",
+]
+
+# ═══════════════════════════════════════════════════════════════
+# System settings
+# ═══════════════════════════════════════════════════════════════
+
+sys.stack.size = "2M"
+sys.brk.max_size = "32M"
+
+# Enable eventfd for async operations
+sys.insecure__allow_eventfd = true

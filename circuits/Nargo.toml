@@ -1,0 +1,7 @@
+[package]
+name = "darkagent_compliance"
+type = "bin"
+authors = ["DarkAgent"]
+compiler_version = ">=0.31.0"
+
+[dependencies]
