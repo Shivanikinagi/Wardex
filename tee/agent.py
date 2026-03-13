@@ -6,8 +6,8 @@ Generates hardware attestation proving code integrity.
 
 If anyone modifies this code:
   → Attestation hash changes
-  → Circuit breaker fires
-  → Wallet freezes instantly
+  → Proposal fails verification layer
+  → Nothing executes
   → Attacker gets nothing
 
 Advanced features:
