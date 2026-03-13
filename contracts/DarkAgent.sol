@@ -3,12 +3,24 @@ pragma solidity ^0.8.19;
 
 import "./interfaces/IDarkAgent.sol";
 
+interface IENSAgentResolver {
+    struct AgentPermissions {
+        uint256 maxSpend;
+        uint256 dailyLimit;
+        uint256 slippageBps;
+        address[] tokens;
+        address[] protocols;
+        uint256 expiry;
+        bool active;
+    }
+    function getPermissions(address user) external view returns (AgentPermissions memory);
+}
+
 /**
- * @title DarkAgent
- * @author DarkAgent Protocol
+ * @title DarkAgent Core Protocol
+ * @author DarkAgent
  * @notice The core verification infrastructure for AI agents in DeFi.
- * @dev Replaces the old reactive "circuit breaker" paradigm with a proactive
- *      "propose -> verify -> execute" standard.
+ * @dev Depends on ENS Agent Permission records for rule sets. 
  */
 contract DarkAgent is IDarkAgent {
     // ===============================================================
@@ -18,13 +30,15 @@ contract DarkAgent is IDarkAgent {
     error AlreadyVerified(bytes32 proposalId);
     error NotVerifiedYet(bytes32 proposalId);
     error AlreadyExecuted(bytes32 proposalId);
-    error VerificationFailed();
+    error VerificationFailedReason(string reason);
 
     // ===============================================================
     //                        STATE VARIABLES
     // ===============================================================
     mapping(bytes32 => Proposal) public proposals;
     uint256 public totalProposals;
+    
+    IENSAgentResolver public ensResolver;
 
     // ===============================================================
     //                          EVENTS
@@ -32,16 +46,13 @@ contract DarkAgent is IDarkAgent {
     event ActionProposed(bytes32 indexed proposalId, address indexed agent, address indexed user);
     event ActionVerified(bytes32 indexed proposalId);
     event ActionExecuted(bytes32 indexed proposalId);
-
-    // ===============================================================
-    //                     CORE PROTOCOL FUNCTIONS
-    // ===============================================================
+    
+    constructor(address _ensResolver) {
+        ensResolver = IENSAgentResolver(_ensResolver);
+    }
 
     /**
-     * @notice Agent proposes an action before doing anything
-     * @param agent Address of the AI agent
-     * @param user Address of the user (or ENS owner) authorzing the agent
-     * @param action Call data or description of the action
+     * @notice Agent proposes an action
      */
     function propose(
         address agent,
@@ -68,10 +79,8 @@ contract DarkAgent is IDarkAgent {
     }
 
     /**
-     * @notice DarkAgent verifies the proposal against the user's ENS rules
-     * @dev In a production environment, this would securely read the ENS text record
-     *      (e.g. via an oracle like CCIP) or use ZK-Proofs of the rule evaluation.
-     *      For this standard interface, agents submit the verification payload.
+     * @notice DarkAgent verifies the proposal against the ENSIP rules
+     * @dev Fetches rules directly from the configured ENS Resolver standard.
      */
     function verify(
         bytes32 proposalId
@@ -81,13 +90,16 @@ contract DarkAgent is IDarkAgent {
         if (p.verified) revert AlreadyVerified(proposalId);
         if (p.executed) revert AlreadyExecuted(proposalId);
 
-        // Here the protocol enforces the logic:
-        // 1. Resolve ENS text record for user
-        // 2. Decode standard `agent.permissions` JSON
-        // 3. Match `p.action` constraints against permissions
-        // (Simulated as passing for the protocol architecture)
+        // Call the ENS standards resolver to grab configuration for the user
+        IENSAgentResolver.AgentPermissions memory rules = ensResolver.getPermissions(p.user);
         
-        // Mark as verified
+        if (!rules.active) revert VerificationFailedReason("Agent permissions inactive in ENS");
+        
+        // If max spend is completely unset, assume misconfiguration
+        if (rules.maxSpend == 0) revert VerificationFailedReason("ENS limit undefined");
+
+        // Further simulated protocol level checks against p.action data structure etc. would happen here...
+
         p.verified = true;
         
         emit ActionVerified(proposalId);
@@ -95,7 +107,7 @@ contract DarkAgent is IDarkAgent {
     }
 
     /**
-     * @notice Executes the action ONLY IF verification passed
+     * @notice Executes the action
      */
     function execute(
         bytes32 proposalId
@@ -107,24 +119,16 @@ contract DarkAgent is IDarkAgent {
 
         p.executed = true;
 
-        // Perform the actual external call or unblock the agent
-        // Example: logic to execute `p.action` on behalf of `p.user`
-
+        // Perform external call 
         emit ActionExecuted(proposalId);
     }
 
-    /**
-     * @notice Check if a proposal is verified
-     */
     function isVerified(
         bytes32 proposalId
     ) external view override returns (bool) {
         return proposals[proposalId].verified;
     }
 
-    /**
-     * @notice Retrieve full proposal details
-     */
     function getProposal(
         bytes32 proposalId
     ) external view override returns (Proposal memory) {

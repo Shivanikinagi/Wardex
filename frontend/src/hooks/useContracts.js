@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ethers } from 'ethers'
-import { DARKAGENT_PROTOCOL_ABI } from '../contracts/abis'
+import { DARKAGENT_PROTOCOL_ABI, PERMISSIONS_ABI } from '../contracts/abis'
 
 let deploymentConfig = null
 async function loadDeploymentConfig() {
@@ -89,7 +89,13 @@ export function useContracts() {
                         s
                     )
                     
-                    setContracts({ darkAgent })
+                    const permissionsContract = new ethers.Contract(
+                        config.contracts.Permissions,
+                        PERMISSIONS_ABI,
+                        s
+                    )
+                    
+                    setContracts({ darkAgent, permissionsContract })
                     setIsLive(true)
                 }
             } else {

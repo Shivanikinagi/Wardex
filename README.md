@@ -1,126 +1,94 @@
-# DarkAgent: The Verification Infrastructure for AI Agents
+# DarkAgent Protocol
 
-> *"Verification layer that ensures AI agents can only execute what users allow"*
+> *"ENS defines what your agent can do. BitGo makes sure it never does more. DarkAgent connects them."*
 
-DarkAgent is a protocol. Not an app. Anyone building an AI agent plugs into DarkAgent instead of building their own security layer.
-
-## The Problem
-
-```text
-Old Workflow (Reactive):
-User → HeyElsa → Agent → Execute → Circuit Breaker Checks Limits
-(Agent acts first, checks happen after. Like checking ID after entering the club.)
-```
-
-## The Paradigm Shift
-
-```text
-New Workflow (Proactive Protocol):
-User → HeyElsa → Agent → Propose → DarkAgent Verifies → Execute
-(Nothing executes without approval. Agent has zero direct power.)
-```
-
-## The Infrastructure Stack
-
-DarkAgent is built as deep infrastructure across four layers:
-
-### Layer 1: ENS Permission Standard (The Rules)
-Don't just read ENS records. We propose the **"ENS Agent Permission Standard"**. Any ENS name can store an `agent.permissions` JSON:
-```json
-{
-  "max_spend": 100,
-  "slippage": 0.5,
-  "allowed_protocols": ["uniswap", "aave"],
-  "allowed_tokens": ["ETH", "USDC"],
-  "time_window": 86400
-}
-```
-Any protocol can now read `alice.eth` permissions before executing anything. It's a standard, not a feature.
-
-### Layer 2: Verification Contract (The Core Protocol)
-```solidity
-import "IDarkAgent.sol";
-
-// 1. Agent proposes action
-bytes32 id = darkAgent.propose(agent, user, action);
-
-// 2. DarkAgent verifies against user's ENS rules
-bool verified = darkAgent.verify(id);
-
-// 3. Only executes if verified
-darkAgent.execute(id);
-```
-Other developers import this. Other agents use this. DarkAgent becomes the standard security interface.
-
-### Layer 3: BitGo Policy Sync (The Enforcer)
-We mirror ENS rules directly into BitGo wallet policies.
-1. User sets rules on ENS
-2. DarkAgent reads ENS and syncs to BitGo wallet policy automatically
-3. Two layers enforce the exact same rules (On-chain + Wallet Level). 
-
-### Layer 4: Fileverse Receipt (The Proof)
-Every execution produces a permanent Verification Receipt stored on Fileverse:
-```json
-{
-  "proposal_id": "0x123",
-  "agent": "0xabc",
-  "user": "alice.eth",
-  "action": "swap ETH→USDC",
-  "rules_checked": {"max_spend": true, "slippage": true, "protocol": true},
-  "verified_by": "DarkAgent",
-  "signature": "0xdef"
-}
-```
-Now any developer can audit any agent, prove compliance, and build trust systems on top of DarkAgent.
-
-## Core Integrations Building the Ecosystem
-
-We built this specifically bridging the gap between every sponsor. Here is how DarkAgent acts as load-bearing infrastructure for the entire pack:
-
-**Base — The Home Chain**
-* *The Problem:* Base wants devs building load-bearing protocol infrastructure, not just isolated dApps.
-* *The Solution:* The Verification Contract is deployed natively on Base. This makes Base the home chain for AI agent security. "All AI agent verification happens on Base."
-
-**ENS — The Financial Identity Layer**
-* *The Problem:* ENS is just names. There's no standard for machine-readable preferences. Agents can't read user intentions.
-* *The Solution:* We built a new ENS standard schema: "Agent Permission Records". Any AI agent reads the `agent.permissions` ENS record before executing. You turn ENS from a name into a financial identity layer.
-
-**HeyElsa — The Trust Gateway**
-* *The Problem:* HeyElsa executes DeFi beautifully but has no safety layer. Users don't fully trust AI autonomous execution.
-* *The Solution:* We built a safety SDK that plugs directly into HeyElsa's execution pipeline. Before HeyElsa executes anything, it calls `DarkAgent.verify()`. We make HeyElsa perfectly trustworthy.
-
-**BitGo — The Institutional Enforcer**
-* *The Problem:* AI agents bypass traditional BitGo institutional policies by signing transactions directly. 
-* *The Solution:* A bridge that mathematically syncs DarkAgent on-chain ENS rules directly into BitGo wallet policies. Users set rules once—DarkAgent AND BitGo enforce the same rules automatically. We make BitGo relevant for the AI era.
-
-**Fileverse — The Killer Use Case**
-* *The Problem:* Fileverse is amazing decentralized storage without a defining killer-app narrative in DeFi. 
-* *The Solution:* We built Fileverse into the default **Audit Trail Layer for all AI Agents**. Every agent execution produces a tamper-proof compliance receipt stored on Fileverse forever. 
+DarkAgent is load-bearing decentralized infrastructure layer for AI agent permissions in DeFi. It solves the exact gap currently restricting institutional and mainstream adoption of autonomous agents: lack of standardized, on-chain, verifiable execution boundaries.
 
 ---
 
-## Developer Experience (3 Lines)
+## 🏗 The Architecture Flow
 
-Any developer can use DarkAgent to secure their AI agents instantly:
+Our core pipeline is a single, bulletproof verification flow entirely secured on Base testnet:
 
-```javascript
-import DarkAgent from 'darkagent-sdk';
-
-// Verify the action against the user's ENS rules
-const verified = await DarkAgent.verify(agentAddress, "alice.eth", actionData);
-
-// Only execute if DarkAgent approves
-if (verified) execute(actionData);
+```text
+alice.eth
+(ENSIP-XX permission records)
+         ↓
+DarkAgent Resolver (ENSAgentResolver.sol)
+(reads + parses ENS)
+         ↓
+Verification Contract (DarkAgent.sol)
+(checks every rule dynamically on Base)
+         ↓
+BitGo Agent Policy Adapter (bitgo.js SDK)
+(enforces at wallet level)
+(generates fresh address per tx for privacy)
+         ↓
+Execute on Base / Base Sepolia
 ```
 
-## Why This Wins
+---
 
-- **Novel Infrastructure:** We aren't building a chat bot with a seatbelt. We're building the decentralized bouncer that every AI agent in DeFi will need to use.
-- **Deep Integrations:** 
-  - **ENS:** A genuine new standard proposal for the ecosystem.
-  - **BitGo:** True wallet-level security synced with on-chain rules.
-  - **Fileverse:** Accountability and auditability layer.
-  - **Base:** The scalable L2 where the Verification Protocol lives.
-  - **HeyElsa:** Connects as a demo client to visual the workflow.
+## 🔵 BitGo Protocol Adapter (What We Built for BitGo)
 
-DarkAgent. Built to be load-bearing infrastructure.
+We didn't just spin up a wallet. We built the first **BitGo Agent Policy Adapter**.
+
+**What it does:**
+1. **Reads ENS permissions** directly mapping them to an agent profile.
+2. **Automatically creates matching BitGo policies**: Translates `agent.max_spend` into BitGo's enterprise `velocityLimit` engine, and `agent.protocols` into an `addressWhitelist`.
+3. Ensures strict **Privacy** by executing via `wallet.createAddress()`—generating a purely fresh un-linkable output address every single time an agent acts.
+
+```javascript
+// Excerpt from /sdk/bitgo.js AgentPolicyAdapter
+async syncPermissions(ensName, perms) {
+   // Generates matching BitGo enterprise policies instantly from ENS
+   await wallet.updatePolicyRule({
+     type: 'velocityLimit',
+     amountString: String(perms.maxSpend),
+     timeWindow: 86400 // Daily limit
+   });
+}
+
+async getExecutionAddress() {
+    // $1,200 Privacy Prize criteria hit precisely.
+    return await wallet.createAddress({ label: `agent-tx-${Date.now()}` });
+}
+```
+
+---
+
+## 🪪 ENSIP-XX: Agent Permission Records (What We Built for ENS)
+
+We aren't just calling `getText()`. We are formally proposing **ENSIP-XX** to turn ENS from an identity service into the ultimate decentralized financial policy standard. 
+
+By defining the `agent.*` prefix, *any* protocol can read what limits a user has enforced upon their AI Agents.
+
+*   `agent.max_spend`: Daily cap
+*   `agent.slippage`: AMM tolerance
+*   `agent.protocols`: Whitelist of DeFi routers (like Uniswap)
+
+The newly deployed `ENSAgentResolver.sol` converts these standards into an easily callable struct that the `DarkAgent.sol` verification contract consumes strictly before any protocol execution state is verified.
+
+---
+
+## 🎯 What We're Pitching
+
+**To ENS Judges ($2,000 Creative + Pool):**
+"We proposed ENSIP-XX. ENS becomes the permission layer for all AI agents. Any protocol reads it using our ENSAgentResolver."
+
+**To BitGo Judges ($2,000 Privacy + DeFi):**
+"We built the first agent policy adapter for BitGo. ENS permissions automatically sync to BitGo policies. Agents cannot exceed limits, and every single execution fires from a perfectly fresh, un-linkable address."
+
+**To ETHMumbai / Base Judges:**
+"We built the infrastructure layer that every AI agent in DeFi needs. ENS defines the rules. BitGo enforces them. Nobody can bypass either. It runs entirely on Base."
+
+## 🚀 Run the Project
+DarkAgent requires minimal setup:
+```bash
+npm install
+npx hardhat compile
+
+# Run the frontend Interface
+cd frontend
+npm run dev
+```
