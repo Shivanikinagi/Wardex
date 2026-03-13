@@ -1,13 +1,14 @@
 /**
- * sdk/bitgo.js
+ * DarkAgent 🤝 BitGo Policy Bridge
  *
- * BitGo vault integration for DarkAgent.
- * Wraps the BitGo SDK to provide wallet management, spending policies,
- * and freeze/unfreeze capabilities tied to DarkAgent's circuit breaker.
+ * Problem: BitGo is enterprise institutional custody. But AI agents bypass these policies. 
+ *          Agents sign transactions natively without going through the BitGo policy engine.
  *
- * Requires: npm install bitgo
- * Environment variables:
- *   BITGO_ACCESS_TOKEN, BITGO_WALLET_ID, BITGO_PASSPHRASE, BITGO_ENV
+ * Solution: This bridge syncs DarkAgent on-chain rules (from ENS) DIRECTLY into
+ *           BitGo wallet policies. 
+ *           
+ * User sets rules once on ENS → Both DarkAgent AND BitGo enforce the same rules
+ * automatically synced. You make BitGo relevant for the AI agent era.
  */
 
 require('dotenv').config()

@@ -73,6 +73,32 @@ Every execution produces a permanent Verification Receipt stored on Fileverse:
 ```
 Now any developer can audit any agent, prove compliance, and build trust systems on top of DarkAgent.
 
+## Core Integrations Building the Ecosystem
+
+We built this specifically bridging the gap between every sponsor. Here is how DarkAgent acts as load-bearing infrastructure for the entire pack:
+
+**Base — The Home Chain**
+* *The Problem:* Base wants devs building load-bearing protocol infrastructure, not just isolated dApps.
+* *The Solution:* The Verification Contract is deployed natively on Base. This makes Base the home chain for AI agent security. "All AI agent verification happens on Base."
+
+**ENS — The Financial Identity Layer**
+* *The Problem:* ENS is just names. There's no standard for machine-readable preferences. Agents can't read user intentions.
+* *The Solution:* We built a new ENS standard schema: "Agent Permission Records". Any AI agent reads the `agent.permissions` ENS record before executing. You turn ENS from a name into a financial identity layer.
+
+**HeyElsa — The Trust Gateway**
+* *The Problem:* HeyElsa executes DeFi beautifully but has no safety layer. Users don't fully trust AI autonomous execution.
+* *The Solution:* We built a safety SDK that plugs directly into HeyElsa's execution pipeline. Before HeyElsa executes anything, it calls `DarkAgent.verify()`. We make HeyElsa perfectly trustworthy.
+
+**BitGo — The Institutional Enforcer**
+* *The Problem:* AI agents bypass traditional BitGo institutional policies by signing transactions directly. 
+* *The Solution:* A bridge that mathematically syncs DarkAgent on-chain ENS rules directly into BitGo wallet policies. Users set rules once—DarkAgent AND BitGo enforce the same rules automatically. We make BitGo relevant for the AI era.
+
+**Fileverse — The Killer Use Case**
+* *The Problem:* Fileverse is amazing decentralized storage without a defining killer-app narrative in DeFi. 
+* *The Solution:* We built Fileverse into the default **Audit Trail Layer for all AI Agents**. Every agent execution produces a tamper-proof compliance receipt stored on Fileverse forever. 
+
+---
+
 ## Developer Experience (3 Lines)
 
 Any developer can use DarkAgent to secure their AI agents instantly:

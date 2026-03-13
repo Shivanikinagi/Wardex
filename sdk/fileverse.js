@@ -1,13 +1,14 @@
 /**
- * sdk/fileverse.js
+ * DarkAgent 🤝 Fileverse: The Default Audit Trail Layer
  *
- * Fileverse integration for DarkAgent audit trail.
- * Stores compliance proofs, circuit breaker events, and transaction receipts
- * as immutable audit documents on Fileverse (IPFS + on-chain anchoring).
- *
- * Fileverse docs: https://docs.fileverse.io
- * Environment variables:
- *   FILEVERSE_API_KEY, FILEVERSE_NAMESPACE
+ * Problem: Fileverse is decentralized storage, but nobody is using it for 
+ *          accountability in DeFi. No killer use case yet.
+ * 
+ * Solution: Compliance receipts stored permanently on Fileverse. Every AI agent 
+ *           execution produces a tamper-proof verification receipt stored on Fileverse forever.
+ * 
+ * You give Fileverse its killer use case:
+ * "The audit trail layer for all AI agents in DeFi."
  */
 
 require('dotenv').config()
