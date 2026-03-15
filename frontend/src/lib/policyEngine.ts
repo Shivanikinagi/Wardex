@@ -53,7 +53,7 @@ export const TOKEN_CATEGORIES: Record<string, string> = {
 }
 
 export const TRUSTED_PROTOCOLS = ['Uniswap', '1inch', 'Aave']
-export const CHAIN_OPTIONS = ['Base', 'Ethereum', 'Arbitrum']
+export const CHAIN_OPTIONS = ['Base']
 export const ACTION_OPTIONS: ActionType[] = ['swap', 'buy', 'bridge']
 export const SOURCE_OPTIONS: SourceType[] = ['twitter']
 
