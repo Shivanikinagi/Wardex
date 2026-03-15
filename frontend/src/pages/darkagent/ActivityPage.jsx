@@ -19,7 +19,7 @@ const fallbackActivity = [
     protocol: 'Uniswap',
     amountUsd: 800,
     status: 'auto-downsize',
-    reason: 'Trade downsized from 800 USD to 300 USD for ai_bot.',
+    reason: 'Trade downsized from 800 USD to 300 USD for twitter.',
   },
   {
     id: 'safe-demo',

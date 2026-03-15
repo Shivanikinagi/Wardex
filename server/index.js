@@ -32,7 +32,7 @@ const SAMPLE_BLINKS = [
   {
     id: "ai-bot-eth",
     label: "AI bot Blink",
-    url: "https://ai.darkagent.trade/recommendation?protocol=uniswap&chain=base&tokenIn=USDC&tokenOut=ETH&amountUsd=800&slippageBps=80&liquidityUsd=2200000&source=ai_bot&sender=DeepTrendBot",
+    url: "https://ai.darkagent.trade/recommendation?protocol=uniswap&chain=base&tokenIn=USDC&tokenOut=ETH&amountUsd=800&slippageBps=80&liquidityUsd=2200000&source=twitter&sender=DeepTrendBot",
   },
   {
     id: "safe-friend",

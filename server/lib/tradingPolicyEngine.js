@@ -12,13 +12,7 @@ const PERSONA_PRESETS = {
     minLiquidityUsd: 1000000,
     trustedProtocols: ["uniswap", "aave", "1inch"],
     sourceLimits: {
-      ai_bot: 300,
-      influencer: 150,
-      telegram: 120,
-      friend: 100,
-      copy_trader: 180,
-      community: 100,
-      unknown: 0,
+      twitter: 300,
     },
   },
   balanced: {
@@ -34,13 +28,7 @@ const PERSONA_PRESETS = {
     minLiquidityUsd: 250000,
     trustedProtocols: ["uniswap", "aave", "1inch"],
     sourceLimits: {
-      ai_bot: 300,
-      influencer: 200,
-      telegram: 150,
-      friend: 150,
-      copy_trader: 250,
-      community: 150,
-      unknown: 0,
+      twitter: 300,
     },
   },
   aggressive: {
@@ -56,25 +44,13 @@ const PERSONA_PRESETS = {
     minLiquidityUsd: 75000,
     trustedProtocols: ["uniswap", "aave", "1inch"],
     sourceLimits: {
-      ai_bot: 700,
-      influencer: 450,
-      telegram: 400,
-      friend: 350,
-      copy_trader: 600,
-      community: 300,
-      unknown: 100,
+      twitter: 900,
     },
   },
 };
 
 const SOURCE_RISK = {
-  ai_bot: 18,
-  influencer: 25,
-  telegram: 24,
-  friend: 10,
-  copy_trader: 16,
-  community: 20,
-  unknown: 32,
+  twitter: 18,
 };
 
 function getPersonaPreset(persona = "balanced") {

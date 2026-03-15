@@ -1,10 +1,4 @@
-export type SourceType =
-  | 'ai_bot'
-  | 'influencer'
-  | 'friend'
-  | 'unknown'
-  | 'telegram'
-  | 'copy_trader'
+export type SourceType = 'twitter'
 
 export type ActionType = 'swap' | 'buy' | 'bridge'
 export type Verdict = 'safe' | 'risky' | 'blocked' | 'downsized'
@@ -61,7 +55,7 @@ export const TOKEN_CATEGORIES: Record<string, string> = {
 export const TRUSTED_PROTOCOLS = ['Uniswap', '1inch', 'Aave']
 export const CHAIN_OPTIONS = ['Base', 'Ethereum', 'Arbitrum']
 export const ACTION_OPTIONS: ActionType[] = ['swap', 'buy', 'bridge']
-export const SOURCE_OPTIONS: SourceType[] = ['ai_bot', 'influencer', 'friend', 'telegram', 'copy_trader', 'unknown']
+export const SOURCE_OPTIONS: SourceType[] = ['twitter']
 
 export const PERSONA_PRESETS: Record<TradingPolicy['persona'], TradingPolicy> = {
   conservative: {
@@ -74,12 +68,7 @@ export const PERSONA_PRESETS: Record<TradingPolicy['persona'], TradingPolicy> = 
     allowLowLiquidityAssets: false,
     trustedProtocols: TRUSTED_PROTOCOLS,
     sourceLimits: {
-      ai_bot: 300,
-      influencer: 150,
-      friend: 100,
-      telegram: 120,
-      copy_trader: 150,
-      unknown: 0,
+      twitter: 300,
     },
   },
   balanced: {
@@ -92,12 +81,7 @@ export const PERSONA_PRESETS: Record<TradingPolicy['persona'], TradingPolicy> = 
     allowLowLiquidityAssets: false,
     trustedProtocols: TRUSTED_PROTOCOLS,
     sourceLimits: {
-      ai_bot: 300,
-      influencer: 200,
-      friend: 150,
-      telegram: 150,
-      copy_trader: 250,
-      unknown: 0,
+      twitter: 300,
     },
   },
   aggressive: {
@@ -110,23 +94,13 @@ export const PERSONA_PRESETS: Record<TradingPolicy['persona'], TradingPolicy> = 
     allowLowLiquidityAssets: true,
     trustedProtocols: TRUSTED_PROTOCOLS,
     sourceLimits: {
-      ai_bot: 900,
-      influencer: 600,
-      friend: 400,
-      telegram: 500,
-      copy_trader: 700,
-      unknown: 150,
+      twitter: 900,
     },
   },
 }
 
 const SOURCE_WEIGHT: Record<string, number> = {
-  ai_bot: 8,
-  influencer: 18,
-  friend: 4,
-  telegram: 16,
-  copy_trader: 12,
-  unknown: 24,
+  twitter: 10,
 }
 
 export function getTokenCategory(symbol: string) {
@@ -353,7 +327,7 @@ export function parseBlinkFromUrl(blinkUrl: string): BlinkDraft {
 export function parseBlinkFromSearchParams(searchParams: URLSearchParams): BlinkDraft {
   return {
     title: searchParams.get('title') || 'Shared trading Blink',
-    source: (searchParams.get('source') as SourceType) || 'ai_bot',
+    source: (searchParams.get('source') as SourceType) || 'twitter',
     action: (searchParams.get('action') as ActionType) || 'swap',
     tokenIn: (searchParams.get('tokenIn') || 'USDC').toUpperCase(),
     tokenOut: (searchParams.get('tokenOut') || 'ETH').toUpperCase(),

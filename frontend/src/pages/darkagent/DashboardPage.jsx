@@ -14,10 +14,7 @@ const DEFAULT_FORM = {
   blockUnknownTokens: true,
   allowLowLiquidityAssets: false,
   trustedProtocols: 'Uniswap, 1inch, Aave',
-  ai_bot: 300,
-  influencer: 200,
-  friend: 150,
-  unknown: 0,
+  twitter: 300,
 }
 
 function formatDateTime(value) {
@@ -58,18 +55,14 @@ export default function DashboardPage() {
       blockUnknownTokens: stored.blockUnknownTokens !== false,
       allowLowLiquidityAssets: stored.allowLowLiquidityAssets === true,
       trustedProtocols: (stored.trustedProtocols || TRUSTED_PROTOCOLS).join(', '),
-      ai_bot: stored.sourceLimits?.ai_bot ?? 300,
-      influencer: stored.sourceLimits?.influencer ?? 200,
-      friend: stored.sourceLimits?.friend ?? 150,
-      unknown: stored.sourceLimits?.unknown ?? 0,
+      twitter: stored.sourceLimits?.twitter ?? 300,
     })
   }, [profile])
 
   const summary = useMemo(
     () => [
       `Max trade size: $${form.maxTradeUsd}`,
-      `AI bot limit: $${form.ai_bot}`,
-      `Influencer limit: $${form.influencer}`,
+        `Twitter limit: $${form.twitter}`,
       `Max slippage: ${form.maxSlippageBps} bps`,
       form.blockMemeCoins ? 'Meme coins blocked' : 'Meme coins allowed',
       form.trustedProtocolsOnly ? 'Trusted protocols only' : 'Open protocol access',
@@ -88,10 +81,7 @@ export default function DashboardPage() {
       blockUnknownTokens: preset.blockUnknownTokens,
       allowLowLiquidityAssets: preset.allowLowLiquidityAssets,
       trustedProtocols: preset.trustedProtocols.join(', '),
-      ai_bot: preset.sourceLimits.ai_bot,
-      influencer: preset.sourceLimits.influencer,
-      friend: preset.sourceLimits.friend,
-      unknown: preset.sourceLimits.unknown,
+      twitter: preset.sourceLimits.twitter,
     })
     setSaved(false)
   }
@@ -111,10 +101,7 @@ export default function DashboardPage() {
         .map((item) => item.trim().toLowerCase())
         .filter(Boolean),
       sourceLimits: {
-        ai_bot: Number(form.ai_bot),
-        influencer: Number(form.influencer),
-        friend: Number(form.friend),
-        unknown: Number(form.unknown),
+        twitter: Number(form.twitter),
       },
     })
     setSaved(true)
@@ -174,22 +161,8 @@ export default function DashboardPage() {
 
               <div className="mt-5 grid gap-3 md:grid-cols-2">
                 <div>
-                  <Label>AI bot limit</Label>
-                  <Input value={form.ai_bot} onChange={(event) => setForm((current) => ({ ...current, ai_bot: event.target.value }))} />
-                </div>
-                <div>
-                  <Label>Influencer limit</Label>
-                  <Input value={form.influencer} onChange={(event) => setForm((current) => ({ ...current, influencer: event.target.value }))} />
-                </div>
-                <div>
-                  <Label>Friend limit</Label>
-                  <Input value={form.friend} onChange={(event) => setForm((current) => ({ ...current, friend: event.target.value }))} />
-                </div>
-                <div>
-                  <Label>Unknown source limit</Label>
-                  <Input value={form.unknown} onChange={(event) => setForm((current) => ({ ...current, unknown: event.target.value }))} />
-                </div>
-              </div>
+                    <Label>Twitter limit</Label>
+                    <Input value={form.twitter} onChange={(event) => setForm((current) => ({ ...current, twitter: event.target.value }))} />
 
               <div className="mt-6">
                 <GlowButton onClick={handleSave} className="bg-vault-green text-black hover:bg-vault-green/90 disabled:opacity-60" disabled={busy}>

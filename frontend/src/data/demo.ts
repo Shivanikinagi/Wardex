@@ -3,7 +3,7 @@ import { buildTweetText, type BlinkDraft } from '../lib/policyEngine'
 export const demoBlinks: BlinkDraft[] = [
   {
     title: 'AI ETH rebalance',
-    source: 'ai_bot',
+    source: 'twitter',
     action: 'swap',
     tokenIn: 'USDC',
     tokenOut: 'ETH',
@@ -15,7 +15,7 @@ export const demoBlinks: BlinkDraft[] = [
   },
   {
     title: 'Influencer meme call',
-    source: 'influencer',
+    source: 'twitter',
     action: 'buy',
     tokenIn: 'USDC',
     tokenOut: 'MEME',
@@ -27,7 +27,7 @@ export const demoBlinks: BlinkDraft[] = [
   },
   {
     title: 'AI size too large on Base',
-    source: 'ai_bot',
+    source: 'twitter',
     action: 'swap',
     tokenIn: 'USDC',
     tokenOut: 'ETH',
@@ -42,7 +42,7 @@ export const demoBlinks: BlinkDraft[] = [
 export const featureHighlights = [
   {
     title: 'Source-aware firewall',
-    body: 'DarkAgent scores every Blink differently depending on whether it came from an AI bot, influencer, friend, or unknown source.',
+    body: 'DarkAgent scores every Blink differently depending on whether it came from Twitter.',
   },
   {
     title: 'Auto-downsize oversized trades',
@@ -62,9 +62,9 @@ export const productPrinciples = [
 
 export function buildMockTweet(blink: BlinkDraft) {
   return {
-    avatar: blink.source === 'ai_bot' ? 'DA' : 'MX',
+    avatar: blink.source === 'twitter' ? 'DA' : 'MX',
     handle: blink.referralTag || '@darkagent_demo',
-    name: blink.source === 'ai_bot' ? 'DarkAgent Signals' : 'Social Trading Feed',
+    name: blink.source === 'twitter' ? 'DarkAgent Signals' : 'Social Trading Feed',
     copy: buildTweetText(blink),
   }
 }

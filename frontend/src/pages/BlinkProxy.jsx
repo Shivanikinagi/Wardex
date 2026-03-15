@@ -99,11 +99,7 @@ export default function BlinkProxy() {
     allowTopTokensOnly: false,
     autoDownsize: true,
     trustedProtocols: 'uniswap, jupiter, aave, raydium',
-    aiBotLimit: 300,
-    influencerLimit: 200,
-    telegramLimit: 150,
-    friendLimit: 150,
-    unknownLimit: 0,
+    twitterLimit: 300,
   })
 
   const selectedPolicy = policiesByEns[selectedEns]
@@ -132,11 +128,7 @@ export default function BlinkProxy() {
       allowTopTokensOnly: stored.allowTopTokensOnly,
       autoDownsize: stored.autoDownsize,
       trustedProtocols: toCsv(stored.trustedProtocols),
-      aiBotLimit: stored.sourceLimits?.ai_bot ?? 300,
-      influencerLimit: stored.sourceLimits?.influencer ?? 200,
-      telegramLimit: stored.sourceLimits?.telegram ?? 150,
-      friendLimit: stored.sourceLimits?.friend ?? 150,
-      unknownLimit: stored.sourceLimits?.unknown ?? 0,
+      twitterLimit: stored.sourceLimits?.twitter ?? 300,
     })
   }, [selectedPolicy])
 
@@ -199,11 +191,7 @@ export default function BlinkProxy() {
       allowTopTokensOnly: preset.allowTopTokensOnly,
       autoDownsize: preset.autoDownsize,
       trustedProtocols: toCsv(preset.trustedProtocols),
-      aiBotLimit: preset.sourceLimits.ai_bot,
-      influencerLimit: preset.sourceLimits.influencer,
-      telegramLimit: preset.sourceLimits.telegram,
-      friendLimit: preset.sourceLimits.friend,
-      unknownLimit: preset.sourceLimits.unknown,
+      twitterLimit: preset.sourceLimits.twitter,
     })
   }
 
@@ -218,11 +206,7 @@ export default function BlinkProxy() {
       autoDownsize: policyForm.autoDownsize,
       trustedProtocols: parseCsv(policyForm.trustedProtocols),
       sourceLimits: {
-        ai_bot: Number(policyForm.aiBotLimit),
-        influencer: Number(policyForm.influencerLimit),
-        telegram: Number(policyForm.telegramLimit),
-        friend: Number(policyForm.friendLimit),
-        unknown: Number(policyForm.unknownLimit),
+        twitter: Number(policyForm.twitterLimit),
       },
     })
     setStatusText('Policy saved. Run Sync Watcher to make the next Blink use the updated rules immediately.')
@@ -425,7 +409,7 @@ export default function BlinkProxy() {
             <div className="flex items-center justify-between gap-4">
               <div>
                 <h3 className="text-xl font-semibold text-vault-text">Policy Setup</h3>
-                <p className="mt-1 text-sm text-vault-slate">Set different limits for AI bots, influencers, Telegram groups, friends, and unknown senders.</p>
+                <p className="mt-1 text-sm text-vault-slate">Set limits for Twitter.</p>
               </div>
               <span
                 className={`rounded-full px-3 py-1 text-xs font-medium ${
@@ -467,20 +451,8 @@ export default function BlinkProxy() {
               <Field label="Trusted Protocols">
                 <input value={policyForm.trustedProtocols} onChange={(event) => setPolicyForm((current) => ({ ...current, trustedProtocols: event.target.value }))} className="input-shell" />
               </Field>
-              <Field label="AI Bot Limit">
-                <input value={policyForm.aiBotLimit} onChange={(event) => setPolicyForm((current) => ({ ...current, aiBotLimit: event.target.value }))} className="input-shell" />
-              </Field>
-              <Field label="Influencer Limit">
-                <input value={policyForm.influencerLimit} onChange={(event) => setPolicyForm((current) => ({ ...current, influencerLimit: event.target.value }))} className="input-shell" />
-              </Field>
-              <Field label="Telegram Limit">
-                <input value={policyForm.telegramLimit} onChange={(event) => setPolicyForm((current) => ({ ...current, telegramLimit: event.target.value }))} className="input-shell" />
-              </Field>
-              <Field label="Friend Limit">
-                <input value={policyForm.friendLimit} onChange={(event) => setPolicyForm((current) => ({ ...current, friendLimit: event.target.value }))} className="input-shell" />
-              </Field>
-              <Field label="Unknown Source Limit">
-                <input value={policyForm.unknownLimit} onChange={(event) => setPolicyForm((current) => ({ ...current, unknownLimit: event.target.value }))} className="input-shell" />
+<Field label="Twitter Limit">
+                  <input value={policyForm.twitterLimit} onChange={(event) => setPolicyForm((current) => ({ ...current, twitterLimit: event.target.value }))} className="input-shell" />
               </Field>
             </div>
 

@@ -36,7 +36,7 @@ function inferSourceCategory(url, explicitSource) {
     return "community";
   }
   if (host.includes("ai") || host.includes("bot")) {
-    return "ai_bot";
+    return "twitter";
   }
   if (host.includes("copy")) {
     return "copy_trader";
