@@ -12,3 +12,4 @@ TrustNet-temp/
 *.mp4
 server_start.log
 test.txt
+.env.example

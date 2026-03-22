@@ -17,7 +17,7 @@ const { EnsPolicyStore, normalizeEnsName } = require("./lib/ensPolicyStore");
 const { EventStreamHub } = require("./lib/eventStreamHub");
 const { evaluateAction } = require("./lib/policyEngine");
 const { PolicyWatcher } = require("./lib/policyWatcher");
-const { ProofService } = require("./lib/proofService");
+const { ProofService } = require("./lib/proofServiceV6");
 const { ProofStore } = require("./lib/proofStore");
 const { ShareLinkStore } = require("./lib/shareLinkStore");
 const {
