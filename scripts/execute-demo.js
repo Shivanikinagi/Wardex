@@ -13,12 +13,13 @@ function requiredEnv(name) {
 
 async function main() {
   const darkAgentAddress =
+    String(process.env.WARDEX_CONTRACT || "").trim() ||
     String(process.env.DARKAGENT_CONTRACT || "").trim() ||
     String(process.env.DARKAGENT_PROTOCOL_ADDRESS || "").trim();
 
   if (!darkAgentAddress || !ethers.isAddress(darkAgentAddress)) {
     throw new Error(
-      "Missing or invalid DARKAGENT_CONTRACT (or DARKAGENT_PROTOCOL_ADDRESS) in .env"
+      "Missing or invalid WARDEX_CONTRACT (or DARKAGENT_CONTRACT/DARKAGENT_PROTOCOL_ADDRESS) in .env"
     );
   }
 
@@ -48,7 +49,7 @@ async function main() {
     return overrides;
   };
 
-  const darkAgent = await ethers.getContractAt("DarkAgent", darkAgentAddress, signer);
+  const darkAgent = await ethers.getContractAt("WARDEX", darkAgentAddress, signer);
   let ensResolverAddress = String(process.env.ENS_RESOLVER_ADDRESS || "").trim();
   try {
     const resolverFromContract = await darkAgent.ensResolver();
