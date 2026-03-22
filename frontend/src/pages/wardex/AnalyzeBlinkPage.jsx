@@ -36,7 +36,7 @@ function mapDecision(decision) {
 export default function AnalyzeBlinkPage() {
   const { shareId } = useParams()
   const [searchParams] = useSearchParams()
-  const { analyzeBlinkUrl, executeBlinkUrl, getShareLink, state, busy } = usewardex()
+  const { analyzeBlinkUrl, executeBlinkUrl, getShareLink, state, busy } = useWardex()
   const [analysisPayload, setAnalysisPayload] = useState(null)
   const [executionPayload, setExecutionPayload] = useState(null)
   const [analysisError, setAnalysisError] = useState('')

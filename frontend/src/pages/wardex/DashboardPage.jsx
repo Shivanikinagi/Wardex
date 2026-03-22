@@ -28,7 +28,7 @@ function formatDateTime(value) {
 }
 
 export default function DashboardPage() {
-  const { state, updatePolicy, busy, streamStatus } = usewardex()
+  const { state, updatePolicy, busy, streamStatus } = useWardex()
   const profile = state?.policies?.find((entry) => entry.ensName === DEFAULT_PROFILE)
   const watcherStatus = state?.watcher
   const watcherLiveLabel =

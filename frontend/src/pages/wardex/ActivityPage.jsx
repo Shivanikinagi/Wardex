@@ -49,7 +49,7 @@ function statusForBadge(status) {
 }
 
 export default function ActivityPage() {
-  const { state } = usewardex()
+  const { state } = useWardex()
   const events = state?.activity?.length ? state.activity : fallbackActivity
 
   return (

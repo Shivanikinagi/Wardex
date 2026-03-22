@@ -1,8 +1,8 @@
 const fs = require('fs');
 const filePaths = [
-  'f:/shivani/VSCode/projects/Oracle/darkagent/frontend/src/pages/Dashboard.jsx',
-  'f:/shivani/VSCode/projects/Oracle/darkagent/frontend/src/pages/Proposer.jsx',
-  'f:/shivani/VSCode/projects/Oracle/darkagent/frontend/src/pages/SmartWallet.jsx'
+  'f:/shivani/VSCode/projects/Oracle/WARDEX/frontend/src/pages/Dashboard.jsx',
+  'f:/shivani/VSCode/projects/Oracle/WARDEX/frontend/src/pages/Proposer.jsx',
+  'f:/shivani/VSCode/projects/Oracle/WARDEX/frontend/src/pages/SmartWallet.jsx'
 ];
 for (const path of filePaths) {
   let content = fs.readFileSync(path, 'utf8');

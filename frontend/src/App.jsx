@@ -309,7 +309,7 @@ function buildSponsorEvidence({ analysisResult, executionResult, selectedPolicy,
     .filter(Boolean)
 }
 
-function LivewardexApp() {
+function LiveWardexApp() {
   const {
     apiBase,
     state,
@@ -319,7 +319,7 @@ function LivewardexApp() {
     analyzeBlinkUrl,
     executeBlinkUrl,
     streamStatus,
-  } = usewardex()
+  } = useWardex()
 
   const [tab, setTab] = useState('create')
   const [draft, setDraft] = useState({
@@ -891,8 +891,8 @@ function LivewardexApp() {
 
 export default function App() {
   return (
-    <wardexProvider>
-      <LivewardexApp />
-    </wardexProvider>
+    <WardexProvider>
+      <LiveWardexApp />
+    </WardexProvider>
   )
 }

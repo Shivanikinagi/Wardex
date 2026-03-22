@@ -31,7 +31,7 @@ const INITIAL_DRAFT = {
 
 export default function CreateBlinkPage() {
   const navigate = useNavigate()
-  const { createShareLink, busy } = usewardex()
+  const { createShareLink, busy } = useWardex()
   const [draft, setDraft] = useState(INITIAL_DRAFT)
   const [generatedRawUrl, setGeneratedRawUrl] = useState('')
   const [shareLink, setShareLink] = useState(null)
