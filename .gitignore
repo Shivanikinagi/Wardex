@@ -6,6 +6,9 @@ typechain-types/
 coverage/
 coverage.json
 .env
+.vscode/
 *.log
 TrustNet-temp/
 *.mp4
+server_start.log
+test.txt

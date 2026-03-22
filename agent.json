@@ -1,0 +1,29 @@
+{
+  "name": "DarkAgent Policy Engine",
+  "version": "1.0.0",
+  "description": "Trustless ZK-verified execution boundaries for AI agents in DeFi",
+  "operator": "${DEPLOYER_ADDRESS}",
+  "erc8004_identity": "pending_registration",
+  "supported_tools": [
+    "analyze-blink",
+    "score-transaction",
+    "verify-compliance",
+    "generate-zk-proof"
+  ],
+  "tech_stack": ["Noir", "Base Sepolia", "Venice AI", "ENS", "Coinbase CDP"],
+  "compute_constraints": {
+    "max_tokens_per_call": 200,
+    "timeout_ms": 5000
+  },
+  "task_categories": [
+    "DeFi compliance",
+    "agent policy enforcement",
+    "ZK proof generation"
+  ],
+  "payment": {
+    "protocol": "x402",
+    "amount": "0.001",
+    "currency": "USDC",
+    "network": "base-sepolia"
+  }
+}

@@ -161,8 +161,10 @@ export default function DashboardPage() {
 
               <div className="mt-5 grid gap-3 md:grid-cols-2">
                 <div>
-                    <Label>Twitter limit</Label>
-                    <Input value={form.twitter} onChange={(event) => setForm((current) => ({ ...current, twitter: event.target.value }))} />
+                  <Label>Twitter limit</Label>
+                  <Input value={form.twitter} onChange={(event) => setForm((current) => ({ ...current, twitter: event.target.value }))} />
+                </div>
+              </div>
 
               <div className="mt-6">
                 <GlowButton onClick={handleSave} className="bg-vault-green text-black hover:bg-vault-green/90 disabled:opacity-60" disabled={busy}>

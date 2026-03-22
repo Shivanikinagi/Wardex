@@ -17,6 +17,11 @@ async function loadDeploymentConfig() {
 const BASE_SEPOLIA_CHAIN_ID = 84532
 const BASE_SEPOLIA_RPC = 'https://sepolia.base.org'
 
+function getAddressFromEnv(key) {
+    const value = import.meta.env[key]
+    return getUsableAddress(value)
+}
+
 function getUsableAddress(address) {
     if (!address || !ethers.isAddress(address)) return null
     if (address === ethers.ZeroAddress) return null
@@ -88,8 +93,13 @@ export function useContracts() {
                 setConnected(true)
 
                 const config = await loadDeploymentConfig()
-                const darkAgentAddress = getUsableAddress(config?.contracts?.DarkAgent)
-                const permissionsAddress = getUsableAddress(config?.contracts?.Permissions)
+                const darkAgentAddress =
+                    getAddressFromEnv('VITE_DARKAGENT_CONTRACT') ||
+                    getUsableAddress(config?.contracts?.DarkAgent)
+                const permissionsAddress =
+                    getAddressFromEnv('VITE_CAPABILITY_CONTRACT') ||
+                    getUsableAddress(config?.contracts?.CapabilityCheck) ||
+                    getUsableAddress(config?.contracts?.Permissions)
 
                 if (darkAgentAddress) {
                     const darkAgent = new ethers.Contract(

@@ -1,85 +1,142 @@
-﻿<div align="center">
-  <h1>🛡️ DarkAgent Protocol</h1>
-  <p><b>Trustless, ZK-Verified Execution Boundaries for AI Agents in DeFi</b></p>
-  <p><i>Built with ❤️ for ETHMumbai 2026</i></p>
-</div>
+﻿# DarkAgent - Verifiable AI Agent Execution Boundaries
 
-> *"ENS defines what your agent can do. Noir ZK circuits prove it complied. Coinbase Smart Wallet gives it a home. DarkAgent connects them all."*
+Live app: https://darkagent.vercel.app
+Demo video: https://loom.com/share/PASTE_AFTER_RECORDING
+Backend API: http://localhost:8787
 
----
+DarkAgent is a policy firewall for agentic DeFi execution. Every Blink is scored, enforced, executed, and provable.
 
-## 🚨 The Problem
-The DeFi space is sprinting toward an **AI-agent future**, but it lacks a fundamental layer of trust. Handing an autonomous AI bot or a social signal access to your funds without mathematical guarantees is reckless. It risks your liquidity to high slippage, unapproved protocol usage, and unauthorized token swaps (like meme coin rugpulls). Institutions and retail users alike need a way to securely **sandbox** their agents.
+## Sponsor Proofs Snapshot
+- Filecoin PieceCID proof (FOC Calibration):
+	- PieceCID: `bafkzcibco4b73v4z5ycsdqdxixuxkyz6tvbzygsb526dpczuqn67niuladxp4fy`
+	- Verify: `https://calibration.filfox.info/en/message/bafkzcibco4b73v4z5ycsdqdxixuxkyz6tvbzygsb526dpczuqn67niuladxp4fy`
+	- Command used: `npm run filecoin:foc:setup`
+- Live Blink execution receipts (Base Sepolia):
+	- Propose: `0x4f6f670b87c759d662412dd105653b4c0236bbdedb9cc902bb019633fbbe5eb5`
+	- Verify: `0xee51b3ce34c3c3eb7fd1faac6113fa09a9b28bc90f86d8554a8019fea85d3044`
+	- Execute: `0x8baf2728cb0b52685e06742dbc0954b7bca9ae918c00bb55296a83e1122a940d`
 
-## 💡 The Solution
-**DarkAgent** acts as an unbreakable decentralized firewall between autonomous agents and your wallet. We allow users to clearly define *exactly* what their agents are allowed to do. 
+## End-to-end flow
+1. Agent proposes a Blink URL.
+2. Server resolves ENS policy and optional treasury yield budget.
+3. Venice AI scores risk (optionally funded by Zyfai yield).
+4. Optional Lit sealed policy verdict can override decision.
+5. Allowed execution is run and a proof receipt is generated.
+6. Execution record is uploaded to Filecoin and CID is returned.
 
-When an external agent attempts to execute a transaction (a **Blink**), our **Policy Engine** intercepts it, dynamically scoring it based on token safety, protocol trust, and source spending limits. Upon execution, we generate a **Zero-Knowledge proof** establishing that the agent acted within compliance—without ever revealing your specific trading strategies or target alpha to regulators or the public.
+## Local setup
+```bash
+git clone https://github.com/Shivanikinagi/DarkAgent
+cd DarkAgent/darkagent
+cp .env.example .env
+# fill all required env vars for your integrations
 
----
+npm install
+cd frontend && npm install && cd ..
 
-## ✨ Key Features
-1. 📊 **Dynamic Policy Engine:** Intercepts payloads and evaluates them against user-defined limits (e.g., Block all meme coins, set a hard maximum of $300 per AI bot transaction).
-2. 🔐 **Zero-Knowledge Compliance:** Uses **Noir (Aztec)** to generate ZK proofs that an agent adhered strictly to spending limits and whitelists, proving compliance on-chain while hiding exact targets.
-3. 💳 **Coinbase Smart Wallet Integrations:** Secure, gas-abstracted transaction execution directly on **Base Sepolia**.
-4. 🌍 **ENS Identity:** Binds human-readable decentralized identities directly to the agent's policy bounds.
+npm run compile
+npm run deploy
+npm run verify
 
----
-
-## 🏗 Architecture Flow
-Our core pipeline is a single, bulletproof verification flow entirely secured on-chain:
-
-`	ext
-1. User Policy Configuration (ENS Profiles & Source Limits)
-         ↓
-2. Action Payload (Blinks intercepted from AI/External sources)
-         ↓
-3. DarkAgent Policy Engine (Evaluates limits, slippage, whitelists)
-         ↓
-4. Base Sepolia Execution (via Coinbase Smart Wallets)
-         ↓
-5. Noir ZK Circuit Verification (Verifier.sol generates compliance proof)
-         ↓
-✅ Approved, Executed & Cryptographically Proven
-`
-
----
-
-## 💻 How to Run the Demo Locally
-To run the full stack and experience the UI locally during judging:
-
-### 1. Start the Proxy Server
-This runs the background proxy on port 8787 that simulates the Blink interception and API generation.
-`ash
 npm run blink:server
-`
-
-### 2. Start the Frontend WebApp
-This runs the Vite React UI on port 5177. Open a new terminal:
-`ash
+# terminal 2
 cd frontend
 npm run dev
-`
+```
 
-### 3. Demo Walkthrough Steps for Judges
-- Navigate to the **Create Blink** tab.
-- Attempt a high-risk operation (e.g., select source: i_bot, set 800 USDC to swap for DEGEN).
-- Click **Generate Blink**.
-- Watch the **Analyze Blink** dashboard intercept the payload, cross-reference it against your internal policy limits, and flag it as Blocked or Downsized with a low safety score.
-- Override the block (for demo purposes) by clicking **Continue**, and view the simulated execution.
-- Observe the **ZK Proof Verification** link that routes directly to the Base Sepolia Testnet confirmation.
+## Deployments
+- DarkAgent contract: https://sepolia.basescan.org/address/PASTE_DARKAGENT_ADDRESS
+- ENS resolver: https://sepolia.basescan.org/address/PASTE_ENS_RESOLVER_ADDRESS
+- Verifier: https://sepolia.basescan.org/address/PASTE_VERIFIER_ADDRESS
+- Agent treasury: https://sepolia.basescan.org/address/PASTE_TREASURY_ADDRESS
+- Status network tx: https://sepolia.status.network/tx/PASTE_STATUS_TX
 
----
+## Track submissions
 
-## 🛠 Tech Stack & Track Submissions
-- **Base / Base Sepolia:** Core deployment environment for fast, cheap execution.
-- **Coinbase Developer Platform (CDP):** For Smart Wallet account abstraction and seamless user onboarding.
-- **Noir / Aztec:** ZK Circuit compilation for privacy-preserving verifiable compute.
-- **Vite, React, TailwindCSS:** Frontend interface and routing.
-- **ENS:** Decentralized handles for agent policies.
+### Lido - stETH Treasury ($3,000)
+`AgentTreasury.sol` enforces principal lock semantics and exposes `availableYieldStETH()` for spend budget only. Policy checks clamp max execution amount to treasury yield when configured.
 
----
-<div align="center">
-  <b>Developed by shivanik1105</b><br>
-  <i>Because your AI agent shouldn't have the keys to the kingdom without a chaperone.</i>
-</div>
+Evidence:
+- Treasury contract address: `PASTE_TREASURY_ADDRESS`
+- Deposit tx: `PASTE_TREASURY_DEPOSIT_TX`
+
+### Filecoin - Agentic Storage ($1,000)
+After successful execution, backend uploads an immutable compliance record and returns `filecoinCid` in API response and UI success panel.
+
+Evidence:
+- FOC setup script now succeeds with real on-chain storage proof.
+- PieceCID: `bafkzcibco4b73v4z5ycsdqdxixuxkyz6tvbzygsb526dpczuqn67niuladxp4fy`
+- Verify: `https://calibration.filfox.info/en/message/bafkzcibco4b73v4z5ycsdqdxixuxkyz6tvbzygsb526dpczuqn67niuladxp4fy`
+- Script: `npm run filecoin:foc:setup`
+
+### Lit Protocol - Dark Knowledge ($250)
+Backend can call a Lit policy endpoint and consume sealed verdict output (`litActionCid` + verdict) without exposing raw rule payloads.
+
+Evidence:
+- Lit Action CID: `not returned (LIT_POLICY_API_URL / LIT_ACTION_CID not configured)`
+
+### Zyfai - Yield Powered Agent ($600)
+Before Venice scoring, backend can query Zyfai yield balance and deduct inference cost after scoring. UI indicates whether inference was funded by Zyfai yield.
+
+Evidence:
+- Zyfai mode: `simulated` via `ZYFAI_SIMULATED_YIELD_USDC=10`
+- Venice funding status: `Venice API reachable but account has insufficient credits`
+
+### Status Network ($50)
+Hardhat config includes `status_sepolia` (chain id `1660990954`, zero gas price path) for fast qualification deploy and tx proof.
+
+Evidence:
+- Status deploy tx: `PASTE_STATUS_DEPLOY_TX`
+- Status execution tx: `PASTE_STATUS_GASLESS_TX`
+
+### Base - Agent Services ($5,000)
+`POST /analyze-blink` is payment-gated in production and returns deterministic decision payloads suitable for agent service consumers.
+
+Evidence:
+- Endpoint: `POST /analyze-blink`
+- x402 metadata: amount `0.001`, currency `USDC`, network `base-sepolia`
+- Live analyze proof id: `9a9a462c-9e3c-445d-9656-f33e7f5e5198`
+- Live execute proof id: `6cd2bf35-2862-443f-b2fd-5cd03f9f3d85`
+- Live execute tx id (propose): `0x4f6f670b87c759d662412dd105653b4c0236bbdedb9cc902bb019633fbbe5eb5`
+- Live execute tx id (verify): `0xee51b3ce34c3c3eb7fd1faac6113fa09a9b28bc90f86d8554a8019fea85d3044`
+- Live execute tx id (execute): `0x8baf2728cb0b52685e06742dbc0954b7bca9ae918c00bb55296a83e1122a940d`
+- Live execute status: `200 OK`
+
+### ENS Identity ($600)
+Policies are keyed by ENS names and rendered in frontend for each analysis and policy panel context.
+
+Evidence:
+- Example profile: `alice.eth`
+
+### Open Track
+DarkAgent combines ENS policy control, paid analysis, yield-constrained spending, verifiable execution receipts, and immutable compliance logs.
+
+## Required environment variables
+Core:
+- `PRIVATE_KEY`
+- `BASE_SEPOLIA_RPC`
+- `BASESCAN_API_KEY`
+- `DEPLOYER_ADDRESS`
+
+Scoring and paywall:
+- `VENICE_API_KEY`
+- `X402_AMOUNT`
+- `X402_CURRENCY`
+- `X402_NETWORK`
+
+Lido / treasury:
+- `AGENT_TREASURY_CONTRACT`
+- `WSTETH_CONTRACT`
+
+Filecoin:
+- `FILECOIN_UPLOAD_ENDPOINT`
+- `FILECOIN_API_KEY`
+
+Lit:
+- `LIT_POLICY_API_URL`
+- `LIT_ACTION_CID`
+
+Zyfai:
+- `ZYFAI_API_URL`
+- `ZYFAI_API_KEY`
+- `ZYFAI_ACCOUNT_ID`

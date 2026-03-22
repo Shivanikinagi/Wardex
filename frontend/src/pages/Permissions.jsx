@@ -33,7 +33,7 @@ const Permissions = () => {
             
             setStatus(`Waiting for transaction: ${tx.hash}`);
             await tx.wait();
-            setStatus(`Permissions successfully saved and synced to BitGo!`);
+            setStatus(`Permissions successfully saved and synced to the execution policy layer.`);
 
         } catch (error) {
             console.error("Permissions save error:", error);
@@ -86,7 +86,7 @@ const Permissions = () => {
 
                 <div className="theme-actions" style={{ marginTop: '8px' }}>
                     <button onClick={handleSave} className="btn btn-brand">
-                        Save to ENS and Sync to BitGo
+                        Save to ENS and Sync Policy
                     </button>
                 </div>
 

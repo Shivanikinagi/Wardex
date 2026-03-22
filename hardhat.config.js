@@ -22,6 +22,17 @@ module.exports = {
             accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
             chainId: 84532,
         },
+        baseSepolia: {
+            url: process.env.BASE_SEPOLIA_RPC || "https://sepolia.base.org",
+            accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+            chainId: 84532,
+        },
+        status_sepolia: {
+            url: process.env.STATUS_SEPOLIA_RPC || "https://public.sepolia.rpc.status.network",
+            accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+            chainId: 1660990954,
+            gasPrice: 0,
+        },
     },
     etherscan: {
         apiKey: {

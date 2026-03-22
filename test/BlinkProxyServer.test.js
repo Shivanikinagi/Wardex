@@ -83,6 +83,88 @@ async function main() {
     }
   });
 
+  await runCase("integration status exposes the targeted sponsor tracks", async () => {
+    const harness = await createHarness();
+
+    try {
+      const { response, payload } = await harness.request("/api/integrations");
+      assert.equal(response.status, 200);
+      assert.ok(Array.isArray(payload.sponsors));
+
+      const sponsorKeys = payload.sponsors.map((entry) => entry.key);
+      assert.deepEqual(
+        sponsorKeys,
+        ["base", "ens", "filecoin", "lit", "zyfai", "lido", "status"]
+      );
+      assert.ok(payload.sponsors.every((entry) => typeof entry.detail === "string"));
+    } finally {
+      await harness.cleanup();
+    }
+  });
+
+  await runCase("integration status surfaces env-backed Filecoin and Status evidence", async () => {
+    const previousEnv = {
+      FILECOIN_LAST_TEST_CID: process.env.FILECOIN_LAST_TEST_CID,
+      STATUS_DEPLOY_TX_HASH: process.env.STATUS_DEPLOY_TX_HASH,
+      STATUS_EXECUTION_TX_HASH: process.env.STATUS_EXECUTION_TX_HASH,
+    };
+
+    process.env.FILECOIN_LAST_TEST_CID =
+      "bafkzcibco4b73v4z5ycsdqdxixuxkyz6tvbzygsb526dpczuqn67niuladxp4fy";
+    process.env.STATUS_DEPLOY_TX_HASH = `0x${"1".repeat(64)}`;
+    process.env.STATUS_EXECUTION_TX_HASH = `0x${"2".repeat(64)}`;
+
+    const harness = await createHarness();
+
+    try {
+      const { response, payload } = await harness.request("/api/integrations");
+      assert.equal(response.status, 200);
+
+      const byKey = new Map(payload.sponsors.map((entry) => [entry.key, entry]));
+      const filecoin = byKey.get("filecoin");
+      const status = byKey.get("status");
+
+      assert.equal(filecoin.status, "ready");
+      assert.ok(
+        filecoin.evidence.some((entry) =>
+          String(entry.href || "").includes("calibration.filfox.info/en/message/")
+        )
+      );
+      assert.equal(status.status, "ready");
+      assert.ok(
+        status.evidence.some((entry) =>
+          String(entry.href || "").includes("sepolia.status.network/tx/")
+        )
+      );
+    } finally {
+      await harness.cleanup();
+
+      for (const [key, value] of Object.entries(previousEnv)) {
+        if (value == null) {
+          delete process.env[key];
+        } else {
+          process.env[key] = value;
+        }
+      }
+    }
+  });
+
+  await runCase("proof view route renders html instead of raw json", async () => {
+    const harness = await createHarness();
+
+    try {
+      const response = await fetch(`${harness.baseUrl}/api/proofs/ff06effa-1b08-43b0-92d2-307bbbfed63a/view`);
+      const html = await response.text();
+
+      assert.equal(response.status, 200);
+      assert.match(response.headers.get("content-type") || "", /text\/html/i);
+      assert.match(html, /DarkAgent Proof Receipt/);
+      assert.match(html, /ff06effa-1b08-43b0-92d2-307bbbfed63a/);
+    } finally {
+      await harness.cleanup();
+    }
+  });
+
   await runCase("risky influencer Blink URL is blocked with a signed proof", async () => {
     const harness = await createHarness();
 

@@ -35,6 +35,21 @@ class ProofStore {
     return entry;
   }
 
+  updateById(proofId, patch) {
+    const entries = this.readAll();
+    const index = entries.findIndex((entry) => entry.id === proofId);
+    if (index === -1) {
+      return null;
+    }
+
+    entries[index] = {
+      ...entries[index],
+      ...patch,
+    };
+    this.writeAll(entries);
+    return entries[index];
+  }
+
   getById(proofId) {
     return this.readAll().find((entry) => entry.id === proofId) || null;
   }

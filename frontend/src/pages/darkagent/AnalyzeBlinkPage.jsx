@@ -1,13 +1,30 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { AlertTriangle, Bot, ShieldX, Sparkles, Wallet } from 'lucide-react'
-import { demoBlinks } from '../../data/demo'
+import { ethers } from 'ethers'
 import { useDarkAgent } from '../../context/DarkAgentContext'
 import { buildBlinkUrl, evaluateBlink, parseBlinkFromSearchParams, parseBlinkFromUrl, titleizeSource } from '../../lib/policyEngine'
 import { AppShell, GlowButton, MetricCard, PageHeader, SectionCard, StatusBadge, ViewportFit } from '../../components/darkagent/Ui'
 import { ExecutionDialog } from '../../components/darkagent/ExecutionDialog'
 
-const PROFILE = 'alice.eth'
+const PROFILE = import.meta.env.VITE_DEFAULT_ENS || 'alice.eth'
+
+async function resolveENS(address) {
+  if (!address || !ethers.isAddress(address)) {
+    return PROFILE
+  }
+
+  const provider = new ethers.JsonRpcProvider(
+    import.meta.env.VITE_ENS_RPC_URL || 'https://eth-mainnet.g.alchemy.com/v2/demo'
+  )
+
+  try {
+    const name = await provider.lookupAddress(address)
+    return name || address
+  } catch {
+    return address
+  }
+}
 
 function mapDecision(decision) {
   if (decision === 'block') return 'blocked'
@@ -27,6 +44,8 @@ export default function AnalyzeBlinkPage() {
   const [confirming, setConfirming] = useState(false)
   const [resolvedBlinkUrl, setResolvedBlinkUrl] = useState('')
   const [loadingSharedBlink, setLoadingSharedBlink] = useState(false)
+  const [analysisLoading, setAnalysisLoading] = useState(false)
+  const [displayName, setDisplayName] = useState(PROFILE)
 
   const hasQueryBlink = Array.from(searchParams.keys()).length > 0
   const hasBlink = Boolean(shareId || hasQueryBlink)
@@ -78,6 +97,7 @@ export default function AnalyzeBlinkPage() {
   useEffect(() => {
     if (!hasBlink || !analysisTargetUrl || loadingSharedBlink) return
     let cancelled = false
+    setAnalysisLoading(true)
 
     analyzeBlinkUrl({ url: analysisTargetUrl, ensName: PROFILE })
       .then((payload) => {
@@ -90,6 +110,11 @@ export default function AnalyzeBlinkPage() {
         if (!cancelled) {
           setAnalysisPayload(null)
           setAnalysisError(error.message)
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setAnalysisLoading(false)
         }
       })
 
@@ -114,8 +139,20 @@ export default function AnalyzeBlinkPage() {
         mockedLiquidityUsd: blink.liquidityUsd || localFallback.mockedLiquidityUsd,
         tokenCategory: blink.tokenCategory || localFallback.tokenCategory,
         sourceLimit: analysisPayload.analysis.sourceLimitUsd,
+        reason: analysisPayload.analysis.summary,
       }
     : localFallback
+
+  useEffect(() => {
+    const explicitName = import.meta.env.VITE_TEST_ENS_NAME
+    if (explicitName) {
+      setDisplayName(explicitName)
+      return
+    }
+
+    const walletAddress = analysisPayload?.policy?.walletAddress || analysisPayload?.parsedBlink?.sourceName
+    resolveENS(walletAddress).then(setDisplayName)
+  }, [analysisPayload])
 
   async function confirmExecution() {
     try {
@@ -123,15 +160,7 @@ export default function AnalyzeBlinkPage() {
       const payload = await executeBlinkUrl({ url: analysisTargetUrl, ensName: PROFILE })
       setExecutionPayload(payload)
     } catch (err) {
-      console.error("Execution failed:", err)
-      setExecutionPayload({
-        execution: {
-          txid: '0x' + Math.random().toString(16).slice(2, 64).padStart(64, '0'),
-          stealthAddress: '0x' + Math.random().toString(16).slice(2, 42).padStart(40, '0'),
-          proofTx: '0xa0ccbe0faab496924c2ed2cff2775fba18ef1845bb0876bed3b4695bce136814',
-          proof: '0x' + Math.random().toString(16).slice(2, 64).padStart(128, '0') + Math.random().toString(16).slice(2, 64).padStart(128, '0')
-        }
-      })
+      setAnalysisError(err?.message || 'Execution failed')
     } finally {
       setConfirming(false)
     }
@@ -149,28 +178,9 @@ export default function AnalyzeBlinkPage() {
           />
 
           {!hasBlink ? (
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {demoBlinks.map((demo, index) => {
-                const url = buildBlinkUrl(window.location.origin, demo)
-                return (
-                  <SectionCard key={demo.title}>
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <div className="font-semibold text-white">{demo.title}</div>
-                        <div className="mt-1 text-sm text-slate-400">{titleizeSource(demo.source)} - {demo.protocol}</div>
-                      </div>
-                      <StatusBadge status={index === 0 ? 'safe' : index === 1 ? 'blocked' : 'downsized'}>
-                        {index === 0 ? 'Safe' : index === 1 ? 'Blocked' : 'Downsized'}
-                      </StatusBadge>
-                    </div>
-                    <div className="mt-4 text-sm text-slate-300">{demo.tokenIn} {'->'} {demo.tokenOut} for ${demo.amount}</div>
-                    <GlowButton as={Link} to={`/analyze?${new URL(url).searchParams.toString()}`} className="mt-5 border border-white/10 bg-white/[0.05] text-white hover:bg-white/[0.08]">
-                      Open scenario
-                    </GlowButton>
-                  </SectionCard>
-                )
-              })}
-            </div>
+            <SectionCard className="mt-6">
+              <div className="text-sm text-slate-300">Provide a Blink URL from the Create Blink flow to run a live analysis.</div>
+            </SectionCard>
           ) : loadingSharedBlink && !analysisPayload ? (
             <SectionCard className="mt-6">
               <div className="text-sm text-slate-300">Resolving shared Blink...</div>
@@ -185,8 +195,15 @@ export default function AnalyzeBlinkPage() {
                     <div className="mt-2 text-sm text-slate-400">
                       {titleizeSource(blink.sourceCategory || localBlink.source)} - {blink.tokenIn || localBlink.tokenIn} {'->'} {blink.tokenOut || localBlink.tokenOut}
                     </div>
+                    <div className="mt-1 text-xs text-slate-500">Policy for: {displayName}</div>
                   </div>
                   <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm text-slate-300">Score {verdict.score}</div>
+                </div>
+
+                <div className="mt-4 flex items-center gap-2 rounded-lg bg-[#E1F5EE] px-3 py-2">
+                  <span className="text-[11px] font-medium text-[#085041]">
+                    Scored by Venice AI · No data retained · Private inference
+                  </span>
                 </div>
 
                 <div className="mt-5 grid gap-3 md:grid-cols-2">
@@ -195,6 +212,15 @@ export default function AnalyzeBlinkPage() {
                   <MetricCard label="Amount" value={`$${blink.amountUsd || localBlink.amount}`} detail={`Limit: $${verdict.sourceLimit}`} />
                   <MetricCard label="Token category" value={verdict.tokenCategory} detail={`${verdict.mockedSlippageBps} bps slippage`} />
                 </div>
+
+                {analysisLoading && (
+                  <p className="mt-4 text-xs text-slate-400">
+                    Venice is privately scoring this transaction...
+                  </p>
+                )}
+
+                <p className="mt-4 text-sm text-slate-300">AI analysis: {verdict.reason || 'No reason returned yet.'}</p>
+                <p className="mt-1 text-xs text-slate-500">Your trading strategy is never stored or seen by any third party.</p>
 
                 
 

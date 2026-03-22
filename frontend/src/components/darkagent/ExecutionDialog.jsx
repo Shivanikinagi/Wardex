@@ -3,7 +3,14 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { CheckCircle2, Wallet, X } from 'lucide-react'
 import { StatusBadge } from './Ui'
 
+const verifierAddress = import.meta.env.VITE_VERIFIER_CONTRACT || ''
+
 export function ExecutionDialog({ open, onOpenChange, blink, analysis, execution, onConfirm, confirming }) {
+  const resolvedVerifierAddress = execution?.verifierContract || verifierAddress
+  const verifierUrl = resolvedVerifierAddress
+    ? `https://sepolia.basescan.org/address/${resolvedVerifierAddress}`
+    : ''
+
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -88,14 +95,18 @@ export function ExecutionDialog({ open, onOpenChange, blink, analysis, execution
                       {execution.proof && (
                         <div>
                           <span className="font-semibold">ZK Proof:</span>{' '}
-                          <a 
-                            href={`https://sepolia.basescan.org/address/0x7D5d1222e12D1D26F512a9626B68ce2394C7e034`} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="text-emerald-300 hover:text-emerald-200 underline"
-                          >
-                            View Verifier Contract on Base
-                          </a>
+                          {verifierUrl ? (
+                            <a 
+                              href={verifierUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-emerald-300 hover:text-emerald-200 underline"
+                            >
+                              View Verifier Contract on Base
+                            </a>
+                          ) : (
+                            <span>Verifier address not configured</span>
+                          )}
                         </div>
                       )}
                     </div>

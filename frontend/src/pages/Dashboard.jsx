@@ -26,12 +26,12 @@ const INTEGRATIONS = [
     learnMoreUrl: 'https://app.ens.domains',
   },
   {
-    name: 'BitGo',
+    name: 'Execution Policy',
     logo: '🛡️',
     status: 'pending',
     metric: { label: 'Policy', value: 'Enforcing' },
-    description: 'Institutional-grade velocity limits and address whitelisting.',
-    learnMoreUrl: 'https://www.bitgo.com',
+    description: 'Execution guardrails, stealth routing, and spend enforcement for agent actions.',
+    learnMoreUrl: 'https://base.org',
   },
   {
     name: 'Base',

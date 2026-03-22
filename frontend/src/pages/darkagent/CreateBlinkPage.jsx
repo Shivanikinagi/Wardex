@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Copy, Sparkles, Twitter } from 'lucide-react'
-import { demoBlinks, buildMockTweet } from '../../data/demo'
+import { buildMockTweet } from '../../data/demo'
 import { useDarkAgent } from '../../context/DarkAgentContext'
 import {
   ACTION_OPTIONS,
@@ -16,11 +16,23 @@ import { AppShell, GlowButton, Input, Label, PageHeader, SectionCard, Select, Te
 import { TwitterShareDialog } from '../../components/darkagent/TwitterShareDialog'
 
 const DEFAULT_ENS = 'alice.eth'
+const INITIAL_DRAFT = {
+  title: 'Live Blink request',
+  source: 'twitter',
+  action: 'swap',
+  tokenIn: 'USDC',
+  tokenOut: 'ETH',
+  amount: 100,
+  protocol: 'Uniswap',
+  chain: 'Base',
+  referralTag: '@signal_source',
+  tweetCopy: 'Live signal shared for policy review.',
+}
 
 export default function CreateBlinkPage() {
   const navigate = useNavigate()
   const { createShareLink, busy } = useDarkAgent()
-  const [draft, setDraft] = useState(demoBlinks[2])
+  const [draft, setDraft] = useState(INITIAL_DRAFT)
   const [generatedRawUrl, setGeneratedRawUrl] = useState('')
   const [shareLink, setShareLink] = useState(null)
   const [shareOpen, setShareOpen] = useState(false)
@@ -38,12 +50,6 @@ export default function CreateBlinkPage() {
     setShareLink(null)
     setPosted(false)
     setLocalError('')
-  }
-
-  function useScenario(index) {
-    setDraft(demoBlinks[index])
-    setGeneratedRawUrl('')
-    resetShareState()
   }
 
   async function ensureShareLink(nextDraft = draft) {
@@ -126,12 +132,6 @@ export default function CreateBlinkPage() {
             description="Generate, share, or analyze."
             actions={<StatusBadge status="safe">Clean X share</StatusBadge>}
           />
-
-          <div className="mt-5 flex flex-wrap gap-3">
-            <button onClick={() => useScenario(0)} className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm text-white transition hover:bg-white/[0.08]">Safe demo</button>
-            <button onClick={() => useScenario(1)} className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm text-white transition hover:bg-white/[0.08]">Blocked demo</button>
-            <button onClick={() => useScenario(2)} className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm text-white transition hover:bg-white/[0.08]">Downsized demo</button>
-          </div>
 
           <SectionCard className="mt-5 mx-auto w-full max-w-5xl overflow-hidden">
             <div className="grid gap-3 md:grid-cols-2">

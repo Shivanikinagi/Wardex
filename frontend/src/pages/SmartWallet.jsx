@@ -203,9 +203,9 @@ const SmartWallet = () => {
                 <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-6 border border-red-500/20 text-red-500 group-hover:scale-110 transition-transform duration-300">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-vault-text">Tenderly & BitGo</h3>
+                <h3 className="text-xl font-bold mb-3 text-vault-text">Tenderly & Policy Enforcement</h3>
                 <p className="text-vault-slate leading-relaxed text-sm">
-                  Transactions are simulated via <strong>Tenderly</strong> to score risk before execution. Final circuit-breakers and stealth enforcement at the policy level are handled by <strong>BitGo</strong>.
+                  Transactions are simulated via <strong>Tenderly</strong> to score risk before execution. Final circuit-breakers and stealth enforcement at the policy level are handled by the DarkAgent execution layer.
                 </p>
               </div>
             </div>
@@ -818,7 +818,7 @@ const SmartWallet = () => {
                       }}
                     >
                       Instantly freeze your smart wallet to block ALL agent
-                      executions. Enforced securely by <strong>BitGo</strong> to ensure even leaked keys cannot act maliciously.
+                      executions. Enforced by the policy execution layer so even leaked keys cannot act maliciously.
                     </p>
 
                     {walletInfo?.frozen ? (

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: darkagent-backend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 18.20.0
+      - key: NPM_VERSION
+        value: 10.5.0
+      - key: NODE_ENV
+        value: production

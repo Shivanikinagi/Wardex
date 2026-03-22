@@ -1,1 +1,0 @@
-﻿git filter-branch -f --env-filter "GIT_AUTHOR_NAME='shivanik1105'; GIT_AUTHOR_EMAIL='shivani.kinagi@gmail.com'; GIT_COMMITTER_NAME='shivanik1105'; GIT_COMMITTER_EMAIL='shivani.kinagi@gmail.com';" --tag-name-filter cat -- --branches --tags

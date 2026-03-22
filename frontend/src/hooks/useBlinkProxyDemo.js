@@ -21,6 +21,18 @@ async function request(path, options = {}) {
   return payload
 }
 
+async function requestOptional(path, options = {}) {
+  try {
+    return await request(path, options)
+  } catch (error) {
+    const message = String(error?.message || '')
+    if (message.toLowerCase().includes('not found')) {
+      return null
+    }
+    throw error
+  }
+}
+
 export function useBlinkProxyDemo() {
   const [state, setState] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -35,7 +47,22 @@ export function useBlinkProxyDemo() {
     }
 
     try {
-      const data = await request('/api/demo/state')
+      const [policies, activity, proofs, watcher, integrations] = await Promise.all([
+        request('/api/policies'),
+        request('/api/activity'),
+        request('/api/proofs'),
+        request('/api/watcher/status'),
+        requestOptional('/api/integrations'),
+      ])
+
+      const data = {
+        policies: policies.policies || [],
+        activity: activity.events || [],
+        proofs: proofs.proofs || [],
+        proofSigner: proofs.signer || null,
+        watcher,
+        integrations,
+      }
       setState(data)
       setError(null)
       return data

@@ -66,7 +66,7 @@ const Proposer = () => {
                 let n=[...prev]; 
                 n[n.length-1].text="simulating DeFi outcome ✓"; 
                 n[n.length-1].status="success"; 
-                return [...n, { step: 4, text: "risk score: 0.12 ✓", status: "success" }, { step: 5, text: "executing via BitGo...", status: "checking"} ]; 
+                return [...n, { step: 4, text: "risk score: 0.12 ✓", status: "success" }, { step: 5, text: "executing via policy layer...", status: "checking"} ]; 
             });
             
             // Trigger actual wallet popup
@@ -74,7 +74,7 @@ const Proposer = () => {
             
             setExecSteps(prev => { 
                 let n=[...prev]; 
-                n[n.length-1].text=`executing via BitGo... (Tx: ${tx.hash.slice(0, 10)}...)`; 
+                n[n.length-1].text=`executing via policy layer... (Tx: ${tx.hash.slice(0, 10)}...)`; 
                 return n; 
             });
 
@@ -83,7 +83,7 @@ const Proposer = () => {
             // Step 6
             setExecSteps(prev => { 
                 let n=[...prev]; 
-                n[n.length-1].text=`executing via BitGo ✓`; 
+                n[n.length-1].text=`executing via policy layer ✓`; 
                 n[n.length-1].status="success"; 
                 return [...n, { step: 6, text: "confirmed ✓", status: "success" }]; 
             });

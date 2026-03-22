@@ -1,6 +1,5 @@
 const { randomUUID } = require("crypto");
-const { Wallet, utils } = require("ethers");
-const { arrayify, keccak256, toUtf8Bytes, verifyMessage } = utils;
+const { Wallet, getBytes, keccak256, toUtf8Bytes, verifyMessage } = require("ethers");
 
 function stableSerialize(value) {
   if (Array.isArray(value)) {
@@ -36,6 +35,7 @@ class ProofService {
     execution,
     watcher,
     reason,
+    integrations,
   }) {
     const createdAt = new Date().toISOString();
     const policyHash = keccak256(toUtf8Bytes(stableSerialize(policy || {})));
@@ -62,8 +62,8 @@ class ProofService {
       )
     );
 
-    const signature = await this.signer.signMessage(arrayify(receiptHash));
-    const recoveredSigner = verifyMessage(arrayify(receiptHash), signature);
+    const signature = await this.signer.signMessage(getBytes(receiptHash));
+    const recoveredSigner = verifyMessage(getBytes(receiptHash), signature);
 
     const proof = {
       id: randomUUID(),
@@ -84,6 +84,22 @@ class ProofService {
       watcherVersion: watcher?.version || 0,
       stealthAddress: execution?.stealthAddress || null,
       executionMode: execution?.mode || null,
+      integrations: {
+        litActionCid:
+          integrations?.litActionCid ??
+          evaluation?.litActionCid ??
+          null,
+        litPolicySealed:
+          integrations?.litPolicySealed ??
+          evaluation?.litPolicySealed ??
+          false,
+        filecoinCid: integrations?.filecoinCid ?? null,
+        fundedBy: integrations?.fundedBy ?? null,
+        budgetSource:
+          integrations?.budgetSource ??
+          policy?.budgetSource ??
+          null,
+      },
     };
 
     this.store.append(proof);

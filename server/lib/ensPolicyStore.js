@@ -75,9 +75,10 @@ function normalizePolicy(ensName, rawPolicy = {}) {
     autoDownsize: rawPolicy.autoDownsize ?? preset.autoDownsize,
     sourceLimits: normalizeSourceLimits(persona, rawPolicy.sourceLimits),
     notifyEmail: rawPolicy.notifyEmail || "",
-    bitgoPolicyId:
+    executionPolicyId:
+      rawPolicy.executionPolicyId ||
       rawPolicy.bitgoPolicyId ||
-      `bitgo-${normalizedEnsName.replace(/[^a-z0-9]/g, "-")}`,
+      `exec-${normalizedEnsName.replace(/[^a-z0-9]/g, "-")}`,
     notes: rawPolicy.notes || "",
     updatedAt:
       rawPolicy.updatedAt ||

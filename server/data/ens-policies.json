@@ -7,8 +7,8 @@
     "maxTradeUsd": 500,
     "maxSpendUsd": 500,
     "dailyLimitUsd": 2400,
-    "dailySpentUsd": 0,
-    "spendWindowStartedAt": "2026-03-15T00:00:00.000Z",
+    "dailySpentUsd": 400,
+    "spendWindowStartedAt": "2026-03-21T20:19:37.321Z",
     "trustedProtocols": [
       "uniswap",
       "aave",
@@ -35,6 +35,7 @@
     "allowLowLiquidityAssets": false,
     "autoDownsize": true,
     "sourceLimits": {
+      "twitter": 300,
       "ai_bot": 300,
       "influencer": 200,
       "telegram": 150,
@@ -44,9 +45,9 @@
       "unknown": 0
     },
     "notifyEmail": "alice@darkagent.demo",
-    "bitgoPolicyId": "bitgo-alice-eth",
+    "executionPolicyId": "bitgo-alice-eth",
     "notes": "Balanced retail profile for social and AI Blink trading.",
-    "updatedAt": "2026-03-14T22:17:48.936Z"
+    "updatedAt": "2026-03-22T11:27:04.605Z"
   },
   "ops.eth": {
     "ensName": "ops.eth",
@@ -57,7 +58,7 @@
     "maxSpendUsd": 500,
     "dailyLimitUsd": 900,
     "dailySpentUsd": 0,
-    "spendWindowStartedAt": "2026-03-15T00:00:00.000Z",
+    "spendWindowStartedAt": "2026-03-21T20:19:37.322Z",
     "trustedProtocols": [
       "uniswap",
       "aave",
@@ -83,6 +84,7 @@
     "allowLowLiquidityAssets": false,
     "autoDownsize": true,
     "sourceLimits": {
+      "twitter": 300,
       "ai_bot": 300,
       "influencer": 200,
       "telegram": 150,
@@ -92,7 +94,7 @@
       "unknown": 0
     },
     "notifyEmail": "ops@darkagent.demo",
-    "bitgoPolicyId": "bitgo-ops-eth",
+    "executionPolicyId": "bitgo-ops-eth",
     "notes": "Frozen profile for emergency demonstrations.",
     "updatedAt": "2026-03-15T00:00:00.000Z"
   }

@@ -1,37 +1,83 @@
-﻿## 🚨 The Problem & Solution
+# DarkAgent - Demo Recording Script
 
-### The Problem
-The DeFi space is sprinting toward an AI-agent future, but it lacks a fundamental layer of trust. Everyone wants the benefit of an autonomous bot trading for them 24/7. However, handing an AI bot or an external social signal access to your actual funds without hard, mathematical boundaries is reckless. It exposes your liquidity to runaway slippage, unauthorized interactions with malicious smart contracts, and dangerous token swaps (like dumping your portfolio into a meme-coin rugpull). 
-
-Retail users and institutions alike need a way to **sandbox** their agents so they can operate freely, but only within strict, predefined limits. The problem is: how do you prove an agent followed the rules without exposing your exact trading strategies and bankroll to the public?
-
-### The Solution: DarkAgent
-**DarkAgent** acts as an unbreakable, decentralized firewall between autonomous agents and your wallet. We allow users to clearly define *exactly* what their agents are allowed to do.
-
-1. **Decentralized Rules via ENS:** Users bind their trading rules (daily limits, whitelisted tokens, trusted protocols) directly to their ENS identity (e.g., lice.eth).
-2. **Real-time Interception (Policy Engine):** When an agent attempts a transaction (a "Blink"), the DarkAgent Policy Engine intercepts it, dynamically scoring it. If the transaction violates the rules—like trying to spend  on an unverified meme coin—the engine forcefully Blocks it or Downsizes it to a safe amount (e.g.,  max).
-3. **ZK-Compliance with Noir:** Once execution is approved, DarkAgent generates a Zero-Knowledge Proof (via Noir). This mathematically proves on-chain that the agent acted strictly within the ENS rules, *without ever revealing the exact limits or strategy to the public.*
-4. **Seamless Execution:** The verified transaction is then executed gaslessly using Coinbase Smart Wallets deployed on Base Sepolia.
+## Preparation
+1. **Ensure all dependent services are running:**
+   - Term 1: `npm run blink:server` (running the backend at `http://localhost:8787`).
+   - Term 2: `cd frontend && npm run dev` (running the frontend).
+2. **Setup environment variables:** 
+   - Ensure your `.env` has all required keys: `VENICE_API_KEY`, `FILECOIN_API_KEY`, `LIDO`/`WSTETH` contracts, `ZYFAI` variables, etc.
+3. **Screen Setup:** 
+   - Have the DarkAgent web app open in your primary browser window.
+   - Have basescan.org / Filecoin calibration explorer / ENS domains tabs ready for quick proof.
 
 ---
 
-## 🎥 Recording Script for the Demo
+## Script / Walkthrough
 
-**[0:00 - 0:15] The Hook**
-*"Imagine waking up to find your favorite AI trading bot went rogue—dumping your entire portfolio into a meme coin. Handing bots the keys to your wallet is reckless. We built DarkAgent because your AI agent shouldn’t have the keys to the kingdom without a chaperone."*
+### 1. Introduction (0:00 - 0:30)
+**Speaker:** 
+"Hello, let me introduce you to **DarkAgent** - a verifiable policy firewall for agentic DeFi execution. We built this to solve a major problem: how do we let autonomous AI agents execute financial transactions safely without giving them a blank check?"
 
-**[0:15 - 0:35] Creating the Threat (Create Blink Tab)**
-*(Visual: On the 'Create Blink' tab. Select 'AI_Bot', set Amount to '800' USDC, and select 'DEGEN' meme coin. Click 'Generate Blink'.)*
-*"Let’s look at a live example on Base Sepolia. Here, a rogue AI agent has generated a transaction request—a Blink—trying to dump  USDC into an unverified meme coin. Normally, if this bot had our keys, our funds would be gone."*
+**Action:** 
+- Show the main dashboard of the DarkAgent interface.
+- Point to the "Agent URL" / "Blink URL" input area.
 
-**[0:35 - 1:00] The Interception (Analyze Blink Tab)**
-*(Visual: Switch to 'Analyze Blink' tab, paste the Blink URL or watch it auto-load. Hover over the red warning cards.)*
-*"But DarkAgent intercepts it. Our Policy Engine checks this transaction against the rules stored on this user’s ENS profile. Instantly, it detects the unauthorized token and realizes the  amount breaches our daily budget limit. Instead of failing completely, DarkAgent steps in and forcefully downsizes the risky trade to a strictly enforced, safe  limit."*
+### 2. The Core Concept & ENS Identity (0:30 - 1:00)
+**Speaker:** 
+"In DarkAgent, every execution request starts with an ENS identity. By tying an agent to an ENS domain (like `alice.eth`), we load on-chain permissions and execution boundaries."
 
-**[1:00 - 1:20] Smart Wallet Execution**
-*(Visual: Click the 'Continue / Execute Simulated' button. Show the confirmation UI.)*
-*"Since the trade is now within our safety bounds, we execute it seamlessly and gaslessly using a Coinbase Smart Wallet. No complicated seed phrases, just secure account abstraction."*
+**Action:** 
+- Type an ENS name into the dashboard (or show one that is pre-populated).
+- Show the "Policy Loaded" UI element displaying constraints for that agent.
 
-**[1:20 - 1:45] The ZK Magic (Final Verification)**
-*(Visual: Show the Success message screen. Click the 'View ZK Proof' text and pull up the Base Sepolia block explorer showing Verifier.sol interaction.)*
-*"Finally, we generate a Noir Zero-Knowledge proof and verify it on-chain in real-time. This cryptographically proves to regulators and auditors that the AI acted exactly within compliance, without ever exposing our actual trading limits or strategy to the public. DarkAgent: Secure, private, and fully automated AI execution."*
+### 3. Agent Execution Proposal & Venice AI (1:00 - 1:45)
+**Speaker:** 
+"Let's see an agent in action. The agent proposes a Blink URL for a DeFi transaction. Before signing or executing, the system passes the transaction intent to **Venice AI**, a privacy-focused model, to score the risk of the transaction against the ENS policy limits."
+
+**Action:** 
+- Paste a sample Blink URL into the interface and hit "Analyze / Submit".
+- Show the UI indicating loading or "Analyzing with Venice AI".
+- Point out the returned risk score and compliance verdict.
+
+### 4. Yield-Powered Execution Tracking - Zyfai & Lido (1:45 - 2:30)
+**Speaker:** 
+"AI inference and transaction execution cost money. But agents shouldn't drain our main funds. Through our integration with **Zyfai** and **Lido**, our Agent Treasury enforces *principal lock semantics*. The agent is only allowed to spend the *yield* generated (e.g., wstETH yield), ensuring our principal remains intact. We also use Zyfai yield to directly fund the Venice AI inference cost."
+
+**Action:** 
+- Highlight the "Treasury Budget" or "Yield available" section in the UI.
+- Show the simulated inference cost deduction from the available budget.
+
+### 5. Private Policies - Lit Protocol (2:30 - 3:00)
+**Speaker:** 
+"Some trading strategies or compliance rules are proprietary. We use **Lit Protocol** Actions to evaluate private policies in a secure enclave. The backend queries a Lit endpoint and only consumes a sealed boolean verdict without over-exposing the internal rule payloads."
+
+**Action:** 
+- Show the interface section where Lit Protocol's "Dark Knowledge" verdict is displayed ("Lit Policy Override: Allowed").
+
+### 6. Executing on Base / Status Network (3:00 - 3:45)
+**Speaker:** 
+"Once approved by the firewall, the transaction is executed securely. Our infrastructure runs on **Base Sepolia** and **Status Network**, providing low-friction and gasless transaction layers as an agentic service."
+
+**Action:** 
+- Click "Execute".
+- Show the system returning the execution receipt. 
+- Open up Basescan / Status Network explorer to show the transaction was confirmed successfully.
+
+### 7. Verifiable Proofs with Filecoin (3:45 - 4:15)
+**Speaker:** 
+"After execution, the backend generates an immutable compliance record. We upload this verifiable execution receipt to **Filecoin** (FOC). Here is the CID in our UI."
+
+**Action:** 
+- Point out the `filecoinCid` returned in the success panel.
+- Copy the CID and open the Filecoin Calibration block explorer (`https://calibration.filfox.info/en/message/...`) to verify the immutable log.
+
+### 8. Outro (4:15 - 4:30)
+**Speaker:** 
+"That is DarkAgent. With ENS policies, Venice risk scoring, yield-funded execution via Lido and Zyfai, private rules via Lit, and verifiable logs on Filecoin, we're building the trust layer for autonomous finance. Thank you!"
+
+---
+
+## Recording Tips
+- **Pacing:** Keep it moving fast. You don't have to explain the code, just explain the *what* and the *why*.
+- **Pre-load Tabs:** Have the explorers (Basescan, Filfox) pre-loaded if you know the CIDs or TX hashes in advance to save loading time.
+- **Failures:** If you want to show the 'firewall' aspect, optionally run a very quick transaction that *fails* the risk score to show it getting blocked, before showing the successful path.

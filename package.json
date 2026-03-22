@@ -1,8 +1,13 @@
 {
     "name": "darkagent",
     "version": "1.0.0",
-    "description": "DarkAgent \u00e2\u20ac\u201d Verifiable AI Agent Infrastructure for ETHMumbai 2026",
+    "description": "DarkAgent – Verifiable AI Agent Infrastructure for ETHMumbai 2026",
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=9.0.0"
+    },
     "scripts": {
+        "start": "node server/index.js",
         "compile": "npx hardhat compile",
         "test": "npx hardhat test",
         "deploy": "npx hardhat run scripts/deploy.js --network base_sepolia",
@@ -12,15 +17,51 @@
         "blink": "node server/index.js",
         "blink:server": "node server/index.js",
         "blink:test": "node test/BlinkProxyServer.test.js",
-        "demo:blink": "node scripts/start-blink-demo.js"
+        "demo:blink": "node scripts/start-blink-demo.js",
+        "register:agent": "npx hardhat run scripts/register-agent.js --network base_sepolia",
+        "execute:demo": "npx hardhat run scripts/execute-demo.js --network base_sepolia",
+        "execute:demo:base": "npx hardhat run scripts/execute-demo.js --network baseSepolia",
+        "venice:test": "node scripts/test-venice.js",
+        "filecoin:setup": "node scripts/setup-filecoin.js",
+        "filecoin:foc:setup": "node scripts/setup-foc.js",
+        "memory:test": "node scripts/test-agent-memory.js",
+        "zyfai:setup": "node scripts/setup-zyfai.js",
+        "zyfai:test": "node scripts/test-zyfai.js",
+        "lit:upload": "node --no-warnings scripts/upload-lit-action.js",
+        "lit:session": "node --no-warnings scripts/get-lit-session.js"
     },
     "devDependencies": {
+        "@nomicfoundation/hardhat-chai-matchers": "^2.1.2",
+        "@nomicfoundation/hardhat-ethers": "^3.1.3",
+        "@nomicfoundation/hardhat-network-helpers": "^1.1.2",
         "@nomicfoundation/hardhat-toolbox": "^4.0.0",
-        "hardhat": "^2.19.4"
+        "@nomicfoundation/hardhat-verify": "^2.1.3",
+        "@typechain/ethers-v6": "^0.5.1",
+        "@typechain/hardhat": "^9.1.0",
+        "@types/chai": "^4.3.20",
+        "@types/mocha": "^10.0.10",
+        "chai": "^4.5.0",
+        "hardhat": "^2.19.4",
+        "hardhat-gas-reporter": "^1.0.10",
+        "solidity-coverage": "^0.8.17",
+        "ts-node": "^10.9.2",
+        "typechain": "^8.3.2"
     },
     "dependencies": {
+        "@filoz/synapse-sdk": "^0.40.0",
+        "@lit-protocol/auth-helpers": "^7.4.0",
+        "@lit-protocol/constants": "^7.4.0",
+        "@lit-protocol/contracts-sdk": "^7.4.0",
+        "@lit-protocol/lit-node-client": "^7.4.0",
+        "@lit-protocol/lit-node-client-nodejs": "^7.4.0",
+        "@lit-protocol/types": "^7.4.0",
         "@openzeppelin/contracts": "^5.0.0",
+        "@web3-storage/w3up-client": "^17.3.0",
+        "@zyfai/sdk": "^0.2.26",
         "dotenv": "^16.3.1",
-        "ethers": "^6.9.0"
+        "ethers": "^6.16.0",
+        "viem": "^2.37.8",
+        "web3.storage": "^4.5.5",
+        "x402": "^1.1.0"
     }
 }

@@ -26,7 +26,7 @@ export function AppShell({ children }) {
   ]
 
   return (
-    <div className="h-screen overflow-hidden bg-[#0a0f14] text-vault-text">
+    <div className="min-h-screen overflow-x-hidden overflow-y-auto bg-[#0a0f14] text-vault-text">
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top_right,rgba(14,165,233,0.12),transparent_28%),radial-gradient(circle_at_left,rgba(0,255,136,0.08),transparent_30%)]" />
       <header className="sticky top-0 z-40 border-b border-white/8 bg-[#0a0f14]/86 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 lg:px-8">
@@ -65,7 +65,7 @@ export function AppShell({ children }) {
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto h-[calc(100vh-65px)] max-w-6xl overflow-hidden px-5 py-4 lg:px-8 lg:py-5">{children}</main>
+      <main className="relative z-10 mx-auto min-h-[calc(100vh-65px)] max-w-6xl px-5 py-4 lg:px-8 lg:py-5">{children}</main>
     </div>
   )
 }

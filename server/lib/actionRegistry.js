@@ -3,7 +3,7 @@ const ACTIONS = {
     id: "uniswap-swap",
     title: "Protected Uniswap Swap",
     description:
-      "Base-native Blink routed through DarkAgent, checked against ENS rules, and executed through BitGo with a fresh stealth address.",
+      "Base-native Blink routed through DarkAgent, checked against ENS rules, and executed with a fresh stealth address.",
     protocol: "uniswap",
     sourceChain: "base",
     settlementChain: "base",
@@ -109,7 +109,7 @@ function buildManifest(baseUrl) {
     name: "DarkAgent Blink Proxy",
     version: "1.0.0",
     description:
-      "Policy-gated Blink execution for AI agents. ENS is the rulebook, BitGo is the enforcer, stealth addresses are mandatory.",
+      "Policy-gated Blink execution for AI agents. ENS is the rulebook and stealth addresses remain mandatory.",
     actions: listActions().map((action) => ({
       id: action.id,
       title: action.title,
