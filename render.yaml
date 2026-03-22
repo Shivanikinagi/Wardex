@@ -4,7 +4,7 @@ services:
     env: node
     region: oregon
     plan: free
-    buildCommand: npm install
+    buildCommand: rm -rf node_modules && npm install
     startCommand: npm start
     envVars:
       - key: NODE_VERSION
@@ -13,3 +13,5 @@ services:
         value: 10.5.0
       - key: NODE_ENV
         value: production
+      - key: NPM_CONFIG_CACHE
+        value: /tmp/npm-cache
