@@ -21,7 +21,7 @@ contract ENSAgentResolver {
     // Standard ENS Text record storage mockup
     mapping(address => mapping(string => string)) private textRecords;
     
-    // Parsed representation of ENS Text records to be used by DarkAgent Validation Protocol
+    // Parsed representation of ENS Text records to be used by WARDEX Validation Protocol
     mapping(address => AgentPermissions) private userPermissions;
 
     event PermissionsSynced(address indexed user);

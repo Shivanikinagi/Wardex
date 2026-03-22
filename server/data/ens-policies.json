@@ -7,7 +7,7 @@
     "maxTradeUsd": 500,
     "maxSpendUsd": 500,
     "dailyLimitUsd": 2400,
-    "dailySpentUsd": 400,
+    "dailySpentUsd": 440,
     "spendWindowStartedAt": "2026-03-21T20:19:37.321Z",
     "trustedProtocols": [
       "uniswap",
@@ -47,7 +47,7 @@
     "notifyEmail": "alice@darkagent.demo",
     "executionPolicyId": "bitgo-alice-eth",
     "notes": "Balanced retail profile for social and AI Blink trading.",
-    "updatedAt": "2026-03-22T11:27:04.605Z"
+    "updatedAt": "2026-03-22T14:53:33.641Z"
   },
   "ops.eth": {
     "ensName": "ops.eth",

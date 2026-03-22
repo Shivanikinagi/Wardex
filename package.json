@@ -1,7 +1,7 @@
 {
-    "name": "darkagent",
+    "name": "wardex",
     "version": "1.0.0",
-    "description": "DarkAgent – Verifiable AI Agent Infrastructure for ETHMumbai 2026",
+    "description": "Wardex – Verifiable AI Agent Infrastructure for ETHMumbai 2026",
     "engines": {
         "node": ">=18.0.0",
         "npm": ">=9.0.0"

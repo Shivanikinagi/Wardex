@@ -1,7 +1,7 @@
 ---
 eip: "TODO"
 title: Agent Permission Records for ENS
-author: DarkAgent Team
+author: WARDEX Team
 status: Draft
 type: Standards Track
 category: ENS
@@ -16,7 +16,7 @@ This standard defines a new namespace within ENS Text Records (`agent.*`) to sto
 
 Agents currently act as EOA signers without an inherent standard for defining *how* they are allowed to operate on behalf of a human user. 
 
-While ENS successfully stores social text records (e.g. `avatar`, `twitter`), it is vastly under-utilized as a decentralized financial configuration layer. By establishing the `agent.*` prefix, any DApp, smart contract architecture (like DarkAgent), or institutional wallet adapter (like BitGo) can automatically index a user's defined AI compliance rules globally.
+While ENS successfully stores social text records (e.g. `avatar`, `twitter`), it is vastly under-utilized as a decentralized financial configuration layer. By establishing the `agent.*` prefix, any DApp, smart contract architecture (like WARDEX), or institutional wallet adapter (like BitGo) can automatically index a user's defined AI compliance rules globally.
 
 ## Specification
 
@@ -42,5 +42,5 @@ This expands upon ENSIP-5 by formally introducing a recognized `agent.` key pref
 
 ## References
 
-1. DarkAgent Core Protocol (Base) 
+1. WARDEX Core Protocol (Base) 
 2. BitGo Agent Policy Adapter Integration

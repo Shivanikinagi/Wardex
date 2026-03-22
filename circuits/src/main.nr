@@ -1,4 +1,4 @@
-// DarkAgent Compliance Circuit — Noir ZK
+// WARDEX Compliance Circuit — Noir ZK
 // ========================================
 // Generates zero-knowledge proofs for agent compliance.
 //

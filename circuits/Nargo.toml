@@ -1,7 +1,7 @@
 [package]
-name = "darkagent_compliance"
+name = "WARDEX_compliance"
 type = "bin"
-authors = ["DarkAgent"]
+authors = ["WARDEX"]
 compiler_version = ">=0.31.0"
 
 [dependencies]

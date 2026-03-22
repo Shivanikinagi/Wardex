@@ -3,7 +3,7 @@ pragma solidity ^0.8.19;
 
 /**
  * @title IENS - Interface for ENS integration
- * @notice Minimal ENS interface for DarkAgent identity resolution
+ * @notice Minimal ENS interface for WARDEX identity resolution
  */
 interface IENS {
     /// @notice Resolve an ENS name to an address

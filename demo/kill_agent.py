@@ -1,5 +1,5 @@
 """
-DarkAgent — THE KILL DEMO
+WARDEX — THE KILL DEMO
 ===========================
 This is the most important script in the entire project.
 This is what wins the hackathon.
@@ -52,7 +52,7 @@ _fix_windows_encoding()
 # Add parent directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from tee.agent import DarkAgentTEE
+from tee.agent import WARDEXTEE
 from tee.attestation import AttestationEngine
 
 
@@ -80,13 +80,13 @@ def countdown(seconds, message):
 def _fire_circuit_breaker_onchain(contract_address: str, agent_address: str):
     """
     Fire the circuit breaker on-chain using a minimal Node.js call.
-    Requires PRIVATE_KEY and BASE_SEPOLIA_RPC in .env (at darkagent root).
+    Requires PRIVATE_KEY and BASE_SEPOLIA_RPC in .env (at WARDEX root).
     Silently skips if node/ethers is unavailable — demo still works.
     """
     import subprocess
     script_dir = os.path.join(os.path.dirname(__file__), '..')
 
-    # Inline JS: calls fireCircuitBreaker(agentAddress, reason) on DarkAgent
+    # Inline JS: calls fireCircuitBreaker(agentAddress, reason) on WARDEX
     js = f"""
 require('dotenv').config();
 const {{ ethers }} = require('ethers');
@@ -193,7 +193,7 @@ def main():
     time.sleep(0.5)
     
     engine = AttestationEngine(agent_file)
-    agent = DarkAgentTEE(
+    agent = WARDEXTEE(
         agent_id="0x4B02abfffd2f4a0De9bdf0Ea3Eb73271014EFb60",
         ens_name="trading-agent.dark26.eth",
         capabilities=["yield-farming", "token-swap", "payment"]
@@ -211,7 +211,7 @@ def main():
     print("\n   Executing normal transaction...")
     time.sleep(0.5)
     result = agent.execute_action("payment", {
-        "recipient": "data-agent.darkagent.eth",
+        "recipient": "data-agent.WARDEX.eth",
         "amount": "0.002 ETH"
     })
     print_status("Transaction", "0x8f2a...1b3c", "📝")
@@ -262,7 +262,7 @@ def main():
     # ═══════════════════════════════════════════════════════════
     
     print("\n   📝 Modifying agent.py line 28...")
-    print('   BEFORE: AGENT_VERSION = "darkagent-v1.0.0"')
+    print('   BEFORE: AGENT_VERSION = "WARDEX-v1.0.0"')
     time.sleep(0.5)
     
     # Actually modify the file
@@ -270,14 +270,14 @@ def main():
         content = f.read()
     
     tampered_content = content.replace(
-        'AGENT_VERSION = "darkagent-v1.0.0"',
-        'AGENT_VERSION = "darkagent-v1.0.0-HACKED"'
+        'AGENT_VERSION = "WARDEX-v1.0.0"',
+        'AGENT_VERSION = "WARDEX-v1.0.0-HACKED"'
     )
     
     with open(agent_file, 'w', encoding='utf-8') as f:
         f.write(tampered_content)
     
-    print('   AFTER:  AGENT_VERSION = "darkagent-v1.0.0-HACKED"')
+    print('   AFTER:  AGENT_VERSION = "WARDEX-v1.0.0-HACKED"')
     print()
     time.sleep(0.5)
     
@@ -391,18 +391,18 @@ def main():
     print()
     time.sleep(0.5)
 
-    darkagent_contract = "0xA77f8507838CC8719ac5B59567D2c260c007A366"
+    WARDEX_contract = "0xA77f8507838CC8719ac5B59567D2c260c007A366"
     trading_agent_addr = "0x4B02abfffd2f4a0De9bdf0Ea3Eb73271014EFb60"
-    basescan_url = f"https://sepolia.basescan.org/address/{darkagent_contract}"
+    basescan_url = f"https://sepolia.basescan.org/address/{WARDEX_contract}"
 
-    print_status("DarkAgent Contract", darkagent_contract, "📋")
+    print_status("WARDEX Contract", WARDEX_contract, "📋")
     print_status("Trading Agent",      trading_agent_addr, "🤖")
     print_status("Network",            "Base Sepolia (chain 84532)", "⛓️")
     print_status("BaseScan",           basescan_url, "🔗")
     print()
 
     # Try firing circuit breaker on-chain via node script
-    _fire_circuit_breaker_onchain(darkagent_contract, trading_agent_addr)
+    _fire_circuit_breaker_onchain(WARDEX_contract, trading_agent_addr)
 
     time.sleep(1)
 
@@ -461,9 +461,9 @@ def main():
     time.sleep(0.5)
     
     # Re-initialize agent with tampered code
-    tampered_agent = DarkAgentTEE(
+    tampered_agent = WARDEXTEE(
         agent_id="0x1a2B3c4D5e6F7a8B9cDeFfeedABCdef01234567",
-        ens_name="trading-agent.darkagent.eth",
+        ens_name="trading-agent.WARDEX.eth",
         capabilities=["yield-farming", "token-swap", "payment"]
     )
     
@@ -492,7 +492,7 @@ def main():
     print("   ┌─────────────────────────────────────────────┐")
     print("   │  ZK COMPLIANCE QUERY                        │")
     print("   ├─────────────────────────────────────────────┤")
-    print("   │  Agent: trading-agent.darkagent.eth         │")
+    print("   │  Agent: trading-agent.WARDEX.eth         │")
     print("   │                                             │")
     print("   │  Within spending limits?     ✅ YES          │")
     print("   │  Only whitelisted contacts?  ✅ YES          │")
@@ -537,7 +537,7 @@ def main():
     print("   8. Attacker got NOTHING")
     print("   9. ZK proof verified compliance")
     print()
-    print("   DarkAgent: the security layer")
+    print("   WARDEX: the security layer")
     print("   the agentic economy never had.")
     print()
     print("🔒" + "═" * 56 + "🔒")

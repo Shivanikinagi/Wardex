@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "./interfaces/IDarkAgent.sol";
+import "./interfaces/IWARDEX.sol";
 
 interface IENSAgentResolver {
     struct AgentPermissions {
@@ -17,12 +17,12 @@ interface IENSAgentResolver {
 }
 
 /**
- * @title DarkAgent Core Protocol
- * @author DarkAgent
+ * @title WARDEX Core Protocol
+ * @author WARDEX
  * @notice The core verification infrastructure for AI agents in DeFi.
  * @dev Depends on ENS Agent Permission records for rule sets. 
  */
-contract DarkAgent is IDarkAgent {
+contract WARDEX is IWARDEX {
     // ===============================================================
     //                       CUSTOM ERRORS
     // ===============================================================
@@ -79,7 +79,7 @@ contract DarkAgent is IDarkAgent {
     }
 
     /**
-     * @notice DarkAgent verifies the proposal against the ENSIP rules
+     * @notice WARDEX verifies the proposal against the ENSIP rules
      * @dev Fetches rules directly from the configured ENS Resolver standard.
      */
     function verify(

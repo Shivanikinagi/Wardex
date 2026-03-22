@@ -2,12 +2,12 @@
 pragma solidity ^0.8.19;
 
 /**
- * @title IDarkAgent
- * @notice The core infrastructure interface for the DarkAgent protocol.
+ * @title IWARDEX
+ * @notice The core infrastructure interface for the WARDEX protocol.
  * @dev Anyone building an AI agent plugs into this instead of building 
  *      their own security layer.
  */
-interface IDarkAgent {
+interface IWARDEX {
     
     struct Proposal {
         address agent;
@@ -25,7 +25,7 @@ interface IDarkAgent {
         bytes calldata action
     ) external returns (bytes32 proposalId);
 
-    // DarkAgent verifies against user's ENS rules
+    // WARDEX verifies against user's ENS rules
     function verify(
         bytes32 proposalId
     ) external returns (bool);

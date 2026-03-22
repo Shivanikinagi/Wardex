@@ -3,16 +3,16 @@ pragma solidity ^0.8.19;
 
 /**
  * @title Verifier
- * @notice Minimal on-chain attestation anchor for DarkAgent execution receipts.
+ * @notice Minimal on-chain attestation anchor for WARDEX execution receipts.
  */
 contract Verifier {
-    address public immutable darkAgent;
+    address public immutable WARDEX;
 
     event ProofAnchored(bytes32 indexed receiptHash, address indexed relayer, uint256 timestamp);
 
-    constructor(address _darkAgent) {
-        require(_darkAgent != address(0), "DarkAgent required");
-        darkAgent = _darkAgent;
+    constructor(address _WARDEX) {
+        require(_WARDEX != address(0), "WARDEX required");
+        WARDEX = _WARDEX;
     }
 
     function anchorProof(bytes32 receiptHash) external {

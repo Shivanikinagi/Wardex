@@ -1,10 +1,10 @@
-﻿# DarkAgent - Verifiable AI Agent Execution Boundaries
+﻿# Wardex - Verifiable AI Agent Execution Boundaries
 
-Live app: https://darkagent.vercel.app
+Live app: https://wardex.vercel.app
 Demo video: https://loom.com/share/PASTE_AFTER_RECORDING
 Backend API: http://localhost:8787
 
-DarkAgent is a policy firewall for agentic DeFi execution. Every Blink is scored, enforced, executed, and provable.
+Wardex is a policy firewall for agentic DeFi execution. Every Blink is scored, enforced, executed, and provable.
 
 ## Sponsor Proofs Snapshot
 - Filecoin PieceCID proof (FOC Calibration):
@@ -26,8 +26,8 @@ DarkAgent is a policy firewall for agentic DeFi execution. Every Blink is scored
 
 ## Local setup
 ```bash
-git clone https://github.com/Shivanikinagi/DarkAgent
-cd DarkAgent/darkagent
+git clone https://github.com/Shivanikinagi/Wardex
+cd Wardex/wardex
 cp .env.example .env
 # fill all required env vars for your integrations
 
@@ -38,14 +38,14 @@ npm run compile
 npm run deploy
 npm run verify
 
-npm run blink:server
+npm run blink:server 
 # terminal 2
 cd frontend
 npm run dev
 ```
 
 ## Deployments
-- DarkAgent contract: https://sepolia.basescan.org/address/PASTE_DARKAGENT_ADDRESS
+- Wardex contract: https://sepolia.basescan.org/address/PASTE_WARDEX_ADDRESS
 - ENS resolver: https://sepolia.basescan.org/address/PASTE_ENS_RESOLVER_ADDRESS
 - Verifier: https://sepolia.basescan.org/address/PASTE_VERIFIER_ADDRESS
 - Agent treasury: https://sepolia.basescan.org/address/PASTE_TREASURY_ADDRESS
@@ -109,7 +109,7 @@ Evidence:
 - Example profile: `alice.eth`
 
 ### Open Track
-DarkAgent combines ENS policy control, paid analysis, yield-constrained spending, verifiable execution receipts, and immutable compliance logs.
+Wardex combines ENS policy control, paid analysis, yield-constrained spending, verifiable execution receipts, and immutable compliance logs.
 
 ## Required environment variables
 Core:

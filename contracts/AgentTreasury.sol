@@ -7,7 +7,7 @@ interface IWstETH {
 
 /**
  * @title AgentTreasury
- * @notice Holds principal in wstETH and allows the DarkAgent executor to spend yield only.
+ * @notice Holds principal in wstETH and allows the WARDEX executor to spend yield only.
  */
 contract AgentTreasury {
     address public immutable owner;
@@ -32,7 +32,7 @@ contract AgentTreasury {
     }
 
     modifier onlyAgent() {
-        require(msg.sender == agent, "Only DarkAgent");
+        require(msg.sender == agent, "Only WARDEX");
         _;
     }
 

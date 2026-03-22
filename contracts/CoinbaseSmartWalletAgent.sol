@@ -2,20 +2,20 @@
 pragma solidity ^0.8.19;
 
 import "./interfaces/ICoinbaseSmartWallet.sol";
-import "./interfaces/IDarkAgent.sol";
+import "./interfaces/IWARDEX.sol";
 
 /**
  * @title CoinbaseSmartWalletAgent
- * @author DarkAgent
- * @notice Adapter that integrates Coinbase Smart Wallet (ERC-4337) with the DarkAgent
+ * @author WARDEX
+ * @notice Adapter that integrates Coinbase Smart Wallet (ERC-4337) with the WARDEX
  *         verification protocol. This enables AI agents to operate through Coinbase Smart
  *         Wallets with full on-chain permission verification via ENS records.
  *
  * @dev Architecture:
  *   1. User deploys/owns a Coinbase Smart Wallet
  *   2. User registers their smart wallet in this contract
- *   3. AI Agent proposes actions through DarkAgent protocol
- *   4. DarkAgent verifies against ENS permission records
+ *   3. AI Agent proposes actions through WARDEX protocol
+ *   4. WARDEX verifies against ENS permission records
  *   5. If verified, this contract executes calls through the smart wallet
  *
  * Key features:
@@ -78,8 +78,8 @@ contract CoinbaseSmartWalletAgent {
     //                      STATE VARIABLES
     // ===============================================================
 
-    /// @notice Reference to the DarkAgent verification protocol
-    IDarkAgent public immutable darkAgent;
+    /// @notice Reference to the WARDEX verification protocol
+    IWARDEX public immutable WARDEX;
 
     /// @notice Reference to the Coinbase Smart Wallet factory
     ICoinbaseSmartWalletFactory public immutable walletFactory;
@@ -173,10 +173,10 @@ contract CoinbaseSmartWalletAgent {
     //                       CONSTRUCTOR
     // ===============================================================
 
-    constructor(address _darkAgent, address _walletFactory) {
-        if (_darkAgent == address(0) || _walletFactory == address(0))
+    constructor(address _WARDEX, address _walletFactory) {
+        if (_WARDEX == address(0) || _walletFactory == address(0))
             revert ZeroAddress();
-        darkAgent = IDarkAgent(_darkAgent);
+        WARDEX = IWARDEX(_WARDEX);
         walletFactory = ICoinbaseSmartWalletFactory(_walletFactory);
     }
 
@@ -185,7 +185,7 @@ contract CoinbaseSmartWalletAgent {
     // ===============================================================
 
     /**
-     * @notice Register an existing Coinbase Smart Wallet with DarkAgent
+     * @notice Register an existing Coinbase Smart Wallet with WARDEX
      * @param _smartWallet The address of the Coinbase Smart Wallet
      */
     function registerWallet(address _smartWallet) external {
@@ -324,14 +324,14 @@ contract CoinbaseSmartWalletAgent {
     }
 
     // ===============================================================
-    //             VERIFIED EXECUTION (via DarkAgent)
+    //             VERIFIED EXECUTION (via WARDEX)
     // ===============================================================
 
     /**
      * @notice Execute a verified action through the smart wallet
-     * @dev The proposal must be verified by DarkAgent before execution
+     * @dev The proposal must be verified by WARDEX before execution
      * @param _owner The wallet owner
-     * @param _proposalId The DarkAgent proposal ID
+     * @param _proposalId The WARDEX proposal ID
      * @param _target Target contract address
      * @param _value ETH value to send
      * @param _data Calldata for the target
@@ -348,8 +348,8 @@ contract CoinbaseSmartWalletAgent {
         if (!auth.authorized) revert AgentNotAuthorized();
         if (block.timestamp > auth.expiresAt) revert SessionExpired();
 
-        // Check DarkAgent verification
-        if (!darkAgent.isVerified(_proposalId)) revert ProposalNotVerified();
+        // Check WARDEX verification
+        if (!WARDEX.isVerified(_proposalId)) revert ProposalNotVerified();
 
         // Check spending limits
         _checkAndUpdateSpending(auth, _value);
@@ -373,7 +373,7 @@ contract CoinbaseSmartWalletAgent {
     /**
      * @notice Execute a batch of verified actions through the smart wallet
      * @param _owner The wallet owner
-     * @param _proposalId The DarkAgent proposal ID
+     * @param _proposalId The WARDEX proposal ID
      * @param _calls Array of calls to execute
      */
     function executeBatchVerified(
@@ -386,8 +386,8 @@ contract CoinbaseSmartWalletAgent {
         if (!auth.authorized) revert AgentNotAuthorized();
         if (block.timestamp > auth.expiresAt) revert SessionExpired();
 
-        // Check DarkAgent verification
-        if (!darkAgent.isVerified(_proposalId)) revert ProposalNotVerified();
+        // Check WARDEX verification
+        if (!WARDEX.isVerified(_proposalId)) revert ProposalNotVerified();
 
         // Calculate total value and check spending
         uint256 totalValue = 0;
