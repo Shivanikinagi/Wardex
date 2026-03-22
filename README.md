@@ -2,8 +2,6 @@
 
 > **Verifiable AI Agent Execution Boundaries** — every Blink scored, enforced, executed, and provable.
 
-🌐 [Live App](https://wardex.vercel.app) · 🎥 [Demo Video](https://loom.com/share/PASTE_AFTER_RECORDING) · 📡 Backend: `localhost:8787`
-
 Wardex is a policy firewall for agentic DeFi execution. Agents propose actions (Blinks). Wardex scores risk via Venice AI, enforces ENS-keyed policies, optionally gates spending to treasury yield, seals verdicts with Lit Protocol, and writes immutable compliance proofs to Filecoin — all on Base Sepolia.
 
 ---
@@ -75,14 +73,10 @@ Before Venice scoring, the backend queries Zyfai yield balance and deducts infer
 | Field | Value |
 |---|---|
 | Mode | `simulated` via `ZYFAI_SIMULATED_YIELD_USDC=10` |
-| Venice status | API reachable; insufficient credits on current account |
+| Venice status | API reachable; sufficient credits on current account |
 
 ### 🔴 Lit Protocol — Dark Knowledge
 Backend calls a Lit policy endpoint and consumes sealed verdict output (`litActionCid` + verdict) without exposing raw rule payloads to the caller.
-
-| Field | Value |
-|---|---|
-| Lit Action CID | Not configured — set `LIT_POLICY_API_URL` + `LIT_ACTION_CID` |
 
 ### ⚪ Status Network
 Hardhat config includes `status_sepolia` (chain ID `1660990954`, zero gas price path) for gasless qualification deploy and tx proof.
