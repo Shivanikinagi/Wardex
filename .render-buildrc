@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# Force clean install on Render
-rm -rf node_modules
-npm install
