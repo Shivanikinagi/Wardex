@@ -1,35 +1,126 @@
-# Wardex - Verifiable AI Agent Execution Boundaries
+# Wardex
 
-Live app: https://wardex.vercel.app
-Demo video: https://loom.com/share/PASTE_AFTER_RECORDING
-Backend API: http://localhost:8787
+> **Verifiable AI Agent Execution Boundaries** — every Blink scored, enforced, executed, and provable.
 
-Wardex is a policy firewall for agentic DeFi execution. Every Blink is scored, enforced, executed, and provable.
+🌐 [Live App](https://wardex.vercel.app) · 🎥 [Demo Video](https://loom.com/share/PASTE_AFTER_RECORDING) · 📡 Backend: `localhost:8787`
 
-## Sponsor Proofs Snapshot
-- Filecoin PieceCID proof (FOC Calibration):
-	- PieceCID: `bafkzcibco4b73v4z5ycsdqdxixuxkyz6tvbzygsb526dpczuqn67niuladxp4fy`
-	- Verify: `https://calibration.filfox.info/en/message/bafkzcibco4b73v4z5ycsdqdxixuxkyz6tvbzygsb526dpczuqn67niuladxp4fy`
-	- Command used: `npm run filecoin:foc:setup`
-- Live Blink execution receipts (Base Sepolia):
-	- Propose: `0x4f6f670b87c759d662412dd105653b4c0236bbdedb9cc902bb019633fbbe5eb5`
-	- Verify: `0xee51b3ce34c3c3eb7fd1faac6113fa09a9b28bc90f86d8554a8019fea85d3044`
-	- Execute: `0x8baf2728cb0b52685e06742dbc0954b7bca9ae918c00bb55296a83e1122a940d`
+Wardex is a policy firewall for agentic DeFi execution. Agents propose actions (Blinks). Wardex scores risk via Venice AI, enforces ENS-keyed policies, optionally gates spending to treasury yield, seals verdicts with Lit Protocol, and writes immutable compliance proofs to Filecoin — all on Base Sepolia.
 
-## End-to-end flow
-1. Agent proposes a Blink URL.
-2. Server resolves ENS policy and optional treasury yield budget.
-3. Venice AI scores risk (optionally funded by Zyfai yield).
-4. Optional Lit sealed policy verdict can override decision.
-5. Allowed execution is run and a proof receipt is generated.
-6. Execution record is uploaded to Filecoin and CID is returned.
+---
 
-## Local setup
+## Execution Flow
+
+```
+Agent proposes Blink URL
+         │
+         ▼
+  Resolve ENS policy
+  + optional yield budget (Zyfai / stETH treasury)
+         │
+         ▼
+  Venice AI scores risk
+  (inference optionally funded by Zyfai yield)
+         │
+         ▼
+  Optional: Lit sealed policy verdict
+  (can override decision without exposing raw rules)
+         │
+         ▼
+  Allowed? → Execute Blink
+         │
+         ▼
+  Proof receipt generated on-chain (Base Sepolia)
+         │
+         ▼
+  Execution record uploaded to Filecoin → CID returned
+```
+
+---
+
+## Sponsor Proofs
+
+### 🔵 Base — Agent Services
+`POST /analyze-blink` is payment-gated via x402 and returns deterministic decision payloads for agent service consumers.
+
+| Field | Value |
+|---|---|
+| Paywall | `0.001 USDC` · `base-sepolia` |
+| Live analyze proof | `9a9a462c-9e3c-445d-9656-f33e7f5e5198` |
+| Live execute proof | `6cd2bf35-2862-443f-b2fd-5cd03f9f3d85` |
+| Propose tx | [`0x4f6f67...`](https://sepolia.basescan.org/tx/0x4f6f670b87c759d662412dd105653b4c0236bbdedb9cc902bb019633fbbe5eb5) |
+| Verify tx | [`0xee51b3...`](https://sepolia.basescan.org/tx/0xee51b3ce34c3c3eb7fd1faac6113fa09a9b28bc90f86d8554a8019fea85d3044) |
+| Execute tx | [`0x8baf27...`](https://sepolia.basescan.org/tx/0x8baf2728cb0b52685e06742dbc0954b7bca9ae918c00bb55296a83e1122a940d) |
+| Execute status | `200 OK` |
+
+### 🟢 Filecoin — Agentic Storage
+After every successful execution, the backend uploads an immutable compliance record and returns `filecoinCid` in the API response and UI success panel.
+
+| Field | Value |
+|---|---|
+| PieceCID | `bafkzcibco4b73v4z5ycsdqdxixuxkyz6tvbzygsb526dpczuqn67niuladxp4fy` |
+| Verify | [filfox calibration explorer](https://calibration.filfox.info/en/message/bafkzcibco4b73v4z5ycsdqdxixuxkyz6tvbzygsb526dpczuqn67niuladxp4fy) |
+| Setup script | `npm run filecoin:foc:setup` |
+
+### 🟡 Lido — stETH Treasury
+`AgentTreasury.sol` enforces principal lock semantics. `availableYieldStETH()` exposes yield-only spend budget. Policy checks clamp max execution amount to treasury yield when configured.
+
+| Field | Value |
+|---|---|
+| Contract | `PASTE_TREASURY_ADDRESS` |
+| Deposit tx | `PASTE_TREASURY_DEPOSIT_TX` |
+
+### 🟣 Zyfai — Yield-Powered Agent
+Before Venice scoring, the backend queries Zyfai yield balance and deducts inference cost post-scoring. UI shows whether inference was yield-funded.
+
+| Field | Value |
+|---|---|
+| Mode | `simulated` via `ZYFAI_SIMULATED_YIELD_USDC=10` |
+| Venice status | API reachable; insufficient credits on current account |
+
+### 🔴 Lit Protocol — Dark Knowledge
+Backend calls a Lit policy endpoint and consumes sealed verdict output (`litActionCid` + verdict) without exposing raw rule payloads to the caller.
+
+| Field | Value |
+|---|---|
+| Lit Action CID | Not configured — set `LIT_POLICY_API_URL` + `LIT_ACTION_CID` |
+
+### ⚪ Status Network
+Hardhat config includes `status_sepolia` (chain ID `1660990954`, zero gas price path) for gasless qualification deploy and tx proof.
+
+| Field | Value |
+|---|---|
+| Deploy tx | `PASTE_STATUS_DEPLOY_TX` |
+| Execution tx | `PASTE_STATUS_GASLESS_TX` |
+
+### 🔷 ENS Identity
+Policies are keyed by ENS names and rendered in the frontend for each analysis and policy panel context.
+
+| Field | Value |
+|---|---|
+| Example profile | `alice.eth` |
+
+---
+
+## Deployed Contracts
+
+| Contract | Address |
+|---|---|
+| Wardex | [BaseScan ↗](https://sepolia.basescan.org/address/PASTE_WARDEX_ADDRESS) |
+| ENS Resolver | [BaseScan ↗](https://sepolia.basescan.org/address/PASTE_ENS_RESOLVER_ADDRESS) |
+| Verifier | [BaseScan ↗](https://sepolia.basescan.org/address/PASTE_VERIFIER_ADDRESS) |
+| Agent Treasury | [BaseScan ↗](https://sepolia.basescan.org/address/PASTE_TREASURY_ADDRESS) |
+| Status Network tx | [Status Explorer ↗](https://sepolia.status.network/tx/PASTE_STATUS_TX) |
+
+---
+
+## Local Setup
+
 ```bash
 git clone https://github.com/Shivanikinagi/Wardex
 cd Wardex/wardex
+
 cp .env.example .env
-# fill all required env vars for your integrations
+# Fill in all required environment variables (see below)
 
 npm install
 cd frontend && npm install && cd ..
@@ -37,106 +128,78 @@ cd frontend && npm install && cd ..
 npm run compile
 npm run deploy
 npm run verify
+```
 
-npm run blink:server 
-# terminal 2
+**Terminal 1 — backend:**
+```bash
+npm run blink:server
+```
+
+**Terminal 2 — frontend:**
+```bash
 cd frontend
 npm run dev
 ```
 
-## Deployments
-- Wardex contract: https://sepolia.basescan.org/address/PASTE_WARDEX_ADDRESS
-- ENS resolver: https://sepolia.basescan.org/address/PASTE_ENS_RESOLVER_ADDRESS
-- Verifier: https://sepolia.basescan.org/address/PASTE_VERIFIER_ADDRESS
-- Agent treasury: https://sepolia.basescan.org/address/PASTE_TREASURY_ADDRESS
-- Status network tx: https://sepolia.status.network/tx/PASTE_STATUS_TX
+| Service | URL |
+|---|---|
+| Frontend | http://localhost:5173 |
+| Backend API | http://localhost:8787 |
 
-## Track submissions
+---
 
-### Lido - stETH Treasury ($3,000)
-`AgentTreasury.sol` enforces principal lock semantics and exposes `availableYieldStETH()` for spend budget only. Policy checks clamp max execution amount to treasury yield when configured.
+## Environment Variables
 
-Evidence:
-- Treasury contract address: `PASTE_TREASURY_ADDRESS`
-- Deposit tx: `PASTE_TREASURY_DEPOSIT_TX`
+### Core
+```env
+PRIVATE_KEY=
+BASE_SEPOLIA_RPC=
+BASESCAN_API_KEY=
+DEPLOYER_ADDRESS=
+```
 
-### Filecoin - Agentic Storage ($1,000)
-After successful execution, backend uploads an immutable compliance record and returns `filecoinCid` in API response and UI success panel.
+### Scoring & Paywall
+```env
+VENICE_API_KEY=
+X402_AMOUNT=
+X402_CURRENCY=
+X402_NETWORK=
+```
 
-Evidence:
-- FOC setup script now succeeds with real on-chain storage proof.
-- PieceCID: `bafkzcibco4b73v4z5ycsdqdxixuxkyz6tvbzygsb526dpczuqn67niuladxp4fy`
-- Verify: `https://calibration.filfox.info/en/message/bafkzcibco4b73v4z5ycsdqdxixuxkyz6tvbzygsb526dpczuqn67niuladxp4fy`
-- Script: `npm run filecoin:foc:setup`
+### Lido / Treasury
+```env
+AGENT_TREASURY_CONTRACT=
+WSTETH_CONTRACT=
+```
 
-### Lit Protocol - Dark Knowledge ($250)
-Backend can call a Lit policy endpoint and consume sealed verdict output (`litActionCid` + verdict) without exposing raw rule payloads.
+### Filecoin
+```env
+FILECOIN_UPLOAD_ENDPOINT=
+FILECOIN_API_KEY=
+```
 
-Evidence:
-- Lit Action CID: `not returned (LIT_POLICY_API_URL / LIT_ACTION_CID not configured)`
+### Lit Protocol
+```env
+LIT_POLICY_API_URL=
+LIT_ACTION_CID=
+```
 
-### Zyfai - Yield Powered Agent ($600)
-Before Venice scoring, backend can query Zyfai yield balance and deduct inference cost after scoring. UI indicates whether inference was funded by Zyfai yield.
+### Zyfai
+```env
+ZYFAI_API_URL=
+ZYFAI_API_KEY=
+ZYFAI_ACCOUNT_ID=
+ZYFAI_SIMULATED_YIELD_USDC=   # set to simulate yield without live account
+```
 
-Evidence:
-- Zyfai mode: `simulated` via `ZYFAI_SIMULATED_YIELD_USDC=10`
-- Venice funding status: `Venice API reachable but account has insufficient credits`
+---
 
-### Status Network ($50)
-Hardhat config includes `status_sepolia` (chain id `1660990954`, zero gas price path) for fast qualification deploy and tx proof.
+## Open Track Summary
 
-Evidence:
-- Status deploy tx: `PASTE_STATUS_DEPLOY_TX`
-- Status execution tx: `PASTE_STATUS_GASLESS_TX`
+Wardex combines ENS policy control, x402-gated paid analysis, yield-constrained spending via stETH treasury and Zyfai, verifiable on-chain execution receipts, sealed Lit verdicts, and immutable Filecoin compliance logs — forming a complete verifiable boundary layer for agentic DeFi.
 
-### Base - Agent Services ($5,000)
-`POST /analyze-blink` is payment-gated in production and returns deterministic decision payloads suitable for agent service consumers.
+---
 
-Evidence:
-- Endpoint: `POST /analyze-blink`
-- x402 metadata: amount `0.001`, currency `USDC`, network `base-sepolia`
-- Live analyze proof id: `9a9a462c-9e3c-445d-9656-f33e7f5e5198`
-- Live execute proof id: `6cd2bf35-2862-443f-b2fd-5cd03f9f3d85`
-- Live execute tx id (propose): `0x4f6f670b87c759d662412dd105653b4c0236bbdedb9cc902bb019633fbbe5eb5`
-- Live execute tx id (verify): `0xee51b3ce34c3c3eb7fd1faac6113fa09a9b28bc90f86d8554a8019fea85d3044`
-- Live execute tx id (execute): `0x8baf2728cb0b52685e06742dbc0954b7bca9ae918c00bb55296a83e1122a940d`
-- Live execute status: `200 OK`
+## License
 
-### ENS Identity ($600)
-Policies are keyed by ENS names and rendered in frontend for each analysis and policy panel context.
-
-Evidence:
-- Example profile: `alice.eth`
-
-### Open Track
-Wardex combines ENS policy control, paid analysis, yield-constrained spending, verifiable execution receipts, and immutable compliance logs.
-
-## Required environment variables
-Core:
-- `PRIVATE_KEY`
-- `BASE_SEPOLIA_RPC`
-- `BASESCAN_API_KEY`
-- `DEPLOYER_ADDRESS`
-
-Scoring and paywall:
-- `VENICE_API_KEY`
-- `X402_AMOUNT`
-- `X402_CURRENCY`
-- `X402_NETWORK`
-
-Lido / treasury:
-- `AGENT_TREASURY_CONTRACT`
-- `WSTETH_CONTRACT`
-
-Filecoin:
-- `FILECOIN_UPLOAD_ENDPOINT`
-- `FILECOIN_API_KEY`
-
-Lit:
-- `LIT_POLICY_API_URL`
-- `LIT_ACTION_CID`
-
-Zyfai:
-- `ZYFAI_API_URL`
-- `ZYFAI_API_KEY`
-- `ZYFAI_ACCOUNT_ID`
+MIT
