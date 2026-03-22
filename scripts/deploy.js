@@ -4,7 +4,7 @@ const path = require("path");
 
 async function main() {
     console.log("═══════════════════════════════════════════════════════════");
-    console.log("     🔒 DarkAgent — Deploying to Base Sepolia");
+    console.log("     🔒 wardex — Deploying to Base Sepolia");
     console.log("═══════════════════════════════════════════════════════════\n");
 
     const [deployer] = await ethers.getSigners();
@@ -24,18 +24,18 @@ async function main() {
     const ensAddress = await ensResolver.getAddress();
     console.log("✅ ENSAgentResolver deployed at:", ensAddress);
 
-    // Deploy DarkAgent Protocol
-    console.log("━━━ Deploying DarkAgent Core Protocol ━━━");
-    const DarkAgent = await ethers.getContractFactory("DarkAgent");
-    const darkAgent = await DarkAgent.deploy(ensAddress, { nonce: nextNonce++ });
-    await darkAgent.waitForDeployment();
-    const darkAgentAddress = await darkAgent.getAddress();
-    console.log("✅ DarkAgent deployed at:", darkAgentAddress);
+    // Deploy wardex Protocol
+    console.log("━━━ Deploying wardex Core Protocol ━━━");
+    const wardex = await ethers.getContractFactory("wardex");
+    const wardex = await wardex.deploy(ensAddress, { nonce: nextNonce++ });
+    await wardex.waitForDeployment();
+    const wardexAddress = await wardex.getAddress();
+    console.log("✅ wardex deployed at:", wardexAddress);
 
     // Deploy Verifier
     console.log("━━━ Deploying Verifier ━━━");
     const Verifier = await ethers.getContractFactory("Verifier");
-    const verifier = await Verifier.deploy(darkAgentAddress, { nonce: nextNonce++ });
+    const verifier = await Verifier.deploy(wardexAddress, { nonce: nextNonce++ });
     await verifier.waitForDeployment();
     const verifierAddress = await verifier.getAddress();
     console.log("✅ Verifier deployed at:", verifierAddress);
@@ -48,7 +48,7 @@ async function main() {
     const CB_FACTORY = "0x0BA5ED0c6AA8c49038F819E587E2633c4A9F428a"; 
 
     const CBAgent = await ethers.getContractFactory("CoinbaseSmartWalletAgent");
-    const cbAgent = await CBAgent.deploy(darkAgentAddress, CB_FACTORY, { nonce: nextNonce++ });
+    const cbAgent = await CBAgent.deploy(wardexAddress, CB_FACTORY, { nonce: nextNonce++ });
     await cbAgent.waitForDeployment();
     const cbAgentAddress = await cbAgent.getAddress();
     console.log("✅ CoinbaseSmartWalletAgent deployed at:", cbAgentAddress);
@@ -68,7 +68,7 @@ async function main() {
     console.log("━━━ Deploying AgentTreasury (yield-only spend) ━━━");
     const AgentTreasury = await ethers.getContractFactory("AgentTreasury");
     const treasury = await AgentTreasury.deploy(
-        darkAgentAddress,
+        wardexAddress,
         effectiveWstEth,
         ethers.parseEther(process.env.TREASURY_PER_TX_CAP_STETH || "0.05"),
         { nonce: nextNonce++ }
@@ -83,7 +83,7 @@ async function main() {
         chainId: 84532,
         deployer: deployer.address,
         contracts: {
-            DarkAgent: darkAgentAddress,
+            wardex: wardexAddress,
             ENSAgentResolver: ensAddress,
             Verifier: verifierAddress,
             CoinbaseSmartWalletAgent: cbAgentAddress,
@@ -111,7 +111,7 @@ async function main() {
     );
     console.log("\n✅ Deployment info saved to frontend/src/contracts/deployment.json\n");
     console.log("📝 Add this to your .env:");
-    console.log(`   DARKAGENT_PROTOCOL_ADDRESS=${darkAgentAddress}`);
+    console.log(`   wardex_PROTOCOL_ADDRESS=${wardexAddress}`);
     console.log(`   VERIFIER_CONTRACT=${verifierAddress}`);
     console.log(`   WSTETH_CONTRACT=${effectiveWstEth}`);
     if (treasuryAddress) {

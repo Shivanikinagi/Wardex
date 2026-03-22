@@ -40,13 +40,13 @@ export function useDashboardData({ contracts, connected } = {}) {
   const loadData = useCallback(async () => {
     setLoading(true)
     try {
-      if (connected && contracts?.darkAgent) {
+      if (connected && contracts?.wardex) {
         // Try on-chain events
-        const filter = contracts.darkAgent.filters
+        const filter = contracts.wardex.filters
         const [proposedEvts, verifiedEvts, executedEvts] = await Promise.all([
-          contracts.darkAgent.queryFilter(filter.ActionProposed?.() || {}, -10000).catch(() => []),
-          contracts.darkAgent.queryFilter(filter.ActionVerified?.() || {}, -10000).catch(() => []),
-          contracts.darkAgent.queryFilter(filter.ActionExecuted?.() || {}, -10000).catch(() => []),
+          contracts.wardex.queryFilter(filter.ActionProposed?.() || {}, -10000).catch(() => []),
+          contracts.wardex.queryFilter(filter.ActionVerified?.() || {}, -10000).catch(() => []),
+          contracts.wardex.queryFilter(filter.ActionExecuted?.() || {}, -10000).catch(() => []),
         ])
 
         if (proposedEvts.length + verifiedEvts.length + executedEvts.length > 0) {

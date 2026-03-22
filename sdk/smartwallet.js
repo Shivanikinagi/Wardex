@@ -1,8 +1,8 @@
 /**
- * DarkAgent Smart Wallet SDK
+ * wardex Smart Wallet SDK
  *
  * Provides utilities to interact with Coinbase Smart Wallet through the
- * DarkAgent verification protocol. Handles wallet creation, agent authorization,
+ * wardex verification protocol. Handles wallet creation, agent authorization,
  * and verified execution flows.
  *
  * @see https://github.com/coinbase/smart-wallet
@@ -39,7 +39,7 @@ const SMART_WALLET_ABI = [
   "function implementation() external view returns (address)",
 ];
 
-// CoinbaseSmartWalletAgent ABI (the DarkAgent adapter)
+// CoinbaseSmartWalletAgent ABI (the wardex adapter)
 const WALLET_AGENT_ABI = [
   "function registerWallet(address smartWallet) external",
   "function createAndRegisterWallet(uint256 nonce) external returns (address)",
@@ -73,7 +73,7 @@ const WALLET_AGENT_ABI = [
 ];
 
 /**
- * SmartWalletSDK - Main SDK class for Coinbase Smart Wallet + DarkAgent integration
+ * SmartWalletSDK - Main SDK class for Coinbase Smart Wallet + wardex integration
  */
 class SmartWalletSDK {
   /**
@@ -143,7 +143,7 @@ class SmartWalletSDK {
   }
 
   /**
-   * Create a wallet and register it with DarkAgent in one transaction
+   * Create a wallet and register it with wardex in one transaction
    * @param {number} nonce - Deployment nonce
    * @returns {Promise<{address: string, tx: ethers.TransactionReceipt}>}
    */
@@ -174,7 +174,7 @@ class SmartWalletSDK {
   }
 
   /**
-   * Register an existing Coinbase Smart Wallet with DarkAgent
+   * Register an existing Coinbase Smart Wallet with wardex
    * @param {string} smartWalletAddress - The smart wallet address
    * @returns {Promise<ethers.TransactionReceipt>}
    */
@@ -293,7 +293,7 @@ class SmartWalletSDK {
   /**
    * Execute a verified action through the smart wallet
    * @param {string} ownerAddress - The wallet owner
-   * @param {string} proposalId - The DarkAgent proposal ID (bytes32)
+   * @param {string} proposalId - The wardex proposal ID (bytes32)
    * @param {Object} call - The call to execute
    * @param {string} call.target - Target contract
    * @param {string} call.value - ETH value in wei
@@ -314,7 +314,7 @@ class SmartWalletSDK {
   /**
    * Execute a batch of verified actions
    * @param {string} ownerAddress - The wallet owner
-   * @param {string} proposalId - The DarkAgent proposal ID
+   * @param {string} proposalId - The wardex proposal ID
    * @param {Array<Object>} calls - Array of calls
    * @returns {Promise<ethers.TransactionReceipt>}
    */

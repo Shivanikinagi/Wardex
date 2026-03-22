@@ -1,7 +1,7 @@
 /**
  * deploy-verifier.js
  *
- * Deploys only the Verifier contract using the already-deployed DarkAgent.
+ * Deploys only the Verifier contract using the already-deployed wardex.
  * Uses explicit nonce management to avoid Hardhat nonce caching bugs.
  *
  * Usage:
@@ -17,7 +17,7 @@ const CAPABILITY_CHECK_ADDRESS = "0x357cC7108B86221AC83920713c0dA5B1e4800794";
 
 async function main() {
     console.log("═══════════════════════════════════════════════════════════");
-    console.log("     🔒 DarkAgent — Deploying Verifier + Final Setup");
+    console.log("     🔒 wardex — Deploying Verifier + Final Setup");
     console.log("═══════════════════════════════════════════════════════════\n");
 
     const [deployer] = await ethers.getSigners();
@@ -38,8 +38,8 @@ async function main() {
     console.log("✅ Verifier deployed to:", verifierAddress, "\n");
 
     // Attach to existing contracts for setup
-    const DarkAgent = await ethers.getContractFactory("DarkAgent");
-    const darkAgent = DarkAgent.attach(DARK_AGENT_ADDRESS);
+    const wardex = await ethers.getContractFactory("wardex");
+    const wardex = wardex.attach(DARK_AGENT_ADDRESS);
     const CapabilityCheck = await ethers.getContractFactory("CapabilityCheck");
     const capabilityCheck = CapabilityCheck.attach(CAPABILITY_CHECK_ADDRESS);
 
@@ -52,9 +52,9 @@ async function main() {
 
     let currentNonce = nonce + 1;
 
-    const tx1 = await darkAgent.registerAgent(
+    const tx1 = await wardex.registerAgent(
         tradingAgentWallet.address,
-        "trading-agent.darkagent.eth",
+        "trading-agent.wardex.eth",
         ["yield-farming", "token-swap", "payment"],
         ethers.parseEther("0.01"),
         ethers.parseEther("0.1"),
@@ -62,11 +62,11 @@ async function main() {
         { nonce: currentNonce++ }
     );
     await tx1.wait();
-    console.log("✅ trading-agent.darkagent.eth registered");
+    console.log("✅ trading-agent.wardex.eth registered");
 
-    const tx2 = await darkAgent.registerAgent(
+    const tx2 = await wardex.registerAgent(
         dataAgentWallet.address,
-        "data-agent.darkagent.eth",
+        "data-agent.wardex.eth",
         ["data-analysis", "reporting", "payment"],
         ethers.parseEther("0.005"),
         ethers.parseEther("0.05"),
@@ -74,7 +74,7 @@ async function main() {
         { nonce: currentNonce++ }
     );
     await tx2.wait();
-    console.log("✅ data-agent.darkagent.eth registered\n");
+    console.log("✅ data-agent.wardex.eth registered\n");
 
     // ─── Step 5: Grant Capabilities ──────────────────────────────
     console.log("━━━ Step 5: Granting Capabilities ━━━");
@@ -97,9 +97,9 @@ async function main() {
     // ─── Step 6: TEE Attestation ──────────────────────────────────
     console.log("━━━ Step 6: Setting Initial TEE Attestation ━━━");
     const attestationHash = ethers.keccak256(
-        ethers.toUtf8Bytes("darkagent-tee-attestation-v1-" + Date.now())
+        ethers.toUtf8Bytes("wardex-tee-attestation-v1-" + Date.now())
     );
-    const tx5 = await darkAgent.updateAttestation(
+    const tx5 = await wardex.updateAttestation(
         tradingAgentWallet.address,
         attestationHash,
         { nonce: currentNonce++ }
@@ -113,14 +113,14 @@ async function main() {
     console.log("     🎉 DEPLOYMENT COMPLETE");
     console.log("═══════════════════════════════════════════════════════════\n");
     console.log("📋 Contract Addresses:");
-    console.log("   DarkAgent:       ", DARK_AGENT_ADDRESS);
+    console.log("   wardex:       ", DARK_AGENT_ADDRESS);
     console.log("   CapabilityCheck: ", CAPABILITY_CHECK_ADDRESS);
     console.log("   Verifier:        ", verifierAddress);
     console.log("\n🤖 Agent Addresses:");
     console.log("   Trading Agent:   ", tradingAgentWallet.address);
     console.log("   Data Agent:      ", dataAgentWallet.address);
     console.log("\n📝 Copy these to your .env:");
-    console.log(`DARKAGENT_CONTRACT=${DARK_AGENT_ADDRESS}`);
+    console.log(`wardex_CONTRACT=${DARK_AGENT_ADDRESS}`);
     console.log(`CAPABILITY_CHECK_CONTRACT=${CAPABILITY_CHECK_ADDRESS}`);
     console.log(`VERIFIER_CONTRACT=${verifierAddress}`);
     console.log(`TRADING_AGENT_ADDRESS=${tradingAgentWallet.address}`);
@@ -138,19 +138,19 @@ async function main() {
         chainId: 84532,
         deployer: deployer.address,
         contracts: {
-            DarkAgent: DARK_AGENT_ADDRESS,
+            wardex: DARK_AGENT_ADDRESS,
             CapabilityCheck: CAPABILITY_CHECK_ADDRESS,
             Verifier: verifierAddress,
         },
         agents: {
             tradingAgent: {
                 address: tradingAgentWallet.address,
-                ensName: "trading-agent.darkagent.eth",
+                ensName: "trading-agent.wardex.eth",
                 capabilities: ["yield-farming", "token-swap", "payment"],
             },
             dataAgent: {
                 address: dataAgentWallet.address,
-                ensName: "data-agent.darkagent.eth",
+                ensName: "data-agent.wardex.eth",
                 capabilities: ["data-analysis", "reporting", "payment"],
             },
         },

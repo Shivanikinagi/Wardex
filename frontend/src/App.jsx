@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { DarkAgentProvider, useDarkAgent } from './context/DarkAgentContext'
+import { WardexProvider, useWardex } from './context/WardexContext'
 import './App.css'
 
 const SOURCES = [
@@ -309,7 +309,7 @@ function buildSponsorEvidence({ analysisResult, executionResult, selectedPolicy,
     .filter(Boolean)
 }
 
-function LiveDarkAgentApp() {
+function LivewardexApp() {
   const {
     apiBase,
     state,
@@ -319,7 +319,7 @@ function LiveDarkAgentApp() {
     analyzeBlinkUrl,
     executeBlinkUrl,
     streamStatus,
-  } = useDarkAgent()
+  } = usewardex()
 
   const [tab, setTab] = useState('create')
   const [draft, setDraft] = useState({
@@ -491,7 +491,7 @@ function LiveDarkAgentApp() {
           <div className="logo">
             <div className="logo-icon" />
             <div>
-              <div className="logo-text">DarkAgent</div>
+              <div className="logo-text">wardex</div>
               <div className="logo-sub">live policy enforcement</div>
             </div>
           </div>
@@ -891,8 +891,8 @@ function LiveDarkAgentApp() {
 
 export default function App() {
   return (
-    <DarkAgentProvider>
-      <LiveDarkAgentApp />
-    </DarkAgentProvider>
+    <wardexProvider>
+      <LivewardexApp />
+    </wardexProvider>
   )
 }

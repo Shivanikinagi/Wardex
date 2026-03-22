@@ -24,19 +24,19 @@ async function main() {
   const client = await create();
   await client.login(email);
 
-  const space = await client.createSpace("darkagent");
+  const space = await client.createSpace("wardex");
   await client.setCurrentSpace(space.did());
 
   const record = {
     test: true,
     timestamp: new Date().toISOString(),
-    message: "DarkAgent Filecoin integration test",
+    message: "wardex Filecoin integration test",
   };
 
   const blob = new Blob([JSON.stringify(record, null, 2)], {
     type: "application/json",
   });
-  const file = new File([blob], "darkagent-test.json");
+  const file = new File([blob], "wardex-test.json");
   const cid = await client.uploadFile(file);
 
   const cidText = cid.toString();

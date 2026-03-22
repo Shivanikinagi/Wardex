@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Copy, Sparkles, Twitter } from 'lucide-react'
 import { buildMockTweet } from '../../data/demo'
-import { useDarkAgent } from '../../context/DarkAgentContext'
+import { useWardex } from '../../context/WardexContext'
 import {
   ACTION_OPTIONS,
   buildBlinkUrl,
@@ -12,8 +12,8 @@ import {
   resolveShareOrigin,
   SOURCE_OPTIONS,
 } from '../../lib/policyEngine'
-import { AppShell, GlowButton, Input, Label, PageHeader, SectionCard, Select, Textarea, StatusBadge, ViewportFit } from '../../components/darkagent/Ui'
-import { TwitterShareDialog } from '../../components/darkagent/TwitterShareDialog'
+import { AppShell, GlowButton, Input, Label, PageHeader, SectionCard, Select, Textarea, StatusBadge, ViewportFit } from '../../components/wardex/Ui'
+import { TwitterShareDialog } from '../../components/wardex/TwitterShareDialog'
 
 const DEFAULT_ENS = 'alice.eth'
 const INITIAL_DRAFT = {
@@ -31,7 +31,7 @@ const INITIAL_DRAFT = {
 
 export default function CreateBlinkPage() {
   const navigate = useNavigate()
-  const { createShareLink, busy } = useDarkAgent()
+  const { createShareLink, busy } = usewardex()
   const [draft, setDraft] = useState(INITIAL_DRAFT)
   const [generatedRawUrl, setGeneratedRawUrl] = useState('')
   const [shareLink, setShareLink] = useState(null)

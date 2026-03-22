@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-const API_BASE = import.meta.env.VITE_DARKAGENT_API_URL || 'http://localhost:8787'
+const API_BASE = import.meta.env.VITE_wardex_API_URL || 'http://localhost:8787'
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, {

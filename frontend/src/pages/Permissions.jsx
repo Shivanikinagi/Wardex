@@ -50,7 +50,7 @@ const Permissions = () => {
             </section>
 
             <div className="theme-panel">
-                <p className="theme-note" style={{ marginBottom: '18px' }}>This simulates setting an ENS text record that the DarkAgent protocol can enforce across downstream actions.</p>
+                <p className="theme-note" style={{ marginBottom: '18px' }}>This simulates setting an ENS text record that the wardex protocol can enforce across downstream actions.</p>
 
                 <div className="theme-grid">
                     <div className="input-group">

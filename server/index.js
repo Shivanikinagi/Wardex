@@ -37,7 +37,7 @@ const SAMPLE_BLINKS = [
   {
     id: "ai-bot-eth",
     label: "AI bot Blink",
-    url: "https://ai.darkagent.trade/recommendation?protocol=uniswap&chain=base&tokenIn=USDC&tokenOut=ETH&amountUsd=800&slippageBps=80&liquidityUsd=2200000&source=twitter&sender=DeepTrendBot",
+    url: "https://ai.wardex.trade/recommendation?protocol=uniswap&chain=base&tokenIn=USDC&tokenOut=ETH&amountUsd=800&slippageBps=80&liquidityUsd=2200000&source=twitter&sender=DeepTrendBot",
   },
   {
     id: "safe-friend",
@@ -109,7 +109,7 @@ function readConfiguredEnv(value) {
 }
 
 const EXTERNAL_REQUEST_TIMEOUT_MS = parsePositiveNumber(
-  process.env.DARKAGENT_EXTERNAL_TIMEOUT_MS,
+  process.env.wardex_EXTERNAL_TIMEOUT_MS,
   7000
 );
 const FILECOIN_UPLOAD_TIMEOUT_MS = parsePositiveNumber(
@@ -365,7 +365,7 @@ async function uploadViaUcanClient(record) {
   const blob = new Blob([JSON.stringify(record, null, 2)], {
     type: "application/json",
   });
-  const file = new File([blob], "darkagent-execution-record.json");
+  const file = new File([blob], "wardex-execution-record.json");
   const cid = await client.uploadFile(file);
   return String(cid);
 }
@@ -419,7 +419,7 @@ async function uploadExecutionRecordToFilecoin(record) {
       const blob = new Blob([JSON.stringify(record, null, 2)], {
         type: "application/json",
       });
-      form.append("file", blob, "darkagent-execution-record.json");
+      form.append("file", blob, "wardex-execution-record.json");
       const response = await fetchWithTimeout(target, {
         method: "POST",
         headers: {
@@ -446,7 +446,7 @@ async function uploadExecutionRecordToFilecoin(record) {
     const blob = new Blob([JSON.stringify(record, null, 2)], {
       type: "application/json",
     });
-    const file = new File([blob], "darkagent-execution-record.json");
+    const file = new File([blob], "wardex-execution-record.json");
     return client.put([file]);
   };
 
@@ -654,7 +654,7 @@ async function generateMemoryAnswerWithVenice({ ensName, prompt, priorMemory }) 
   }
 
   const model = process.env.VENICE_MODEL || "llama-3.3-70b";
-  const systemPrompt = `You are DarkAgent, an autonomous assistant with persistent decentralized memory.
+  const systemPrompt = `You are wardex, an autonomous assistant with persistent decentralized memory.
 Use prior memory when present, but never fabricate facts.
 Return ONLY raw JSON:
 {
@@ -712,7 +712,7 @@ async function scoreWithVenice(blinkPayload, ensPolicy) {
     throw error;
   }
 
-  const systemPrompt = `You are a private DeFi compliance agent embedded in DarkAgent.
+  const systemPrompt = `You are a private DeFi compliance agent embedded in wardex.
 Evaluate this transaction request against the user's ENS policy rules.
 Return ONLY raw JSON with these fields:
 {
@@ -835,7 +835,7 @@ function buildProofViewHtml({ proof, requestUrl }) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>DarkAgent Proof ${escapeHtml(proof.id)}</title>
+    <title>wardex Proof ${escapeHtml(proof.id)}</title>
     <style>
       :root {
         color-scheme: dark;
@@ -953,7 +953,7 @@ function buildProofViewHtml({ proof, requestUrl }) {
   <body>
     <div class="wrap">
       <div class="card">
-        <div class="eyebrow">DarkAgent Proof Receipt</div>
+        <div class="eyebrow">wardex Proof Receipt</div>
         <h1>${escapeHtml(proof.kind || "proof")}</h1>
         <div class="sub">${escapeHtml(
           proof.reason || "Signed policy and execution receipt."
@@ -1422,7 +1422,7 @@ function buildPolicyState(store, watcher) {
   });
 }
 
-function getDarkAgentIcon() {
+function getwardexIcon() {
   return `
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
   <rect width="256" height="256" rx="48" fill="#0B1118"/>
@@ -1491,7 +1491,7 @@ function createBlinkProxyServer(options = {}) {
     executor,
     intervalMs:
       options.watchIntervalMs ||
-      Number(process.env.DARKAGENT_WATCH_INTERVAL_MS || 15000),
+      Number(process.env.wardex_WATCH_INTERVAL_MS || 15000),
     onSync: (syncResult) => {
       eventHub.publish("watcher", {
         ...syncResult,
@@ -1656,7 +1656,7 @@ function createBlinkProxyServer(options = {}) {
       analysis.decision === "auto-downsize"
         ? rewriteBlinkUrl(blinkUrl, {
             amountUsd: analysis.executionAmountUsd,
-            darkagentAdjusted: 1,
+            wardexAdjusted: 1,
           })
         : blinkUrl;
 
@@ -1701,7 +1701,7 @@ function createBlinkProxyServer(options = {}) {
         analysis.decision === "auto-downsize"
           ? rewriteBlinkUrl(blinkUrl, {
               amountUsd: analysis.executionAmountUsd,
-              darkagentAdjusted: 1,
+              wardexAdjusted: 1,
             })
           : blinkUrl,
     };
@@ -1726,8 +1726,8 @@ function createBlinkProxyServer(options = {}) {
       if (request.method === "GET" && pathName === "/") {
         writeJson(response, 200, {
           ok: true,
-          service: "darkagent-blink-proxy",
-          message: "DarkAgent Blink Proxy is running.",
+          service: "wardex-blink-proxy",
+          message: "wardex Blink Proxy is running.",
           endpoints: {
             health: `${baseUrl}/health`,
             manifest: `${baseUrl}/api/actions/manifest`,
@@ -1749,7 +1749,7 @@ function createBlinkProxyServer(options = {}) {
       if (request.method === "GET" && pathName === "/health") {
         writeJson(response, 200, {
           ok: true,
-          service: "darkagent-blink-proxy",
+          service: "wardex-blink-proxy",
           now: new Date().toISOString(),
           live: eventHub.getStatus(),
         });
@@ -1762,8 +1762,8 @@ function createBlinkProxyServer(options = {}) {
         return;
       }
 
-      if (request.method === "GET" && pathName === "/api/assets/darkagent.svg") {
-        writeSvg(response, getDarkAgentIcon());
+      if (request.method === "GET" && pathName === "/api/assets/wardex.svg") {
+        writeSvg(response, getwardexIcon());
         return;
       }
 
@@ -2386,7 +2386,7 @@ function createBlinkProxyServer(options = {}) {
           writeJson(response, 403, {
             type: "error",
             status: "blocked",
-            message: "DarkAgent blocked this Blink action.",
+            message: "wardex blocked this Blink action.",
             action: {
               id: action.id,
               protocol: action.protocol,
@@ -2445,7 +2445,7 @@ function createBlinkProxyServer(options = {}) {
           type: "transaction",
           status: "executed",
           message:
-            "Blink cleared the DarkAgent policy gate and executed successfully.",
+            "Blink cleared the wardex policy gate and executed successfully.",
           action: {
             id: action.id,
             protocol: action.protocol,
@@ -2520,7 +2520,7 @@ function createBlinkProxyServer(options = {}) {
   });
 
   return {
-    async start(port = Number(process.env.DARKAGENT_BLINK_PORT || 8787)) {
+    async start(port = Number(process.env.wardex_BLINK_PORT || 8787)) {
       await watcher.start();
       await new Promise((resolve) => {
         server.listen(port, resolve);
@@ -2559,7 +2559,7 @@ async function startFromCli() {
   const app = createBlinkProxyServer();
   const { port } = await app.start();
   console.log(
-    `[DarkAgent Blink Proxy] Running on http://localhost:${port} with ${
+    `[wardex Blink Proxy] Running on http://localhost:${port} with ${
       app.services.watcher.getStatus().intervalMs
     }ms ENS watcher cadence.`
   );
@@ -2567,7 +2567,7 @@ async function startFromCli() {
 
 if (require.main === module) {
   startFromCli().catch((error) => {
-    console.error("[DarkAgent Blink Proxy] Failed to start:", error);
+    console.error("[wardex Blink Proxy] Failed to start:", error);
     process.exitCode = 1;
   });
 }

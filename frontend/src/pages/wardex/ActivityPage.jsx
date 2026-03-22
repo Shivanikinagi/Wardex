@@ -1,6 +1,6 @@
 import { Clock3 } from 'lucide-react'
-import { useDarkAgent } from '../../context/DarkAgentContext'
-import { AppShell, PageHeader, SectionCard, StatusBadge, ViewportFit } from '../../components/darkagent/Ui'
+import { useWardex } from '../../context/WardexContext'
+import { AppShell, PageHeader, SectionCard, StatusBadge, ViewportFit } from '../../components/wardex/Ui'
 
 const fallbackActivity = [
   {
@@ -49,7 +49,7 @@ function statusForBadge(status) {
 }
 
 export default function ActivityPage() {
-  const { state } = useDarkAgent()
+  const { state } = usewardex()
   const events = state?.activity?.length ? state.activity : fallbackActivity
 
   return (
@@ -70,7 +70,7 @@ export default function ActivityPage() {
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
                       <div className="flex items-center gap-3">
-                        <div className="font-semibold text-white">{event.sourceName || event.ensName || 'DarkAgent system'}</div>
+                        <div className="font-semibold text-white">{event.sourceName || event.ensName || 'wardex system'}</div>
                         <StatusBadge status={statusForBadge(event.status)}>{event.status}</StatusBadge>
                       </div>
                       <div className="mt-2 flex items-center gap-2 text-sm text-slate-400">

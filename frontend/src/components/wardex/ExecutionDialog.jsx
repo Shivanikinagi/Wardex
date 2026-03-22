@@ -52,7 +52,7 @@ export function ExecutionDialog({ open, onOpenChange, blink, analysis, execution
                     </div>
                   </div>
                   <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                    <div className="text-xs uppercase tracking-[0.22em] text-slate-500">DarkAgent Verdict</div>
+                    <div className="text-xs uppercase tracking-[0.22em] text-slate-500">wardex Verdict</div>
                     <div className="mt-2 flex items-center gap-3">
                       <StatusBadge status={analysis?.status || 'safe'}>{analysis?.status || 'safe'}</StatusBadge>
                       <div className="text-sm text-slate-300">Score {analysis?.score || '--'}</div>
@@ -87,7 +87,7 @@ export function ExecutionDialog({ open, onOpenChange, blink, analysis, execution
                       <div className="text-base font-semibold">Execution confirmed</div>
                     </div>
                     <div className="mt-2 text-sm text-emerald-50/90">
-                      Blink executed through DarkAgent.
+                      Blink executed through wardex.
                     </div>
                     <div className="mt-3 space-y-2 text-sm text-emerald-50/90 break-all">
                       <div><span className="font-semibold">Transaction ID:</span> {execution.txid}</div>

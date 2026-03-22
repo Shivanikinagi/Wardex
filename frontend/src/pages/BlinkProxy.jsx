@@ -152,7 +152,7 @@ export default function BlinkProxy() {
 
   async function runAnalysis() {
     try {
-      setStatusText('DarkAgent is parsing the URL, tagging the source, and matching the trade against your live policy...')
+      setStatusText('wardex is parsing the URL, tagging the source, and matching the trade against your live policy...')
       const result = await analyzeBlinkUrl({ url: blinkUrl, ensName: selectedEns })
       setAnalysisResult(result)
       setExecutionResult(null)
@@ -166,7 +166,7 @@ export default function BlinkProxy() {
 
   async function runExecution() {
     try {
-      setStatusText('DarkAgent is forwarding only the policy-approved version of this Blink...')
+      setStatusText('wardex is forwarding only the policy-approved version of this Blink...')
       const result = await executeBlinkUrl({ url: blinkUrl, ensName: selectedEns })
       setExecutionResult(result)
       setAnalysisResult(result)
@@ -224,10 +224,10 @@ export default function BlinkProxy() {
       <section className="rounded-3xl border border-vault-slate/20 bg-[#1a1d23]/70 p-8 backdrop-blur-xl">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-4xl">
-            <div className="text-sm uppercase tracking-[0.3em] text-vault-slate">DarkAgent</div>
+            <div className="text-sm uppercase tracking-[0.3em] text-vault-slate">wardex</div>
             <h2 className="mt-3 text-4xl font-bold text-vault-text">Not every Blink deserves your wallet.</h2>
             <p className="mt-3 text-base text-vault-slate">
-              DarkAgent is a personal firewall for trading Blinks. It analyzes any pasted trade URL in real time, scores the risk,
+              wardex is a personal firewall for trading Blinks. It analyzes any pasted trade URL in real time, scores the risk,
               explains the verdict, and only forwards a version that matches the user&apos;s policy.
             </p>
           </div>
@@ -286,7 +286,7 @@ export default function BlinkProxy() {
                   rows={4}
                   value={blinkUrl}
                   onChange={(event) => setBlinkUrl(event.target.value)}
-                  placeholder="https://x.com/... or https://ai.darkagent.trade/..."
+                  placeholder="https://x.com/... or https://ai.wardex.trade/..."
                   className="input-shell resize-none"
                 />
               </Field>

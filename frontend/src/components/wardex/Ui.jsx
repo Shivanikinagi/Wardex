@@ -35,7 +35,7 @@ export function AppShell({ children }) {
               <Shield className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-base font-semibold tracking-tight text-white">DarkAgent</div>
+              <div className="text-base font-semibold tracking-tight text-white">wardex</div>
               <div className="text-[10px] uppercase tracking-[0.2em] text-vault-slate">Blink trading firewall</div>
             </div>
           </Link>

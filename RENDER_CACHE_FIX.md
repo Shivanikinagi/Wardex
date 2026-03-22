@@ -27,7 +27,7 @@ Render is deploying OLD cached code, not your latest commit!
 I've updated `render.yaml` with the clean build command. To use it:
 
 ```bash
-cd darkagent
+cd wardex
 git add render.yaml
 git commit -m "Force clean build on Render"
 git push
@@ -53,7 +53,7 @@ Then redeploy.
 Run locally to confirm:
 
 ```bash
-cd darkagent
+cd wardex
 node -e "const { Wallet, getBytes, keccak256 } = require('ethers'); console.log('✅ ethers v6 works');"
 ```
 

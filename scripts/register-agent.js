@@ -23,7 +23,7 @@ async function registerAgent() {
   const registry = new ethers.Contract(registryAddress, registryAbi, signer)
 
   const tx = await registry.register({
-    name: ethers.encodeBytes32String('DarkAgent'),
+    name: ethers.encodeBytes32String('wardex'),
     operator: deployerAddress,
     metadataURI,
   })

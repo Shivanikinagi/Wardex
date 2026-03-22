@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: darkagent-backend
+    name: wardex-backend
     env: node
     region: oregon
     plan: free

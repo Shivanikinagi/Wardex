@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
-import { AppShell, GlowButton, HeroMockCard, PageHeader, StatusBadge, ViewportFit } from '../../components/darkagent/Ui'
+import { AppShell, GlowButton, HeroMockCard, PageHeader, StatusBadge, ViewportFit } from '../../components/wardex/Ui'
 
 export default function LandingPage() {
   return (

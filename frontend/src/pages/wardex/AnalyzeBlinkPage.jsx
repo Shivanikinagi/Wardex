@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { AlertTriangle, Bot, ShieldX, Sparkles, Wallet } from 'lucide-react'
 import { ethers } from 'ethers'
-import { useDarkAgent } from '../../context/DarkAgentContext'
+import { useWardex } from '../../context/WardexContext'
 import { buildBlinkUrl, evaluateBlink, parseBlinkFromSearchParams, parseBlinkFromUrl, titleizeSource } from '../../lib/policyEngine'
-import { AppShell, GlowButton, MetricCard, PageHeader, SectionCard, StatusBadge, ViewportFit } from '../../components/darkagent/Ui'
-import { ExecutionDialog } from '../../components/darkagent/ExecutionDialog'
+import { AppShell, GlowButton, MetricCard, PageHeader, SectionCard, StatusBadge, ViewportFit } from '../../components/wardex/Ui'
+import { ExecutionDialog } from '../../components/wardex/ExecutionDialog'
 
 const PROFILE = import.meta.env.VITE_DEFAULT_ENS || 'alice.eth'
 
@@ -36,7 +36,7 @@ function mapDecision(decision) {
 export default function AnalyzeBlinkPage() {
   const { shareId } = useParams()
   const [searchParams] = useSearchParams()
-  const { analyzeBlinkUrl, executeBlinkUrl, getShareLink, state, busy } = useDarkAgent()
+  const { analyzeBlinkUrl, executeBlinkUrl, getShareLink, state, busy } = usewardex()
   const [analysisPayload, setAnalysisPayload] = useState(null)
   const [executionPayload, setExecutionPayload] = useState(null)
   const [analysisError, setAnalysisError] = useState('')
@@ -92,7 +92,7 @@ export default function AnalyzeBlinkPage() {
 
   const localPolicy = useMemo(() => state?.policies?.find((entry) => entry.ensName === PROFILE)?.stored, [state])
   const localFallback = useMemo(() => evaluateBlink(localBlink, localPolicy), [localBlink, localPolicy])
-  const analysisTargetUrl = resolvedBlinkUrl || (hasQueryBlink ? (typeof window !== 'undefined' ? window.location.href : buildBlinkUrl('https://darkagent.app', localBlink)) : '')
+  const analysisTargetUrl = resolvedBlinkUrl || (hasQueryBlink ? (typeof window !== 'undefined' ? window.location.href : buildBlinkUrl('https://wardex.app', localBlink)) : '')
 
   useEffect(() => {
     if (!hasBlink || !analysisTargetUrl || loadingSharedBlink) return

@@ -2,7 +2,7 @@
  * useSmartWallet Hook
  *
  * React hook for interacting with Coinbase Smart Wallet through the
- * DarkAgent CoinbaseSmartWalletAgent contract. Provides wallet registration,
+ * wardex CoinbaseSmartWalletAgent contract. Provides wallet registration,
  * agent authorization, execution, and emergency controls.
  */
 
@@ -319,16 +319,16 @@ export function useSmartWallet() {
       }
 
       if (connector) {
-        console.log("[DarkAgent] Connecting with connector:", connector.id, connector.name);
+        console.log("[wardex] Connecting with connector:", connector.id, connector.name);
         await connectAsync({ connector });
-        console.log("[DarkAgent] Connection successful");
+        console.log("[wardex] Connection successful");
       } else {
         const msg = "No wallet connectors available. Please refresh the page.";
         console.error(msg, "Available connectors:", connectors);
         setError(msg);
       }
     } catch (err) {
-      console.error("[DarkAgent] Connect wallet error:", err);
+      console.error("[wardex] Connect wallet error:", err);
       setError(err.shortMessage || err.message || "Wallet connection failed");
     }
   }, [connectAsync, connectors]);
@@ -399,7 +399,7 @@ export function useSmartWallet() {
   }, [publicClient, walletAgentAddress]);
 
   /**
-   * Register the connected smart wallet with DarkAgent
+   * Register the connected smart wallet with wardex
    */
   const registerWallet = useCallback(
     async (smartWalletAddress) => {

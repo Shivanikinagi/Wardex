@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { CheckCircle2 } from 'lucide-react'
-import { useDarkAgent } from '../../context/DarkAgentContext'
+import { useWardex } from '../../context/WardexContext'
 import { normalizePolicy, PERSONA_PRESETS, TRUSTED_PROTOCOLS } from '../../lib/policyEngine'
-import { AppShell, GlowButton, Input, Label, MetricCard, PageHeader, SectionCard, StatusBadge, ViewportFit } from '../../components/darkagent/Ui'
+import { AppShell, GlowButton, Input, Label, MetricCard, PageHeader, SectionCard, StatusBadge, ViewportFit } from '../../components/wardex/Ui'
 
 const DEFAULT_PROFILE = 'alice.eth'
 const DEFAULT_FORM = {
@@ -28,7 +28,7 @@ function formatDateTime(value) {
 }
 
 export default function DashboardPage() {
-  const { state, updatePolicy, busy, streamStatus } = useDarkAgent()
+  const { state, updatePolicy, busy, streamStatus } = usewardex()
   const profile = state?.policies?.find((entry) => entry.ensName === DEFAULT_PROFILE)
   const watcherStatus = state?.watcher
   const watcherLiveLabel =

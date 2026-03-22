@@ -12,7 +12,7 @@ Your code is correct. Render's cache is the problem.
 https://dashboard.render.com/
 
 ### Step 2: Select Your Service
-Click on your darkagent-backend service
+Click on your wardex-backend service
 
 ### Step 3: Update Build Command
 1. Click **Settings** (left sidebar)

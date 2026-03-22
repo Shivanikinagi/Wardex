@@ -9,13 +9,13 @@ const SAMPLE_URLS = {
   influencerMeme:
     "https://x.com/moonalpha/status/20991?protocol=uniswap&chain=base&tokenIn=USDC&tokenOut=PEPE&amountUsd=1000&slippageBps=220&liquidityUsd=65000&source=influencer&sender=%40moonalpha",
   aiBotEth:
-    "https://ai.darkagent.trade/recommendation?protocol=uniswap&chain=base&tokenIn=USDC&tokenOut=ETH&amountUsd=800&slippageBps=80&liquidityUsd=2200000&source=ai_bot&sender=DeepTrendBot",
+    "https://ai.wardex.trade/recommendation?protocol=uniswap&chain=base&tokenIn=USDC&tokenOut=ETH&amountUsd=800&slippageBps=80&liquidityUsd=2200000&source=ai_bot&sender=DeepTrendBot",
   safeFriend:
     "https://friend.trade/blink?protocol=uniswap&chain=base&tokenIn=USDC&tokenOut=ETH&amountUsd=120&slippageBps=40&liquidityUsd=5300000&source=friend&sender=Riya",
 };
 
 function createTempDataDir() {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "darkagent-blink-"));
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "wardex-blink-"));
   const sourceDir = path.join(__dirname, "..", "server", "data");
 
   fs.copyFileSync(
@@ -158,7 +158,7 @@ async function main() {
 
       assert.equal(response.status, 200);
       assert.match(response.headers.get("content-type") || "", /text\/html/i);
-      assert.match(html, /DarkAgent Proof Receipt/);
+      assert.match(html, /wardex Proof Receipt/);
       assert.match(html, /ff06effa-1b08-43b0-92d2-307bbbfed63a/);
     } finally {
       await harness.cleanup();
@@ -208,7 +208,7 @@ async function main() {
       assert.equal(result.payload.analysis.decision, "auto-downsize");
       assert.equal(result.payload.analysis.executionAmountUsd, 300);
       assert.equal(result.payload.rewrittenBlinkUrl.includes("amountUsd=300"), true);
-      assert.equal(result.payload.rewrittenBlinkUrl.includes("darkagentAdjusted=1"), true);
+      assert.equal(result.payload.rewrittenBlinkUrl.includes("wardexAdjusted=1"), true);
 
       const update = await harness.request("/api/policies/alice.eth", {
         method: "PUT",

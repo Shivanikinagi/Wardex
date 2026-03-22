@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ethers } from 'ethers'
-import { DARKAGENT_PROTOCOL_ABI, PERMISSIONS_ABI } from '../contracts/abis'
+import { wardex_PROTOCOL_ABI, PERMISSIONS_ABI } from '../contracts/abis'
 
 let deploymentConfig = null
 async function loadDeploymentConfig() {
@@ -93,18 +93,18 @@ export function useContracts() {
                 setConnected(true)
 
                 const config = await loadDeploymentConfig()
-                const darkAgentAddress =
-                    getAddressFromEnv('VITE_DARKAGENT_CONTRACT') ||
-                    getUsableAddress(config?.contracts?.DarkAgent)
+                const wardexAddress =
+                    getAddressFromEnv('VITE_wardex_CONTRACT') ||
+                    getUsableAddress(config?.contracts?.wardex)
                 const permissionsAddress =
                     getAddressFromEnv('VITE_CAPABILITY_CONTRACT') ||
                     getUsableAddress(config?.contracts?.CapabilityCheck) ||
                     getUsableAddress(config?.contracts?.Permissions)
 
-                if (darkAgentAddress) {
-                    const darkAgent = new ethers.Contract(
-                        darkAgentAddress,
-                        DARKAGENT_PROTOCOL_ABI,
+                if (wardexAddress) {
+                    const wardex = new ethers.Contract(
+                        wardexAddress,
+                        wardex_PROTOCOL_ABI,
                         s
                     )
 
@@ -116,7 +116,7 @@ export function useContracts() {
                         )
                         : null
                     
-                    setContracts({ darkAgent, permissionsContract })
+                    setContracts({ wardex, permissionsContract })
                     setIsLive(true)
                     setError(
                         permissionsAddress
@@ -126,7 +126,7 @@ export function useContracts() {
                 } else {
                     setContracts(null)
                     setIsLive(false)
-                    setError('DarkAgent contract is missing or invalid in deployment.json.')
+                    setError('wardex contract is missing or invalid in deployment.json.')
                 }
             } else {
                 setConnected(false)

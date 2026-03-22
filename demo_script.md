@@ -1,4 +1,4 @@
-# DarkAgent - Demo Recording Script
+# wardex - Demo Recording Script
 
 ## Preparation
 1. **Ensure all dependent services are running:**
@@ -7,7 +7,7 @@
 2. **Setup environment variables:** 
    - Ensure your `.env` has all required keys: `VENICE_API_KEY`, `FILECOIN_API_KEY`, `LIDO`/`WSTETH` contracts, `ZYFAI` variables, etc.
 3. **Screen Setup:** 
-   - Have the DarkAgent web app open in your primary browser window.
+   - Have the wardex web app open in your primary browser window.
    - Have basescan.org / Filecoin calibration explorer / ENS domains tabs ready for quick proof.
 
 ---
@@ -16,15 +16,15 @@
 
 ### 1. Introduction (0:00 - 0:30)
 **Speaker:** 
-"Hello, let me introduce you to **DarkAgent** - a verifiable policy firewall for agentic DeFi execution. We built this to solve a major problem: how do we let autonomous AI agents execute financial transactions safely without giving them a blank check?"
+"Hello, let me introduce you to **wardex** - a verifiable policy firewall for agentic DeFi execution. We built this to solve a major problem: how do we let autonomous AI agents execute financial transactions safely without giving them a blank check?"
 
 **Action:** 
-- Show the main dashboard of the DarkAgent interface.
+- Show the main dashboard of the wardex interface.
 - Point to the "Agent URL" / "Blink URL" input area.
 
 ### 2. The Core Concept & ENS Identity (0:30 - 1:00)
 **Speaker:** 
-"In DarkAgent, every execution request starts with an ENS identity. By tying an agent to an ENS domain (like `alice.eth`), we load on-chain permissions and execution boundaries."
+"In wardex, every execution request starts with an ENS identity. By tying an agent to an ENS domain (like `alice.eth`), we load on-chain permissions and execution boundaries."
 
 **Action:** 
 - Type an ENS name into the dashboard (or show one that is pre-populated).
@@ -73,7 +73,7 @@
 
 ### 8. Outro (4:15 - 4:30)
 **Speaker:** 
-"That is DarkAgent. With ENS policies, Venice risk scoring, yield-funded execution via Lido and Zyfai, private rules via Lit, and verifiable logs on Filecoin, we're building the trust layer for autonomous finance. Thank you!"
+"That is wardex. With ENS policies, Venice risk scoring, yield-funded execution via Lido and Zyfai, private rules via Lit, and verifiable logs on Filecoin, we're building the trust layer for autonomous finance. Thank you!"
 
 ---
 

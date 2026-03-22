@@ -1,8 +1,8 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("DarkAgent Protocol - End to End", function () {
-  let darkAgent, ensResolver;
+describe("wardex Protocol - End to End", function () {
+  let wardex, ensResolver;
   let owner, agent1, user;
 
   beforeEach(async function () {
@@ -12,9 +12,9 @@ describe("DarkAgent Protocol - End to End", function () {
     const Resolver = await ethers.getContractFactory("ENSAgentResolver");
     ensResolver = await Resolver.deploy();
 
-    // 2. Deploy DarkAgent with Resolver address
-    const DarkAgent = await ethers.getContractFactory("DarkAgent");
-    darkAgent = await DarkAgent.deploy(await ensResolver.getAddress());
+    // 2. Deploy wardex with Resolver address
+    const wardex = await ethers.getContractFactory("wardex");
+    wardex = await wardex.deploy(await ensResolver.getAddress());
 
     // 3. Mock up ENS records for the user
     const maxSpend = ethers.parseEther("100");
@@ -36,7 +36,7 @@ describe("DarkAgent Protocol - End to End", function () {
     it("should allow an agent to propose an action", async function () {
       const action = ethers.toUtf8Bytes("swap 1 ETH to USDC");
 
-      const tx = await darkAgent.propose(agent1.address, user.address, action);
+      const tx = await wardex.propose(agent1.address, user.address, action);
       const receipt = await tx.wait();
 
       const proposalEvent = receipt.logs.find(
@@ -45,7 +45,7 @@ describe("DarkAgent Protocol - End to End", function () {
       expect(proposalEvent).to.not.be.undefined;
 
       const proposalId = proposalEvent.args[0];
-      const proposal = await darkAgent.getProposal(proposalId);
+      const proposal = await wardex.getProposal(proposalId);
       expect(proposal.agent).to.equal(agent1.address);
       expect(proposal.user).to.equal(user.address);
       expect(proposal.verified).to.be.false;
@@ -53,45 +53,45 @@ describe("DarkAgent Protocol - End to End", function () {
 
     it("should dynamically verify a proposal via ENS Rules", async function () {
       const action = ethers.toUtf8Bytes("swap 1 ETH to USDC");
-      const tx = await darkAgent.propose(agent1.address, user.address, action);
+      const tx = await wardex.propose(agent1.address, user.address, action);
       const receipt = await tx.wait();
       const proposalEvent = receipt.logs.find(
         (l) => l.fragment?.name === "ActionProposed",
       );
       const proposalId = proposalEvent.args[0];
 
-      await darkAgent.verify(proposalId);
+      await wardex.verify(proposalId);
 
-      const isVerified = await darkAgent.isVerified(proposalId);
+      const isVerified = await wardex.isVerified(proposalId);
       expect(isVerified).to.be.true;
     });
 
     it("should execute a verified proposal", async function () {
       const action = ethers.toUtf8Bytes("swap 1 ETH to USDC");
-      const tx = await darkAgent.propose(agent1.address, user.address, action);
+      const tx = await wardex.propose(agent1.address, user.address, action);
       const receipt = await tx.wait();
       const proposalEvent = receipt.logs.find(
         (l) => l.fragment?.name === "ActionProposed",
       );
       const proposalId = proposalEvent.args[0];
 
-      await darkAgent.verify(proposalId);
-      await darkAgent.execute(proposalId);
+      await wardex.verify(proposalId);
+      await wardex.execute(proposalId);
 
-      const proposal = await darkAgent.getProposal(proposalId);
+      const proposal = await wardex.getProposal(proposalId);
       expect(proposal.executed).to.be.true;
     });
 
     it("should revert execution if not verified", async function () {
       const action = ethers.toUtf8Bytes("malicious activity");
-      const tx = await darkAgent.propose(agent1.address, user.address, action);
+      const tx = await wardex.propose(agent1.address, user.address, action);
       const receipt = await tx.wait();
       const proposalId = receipt.logs.find(
         (l) => l.fragment?.name === "ActionProposed",
       ).args[0];
 
       try {
-        await darkAgent.execute(proposalId);
+        await wardex.execute(proposalId);
         expect.fail("Should have reverted");
       } catch (error) {
         expect(error.message).to.include("NotVerifiedYet");
@@ -112,14 +112,14 @@ describe("DarkAgent Protocol - End to End", function () {
       );
 
       const action = ethers.toUtf8Bytes("swap 1 ETH to USDC");
-      const tx = await darkAgent.propose(agent1.address, user.address, action);
+      const tx = await wardex.propose(agent1.address, user.address, action);
       const receipt = await tx.wait();
       const proposalId = receipt.logs.find(
         (l) => l.fragment?.name === "ActionProposed",
       ).args[0];
 
       try {
-        await darkAgent.verify(proposalId);
+        await wardex.verify(proposalId);
         expect.fail("Should have reverted");
       } catch (error) {
         expect(error.message).to.include("VerificationFailedReason");

@@ -1,7 +1,7 @@
 export const simulateTransaction = async (tx) => {
   // Use environment variables for API keys in a real app, hardcoding here for hackathon demo compatibility
   const TENDERLY_USER = import.meta.env.VITE_TENDERLY_USER || "demo_user";
-  const TENDERLY_PROJECT = import.meta.env.VITE_TENDERLY_PROJECT || "darkagent";
+  const TENDERLY_PROJECT = import.meta.env.VITE_TENDERLY_PROJECT || "wardex";
   const TENDERLY_API_KEY = import.meta.env.VITE_TENDERLY_API_KEY || "dummy_key";
 
   if (!import.meta.env.VITE_TENDERLY_API_KEY) {

@@ -285,7 +285,7 @@ export function resolveShareOrigin() {
     }
   }
 
-  return 'https://darkagent.app'
+  return 'https://wardex.app'
 }
 
 export function buildTweetText(blink: BlinkDraft) {

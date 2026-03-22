@@ -8,7 +8,7 @@ async function main() {
   const upload = await uploadToFOC({
     test: true,
     timestamp: new Date().toISOString(),
-    message: "DarkAgent Filecoin Onchain Cloud integration test",
+    message: "wardex Filecoin Onchain Cloud integration test",
   });
 
   const status = await getStorageStatus();

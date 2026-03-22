@@ -58,7 +58,7 @@ class PolicyWatcher {
     await this.syncOnce("startup");
     this.timer = setInterval(() => {
       this.syncOnce("poll").catch((error) => {
-        console.error("[DarkAgent Watcher] Sync failed:", error.message);
+        console.error("[wardex Watcher] Sync failed:", error.message);
       });
     }, this.intervalMs);
   }

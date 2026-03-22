@@ -3,14 +3,14 @@ import VerificationStep from './VerificationStep'
 
 const STEP_TOOLTIPS = {
   ens: 'Reads agent permissions from ENS text records (max_spend, slippage, protocols)',
-  darkagent: 'DarkAgent contract verifies the action against ENS rules and spending limits',
+  wardex: 'wardex contract verifies the action against ENS rules and spending limits',
   smartwallet: 'Coinbase Smart Wallet validates the ERC-4337 UserOperation',
   base: 'Transaction executes on Base network via the smart wallet',
 }
 
 const DEFAULT_STEPS = [
   { id: 'ens', label: 'ENS Lookup', icon: '🌐' },
-  { id: 'darkagent', label: 'DarkAgent Verify', icon: '⚡' },
+  { id: 'wardex', label: 'wardex Verify', icon: '⚡' },
   { id: 'smartwallet', label: 'Smart Wallet', icon: '🔵' },
   { id: 'base', label: 'Base Execution', icon: '🔷' },
 ]

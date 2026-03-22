@@ -100,7 +100,7 @@ function parseBlinkUrl(inputUrl) {
   const slippageBps = numberParam(params, ["slippageBps", "slippage"], 100);
   const liquidityUsd = numberParam(params, ["liquidityUsd", "liquidity"], 500000);
   const leverage = numberParam(params, ["leverage"], 1);
-  const title = stringParam(params, ["title", "headline"], "DarkAgent trading Blink");
+  const title = stringParam(params, ["title", "headline"], "wardex trading Blink");
   const tweetCopy = stringParam(params, ["tweet", "tweetCopy"], "");
 
   const parsedBlink = {

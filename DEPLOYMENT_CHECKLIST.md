@@ -1,4 +1,4 @@
-# DarkAgent Deployment Checklist ✅
+# wardex Deployment Checklist ✅
 
 ## ✅ Build Status: PASSING
 Your frontend builds successfully! The warnings are just optimization notices and don't affect functionality.
@@ -7,7 +7,7 @@ Your frontend builds successfully! The warnings are just optimization notices an
 
 ### 1. Push to Git (if not already done)
 ```bash
-cd darkagent
+cd wardex
 git add .
 git commit -m "Ready for Vercel deployment"
 git push origin main
@@ -26,7 +26,7 @@ vercel
 **Option B: Vercel Dashboard**
 1. Go to https://vercel.com/new
 2. Import your Git repository
-3. Set root directory to: `darkagent/frontend`
+3. Set root directory to: `wardex/frontend`
 4. Framework preset: Vite
 5. Build command: `npm run build`
 6. Output directory: `dist`
@@ -36,12 +36,12 @@ vercel
 Go to your Vercel project → Settings → Environment Variables and add:
 
 **Required:**
-- `VITE_DARKAGENT_API_URL` = Your backend API URL (e.g., https://your-backend.railway.app)
+- `VITE_wardex_API_URL` = Your backend API URL (e.g., https://your-backend.railway.app)
 - `VITE_CHAIN_ID` = `84532` (Base Sepolia)
 - `VITE_RPC_URL` = `https://sepolia.base.org`
 
 **After Contract Deployment:**
-- `VITE_DARKAGENT_CONTRACT` = Your DarkAgent contract address
+- `VITE_wardex_CONTRACT` = Your wardex contract address
 - `VITE_VERIFIER_CONTRACT` = Your Verifier contract address
 - `VITE_CAPABILITY_CONTRACT` = Your capability contract address
 
@@ -58,7 +58,7 @@ After adding environment variables, trigger a new deployment:
 
 ### Railway Deployment
 ```bash
-cd darkagent
+cd wardex
 # Install Railway CLI
 npm install -g @railway/cli
 railway login
@@ -72,7 +72,7 @@ Set environment variables in Railway dashboard from your `.env` file.
 1. Go to https://render.com/
 2. New → Web Service
 3. Connect your repository
-4. Root directory: `darkagent`
+4. Root directory: `wardex`
 5. Build command: `npm install`
 6. Start command: `npm run blink:server`
 7. Add all environment variables from `.env`
@@ -81,7 +81,7 @@ Set environment variables in Railway dashboard from your `.env` file.
 
 ### Deploy to Base Sepolia
 ```bash
-cd darkagent
+cd wardex
 
 # 1. Set up environment
 cp .env.example .env
@@ -102,7 +102,7 @@ npm run verify
 
 ### After Deployment
 Copy the contract addresses from the deployment output and:
-1. Update `darkagent/.env`
+1. Update `wardex/.env`
 2. Update Vercel environment variables
 3. Update `frontend/src/contracts/deployment.json` (auto-generated)
 
@@ -111,17 +111,17 @@ Copy the contract addresses from the deployment output and:
 ### Local Testing
 ```bash
 # Terminal 1: Backend
-cd darkagent
+cd wardex
 npm run blink:server
 
 # Terminal 2: Frontend
-cd darkagent/frontend
+cd wardex/frontend
 npm run dev
 ```
 
 ### Build Testing
 ```bash
-cd darkagent/frontend
+cd wardex/frontend
 npm run build
 npm run preview
 ```

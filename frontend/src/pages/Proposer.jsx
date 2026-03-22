@@ -13,7 +13,7 @@ const Proposer = () => {
     const [agentAddress, setAgentAddress] = useState('0x1111111111111111111111111111111111111111');
 
     const handlePropose = async () => {
-        if (!connected || !contracts?.darkAgent || !account) {
+        if (!connected || !contracts?.wardex || !account) {
             setStatus("[ERROR] Please connect vault configuration first.");
             return;
         }
@@ -22,7 +22,7 @@ const Proposer = () => {
             setStatus("[SYS] Initiating cryptographic proposal on-chain...\nPlease confirm the transaction in your wallet.");
 
             // Real interaction
-            const tx = await contracts.darkAgent.propose(agentAddress, account, actionData);
+            const tx = await contracts.wardex.propose(agentAddress, account, actionData);
             setStatus(`[PENDING] Transaction broadcast: https://sepolia.basescan.org/tx/${tx.hash}\nWaiting for network confirmation...`);
 
             const receipt = await tx.wait();
@@ -39,7 +39,7 @@ const Proposer = () => {
     };
 
     const handleVerifyAndExecute = async () => {
-        if (!connected || !contracts?.darkAgent || proposalId === null) {
+        if (!connected || !contracts?.wardex || proposalId === null) {
             setStatus("[ERROR] Invalid state. Await valid proposal ID.");
             return;
         }
@@ -70,7 +70,7 @@ const Proposer = () => {
             });
             
             // Trigger actual wallet popup
-            const tx = await contracts.darkAgent.execute(proposalId);
+            const tx = await contracts.wardex.execute(proposalId);
             
             setExecSteps(prev => { 
                 let n=[...prev]; 

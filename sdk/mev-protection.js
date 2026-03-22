@@ -1,5 +1,5 @@
 /**
- * DarkAgent SDK — MEV Protection
+ * wardex SDK — MEV Protection
  * ====================================
  * Routes agent transactions through Flashbots Protect RPC to prevent
  * MEV extraction (frontrunning, sandwich attacks, etc.)
@@ -78,7 +78,7 @@ async function isMEVProtectionEnabled(ensName, config = {}) {
 }
 
 /**
- * Read all DarkAgent ENS policy records
+ * Read all wardex ENS policy records
  */
 async function readENSPolicies(ensName, config = {}) {
     const cfg = { ...DEFAULT_CONFIG, ...config };

@@ -22,7 +22,7 @@ Your frontend builds successfully locally! The Vercel error is likely due to:
 
 **Option B: Force Redeploy via Git**
 ```bash
-cd darkagent/frontend
+cd wardex/frontend
 
 # Make a trivial change to force rebuild
 git commit --allow-empty -m "Force Vercel rebuild"
@@ -49,7 +49,7 @@ In Vercel dashboard:
 Always test before pushing:
 
 ```bash
-cd darkagent/frontend
+cd wardex/frontend
 
 # Clean build
 rm -rf node_modules dist
@@ -98,7 +98,7 @@ export default defineConfig({
 
 **3. Environment variables missing**
 Check Vercel environment variables are set:
-- `VITE_DARKAGENT_API_URL`
+- `VITE_wardex_API_URL`
 - `VITE_CHAIN_ID`
 - `VITE_RPC_URL`
 - etc.
@@ -122,7 +122,7 @@ Check Vercel environment variables are set:
 
 ```bash
 # Test build locally
-cd darkagent/frontend
+cd wardex/frontend
 npm run build
 
 # Preview production build

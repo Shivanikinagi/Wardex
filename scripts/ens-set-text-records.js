@@ -41,8 +41,8 @@ const AGENTS = [
         allowed_tokens: ["ETH", "USDC", "WETH"],
         time_window: 86400
       }),
-      description: 'DarkAgent trading agent — yield farming, swaps',
-      project: 'darkagent',
+      description: 'wardex trading agent — yield farming, swaps',
+      project: 'wardex',
     },
   },
   {
@@ -56,8 +56,8 @@ const AGENTS = [
         allowed_tokens: ["ETH", "USDC"],
         time_window: 86400
       }),
-      description: 'DarkAgent data agent',
-      project: 'darkagent',
+      description: 'wardex data agent',
+      project: 'wardex',
     },
   },
 ]

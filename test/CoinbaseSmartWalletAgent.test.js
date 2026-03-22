@@ -2,7 +2,7 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("CoinbaseSmartWalletAgent", function () {
-  let darkAgent;
+  let wardex;
   let ensResolver;
   let walletAgent;
   let owner;
@@ -19,14 +19,14 @@ describe("CoinbaseSmartWalletAgent", function () {
     ensResolver = await ENSAgentResolver.deploy();
     await ensResolver.waitForDeployment();
 
-    // Deploy DarkAgent
-    const DarkAgent = await ethers.getContractFactory("DarkAgent");
-    darkAgent = await DarkAgent.deploy(await ensResolver.getAddress());
-    await darkAgent.waitForDeployment();
+    // Deploy wardex
+    const wardex = await ethers.getContractFactory("wardex");
+    wardex = await wardex.deploy(await ensResolver.getAddress());
+    await wardex.waitForDeployment();
   });
 
   describe("Contract Deployment", function () {
-    it("Should revert with zero address for darkAgent", async function () {
+    it("Should revert with zero address for wardex", async function () {
       const CoinbaseSmartWalletAgent = await ethers.getContractFactory(
         "CoinbaseSmartWalletAgent",
       );
@@ -47,7 +47,7 @@ describe("CoinbaseSmartWalletAgent", function () {
       );
       try {
         await CoinbaseSmartWalletAgent.deploy(
-          await darkAgent.getAddress(),
+          await wardex.getAddress(),
           ethers.ZeroAddress,
         );
         expect.fail("Should have reverted");
@@ -61,13 +61,13 @@ describe("CoinbaseSmartWalletAgent", function () {
         "CoinbaseSmartWalletAgent",
       );
       walletAgent = await CoinbaseSmartWalletAgent.deploy(
-        await darkAgent.getAddress(),
+        await wardex.getAddress(),
         owner.address, // Using owner as mock factory
       );
       await walletAgent.waitForDeployment();
 
-      expect(await walletAgent.darkAgent()).to.equal(
-        await darkAgent.getAddress(),
+      expect(await walletAgent.wardex()).to.equal(
+        await wardex.getAddress(),
       );
       expect(await walletAgent.walletFactory()).to.equal(owner.address);
     });
@@ -79,7 +79,7 @@ describe("CoinbaseSmartWalletAgent", function () {
         "CoinbaseSmartWalletAgent",
       );
       walletAgent = await CoinbaseSmartWalletAgent.deploy(
-        await darkAgent.getAddress(),
+        await wardex.getAddress(),
         owner.address,
       );
       await walletAgent.waitForDeployment();
@@ -103,19 +103,19 @@ describe("CoinbaseSmartWalletAgent", function () {
     });
   });
 
-  describe("DarkAgent Integration", function () {
-    it("Should reference the correct DarkAgent contract", async function () {
+  describe("wardex Integration", function () {
+    it("Should reference the correct wardex contract", async function () {
       const CoinbaseSmartWalletAgent = await ethers.getContractFactory(
         "CoinbaseSmartWalletAgent",
       );
       walletAgent = await CoinbaseSmartWalletAgent.deploy(
-        await darkAgent.getAddress(),
+        await wardex.getAddress(),
         owner.address,
       );
       await walletAgent.waitForDeployment();
 
-      const darkAgentAddr = await walletAgent.darkAgent();
-      expect(darkAgentAddr).to.equal(await darkAgent.getAddress());
+      const wardexAddr = await walletAgent.wardex();
+      expect(wardexAddr).to.equal(await wardex.getAddress());
     });
 
     it("Should reference the correct factory", async function () {
@@ -123,7 +123,7 @@ describe("CoinbaseSmartWalletAgent", function () {
         "CoinbaseSmartWalletAgent",
       );
       walletAgent = await CoinbaseSmartWalletAgent.deploy(
-        await darkAgent.getAddress(),
+        await wardex.getAddress(),
         owner.address,
       );
       await walletAgent.waitForDeployment();
@@ -133,8 +133,8 @@ describe("CoinbaseSmartWalletAgent", function () {
     });
   });
 
-  describe("ENS + DarkAgent + Smart Wallet Flow", function () {
-    it("Should complete the full ENS -> DarkAgent -> verification flow", async function () {
+  describe("ENS + wardex + Smart Wallet Flow", function () {
+    it("Should complete the full ENS -> wardex -> verification flow", async function () {
       // Step 1: Set ENS permissions
       await ensResolver.syncPermissions(
         owner.address,
@@ -152,8 +152,8 @@ describe("CoinbaseSmartWalletAgent", function () {
       expect(perms.active).to.be.true;
       expect(perms.maxSpend).to.equal(ethers.parseEther("10"));
 
-      // Step 3: Propose through DarkAgent
-      const tx = await darkAgent.propose(
+      // Step 3: Propose through wardex
+      const tx = await wardex.propose(
         agent.address,
         owner.address,
         "0xdeadbeef",
@@ -163,28 +163,28 @@ describe("CoinbaseSmartWalletAgent", function () {
       // Extract proposal ID from event
       const event = receipt.logs.find((log) => {
         try {
-          return darkAgent.interface.parseLog(log)?.name === "ActionProposed";
+          return wardex.interface.parseLog(log)?.name === "ActionProposed";
         } catch {
           return false;
         }
       });
       expect(event).to.not.be.undefined;
 
-      const parsedLog = darkAgent.interface.parseLog(event);
+      const parsedLog = wardex.interface.parseLog(event);
       const proposalId = parsedLog.args.proposalId;
 
-      // Step 4: Verify through DarkAgent (checks ENS permissions)
-      await darkAgent.verify(proposalId);
+      // Step 4: Verify through wardex (checks ENS permissions)
+      await wardex.verify(proposalId);
 
       // Step 5: Confirm verification
-      const isVerified = await darkAgent.isVerified(proposalId);
+      const isVerified = await wardex.isVerified(proposalId);
       expect(isVerified).to.be.true;
 
       // Step 6: Execute
-      await darkAgent.execute(proposalId);
+      await wardex.execute(proposalId);
 
       // Step 7: Confirm execution
-      const proposal = await darkAgent.getProposal(proposalId);
+      const proposal = await wardex.getProposal(proposalId);
       expect(proposal.executed).to.be.true;
     });
   });

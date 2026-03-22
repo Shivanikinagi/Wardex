@@ -25,7 +25,7 @@
 - No test transactions had been run
 
 **What I did:**
-- Fixed contract naming (DarkAgent → WARDEX)
+- Fixed contract naming (wardex → WARDEX)
 - Ran test execution script
 - Generated 3 real transactions on Base Sepolia
 
@@ -52,14 +52,14 @@
    - Removed invalid API key
 
 2. **`server/index.js`**
-   - Changed `DARKAGENT_FILECOIN_*` to `WARDEX_FILECOIN_*`
+   - Changed `wardex_FILECOIN_*` to `WARDEX_FILECOIN_*`
 
 3. **`scripts/execute-demo.js`**
    - Updated to use `WARDEX_CONTRACT`
-   - Changed contract name from `DarkAgent` to `WARDEX`
+   - Changed contract name from `wardex` to `WARDEX`
 
 4. **`contracts/interfaces/`**
-   - Renamed `IDarkAgent.sol` to `IWARDEX.sol`
+   - Renamed `Iwardex.sol` to `IWARDEX.sol`
 
 ### Contracts Compiled:
 ✅ All contracts compiled successfully
@@ -97,7 +97,7 @@ Then redeploy.
 
 Run the demo script anytime:
 ```bash
-cd darkagent
+cd wardex
 npx hardhat run scripts/execute-demo.js --network base_sepolia
 ```
 

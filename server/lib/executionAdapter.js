@@ -2,7 +2,7 @@ const { randomUUID } = require("crypto");
 const { Wallet } = require("ethers");
 
 class ExecutionAdapter {
-  constructor({ mode = process.env.DARKAGENT_EXECUTION_MODE || "mock" } = {}) {
+  constructor({ mode = process.env.wardex_EXECUTION_MODE || "mock" } = {}) {
     this.mode = mode;
     this.syncedPolicies = new Map();
   }

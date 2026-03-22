@@ -31,7 +31,7 @@
 
 3. **Run setup script:**
    ```bash
-   cd darkagent
+   cd wardex
    npm run filecoin:foc:setup
    ```
 
@@ -70,7 +70,7 @@ The contract shows no transactions because it was just deployed. To see transact
 Run a test transaction:
 
 ```bash
-cd darkagent
+cd wardex
 npx hardhat run scripts/execute-demo.js --network base_sepolia
 ```
 
@@ -89,7 +89,7 @@ Make sure you're looking at the right contract:
 ## 🧪 Test Filecoin Upload
 
 ```bash
-cd darkagent
+cd wardex
 
 # Test FOC upload
 npm run filecoin:foc:setup
@@ -132,7 +132,7 @@ VERIFIER_CONTRACT=your_verifier_address
 
 1. **Update environment:**
    ```bash
-   cd darkagent
+   cd wardex
    # Edit .env with correct values
    ```
 

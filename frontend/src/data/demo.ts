@@ -42,11 +42,11 @@ export const demoBlinks: BlinkDraft[] = [
 export const featureHighlights = [
   {
     title: 'Source-aware firewall',
-    body: 'DarkAgent scores every Blink differently depending on whether it came from Twitter.',
+    body: 'wardex scores every Blink differently depending on whether it came from Twitter.',
   },
   {
     title: 'Auto-downsize oversized trades',
-    body: 'When a Blink is acceptable in principle but too large for the user, DarkAgent rewrites it to a safe size instead of forcing a hard reject.',
+    body: 'When a Blink is acceptable in principle but too large for the user, wardex rewrites it to a safe size instead of forcing a hard reject.',
   },
   {
     title: 'Explain every decision',
@@ -63,8 +63,8 @@ export const productPrinciples = [
 export function buildMockTweet(blink: BlinkDraft) {
   return {
     avatar: blink.source === 'twitter' ? 'DA' : 'MX',
-    handle: blink.referralTag || '@darkagent_demo',
-    name: blink.source === 'twitter' ? 'DarkAgent Signals' : 'Social Trading Feed',
+    handle: blink.referralTag || '@wardex_demo',
+    name: blink.source === 'twitter' ? 'wardex Signals' : 'Social Trading Feed',
     copy: buildTweetText(blink),
   }
 }

@@ -4,7 +4,7 @@ const path = require("path");
 
 async function main() {
     console.log("═══════════════════════════════════════════════════════════");
-    console.log("     🔒 DarkAgent — Deploying to Local Hardhat Node");
+    console.log("     🔒 wardex — Deploying to Local Hardhat Node");
     console.log("═══════════════════════════════════════════════════════════\n");
 
     const [deployer, user1, agent1] = await ethers.getSigners();
@@ -13,13 +13,13 @@ async function main() {
     const balance = await ethers.provider.getBalance(deployer.address);
     console.log("💰 Balance:", ethers.formatEther(balance), "ETH\n");
 
-    // Deploy DarkAgent Protocol
-    console.log("━━━ Deploying DarkAgent Core Protocol ━━━");
-    const DarkAgent = await ethers.getContractFactory("DarkAgent");
-    const darkAgent = await DarkAgent.deploy();
-    await darkAgent.waitForDeployment();
-    const darkAgentAddress = await darkAgent.getAddress();
-    console.log("✅ DarkAgent deployed at:", darkAgentAddress);
+    // Deploy wardex Protocol
+    console.log("━━━ Deploying wardex Core Protocol ━━━");
+    const wardex = await ethers.getContractFactory("wardex");
+    const wardex = await wardex.deploy();
+    await wardex.waitForDeployment();
+    const wardexAddress = await wardex.getAddress();
+    console.log("✅ wardex deployed at:", wardexAddress);
 
     // Save deployment info for frontend
     const deployment = {
@@ -27,7 +27,7 @@ async function main() {
         chainId: 31337,
         deployer: deployer.address,
         contracts: {
-            DarkAgent: darkAgentAddress
+            wardex: wardexAddress
         },
         agents: {
             demoAgent: {

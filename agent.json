@@ -1,5 +1,5 @@
 {
-  "name": "DarkAgent Policy Engine",
+  "name": "wardex Policy Engine",
   "version": "1.0.0",
   "description": "Trustless ZK-verified execution boundaries for AI agents in DeFi",
   "operator": "${DEPLOYER_ADDRESS}",

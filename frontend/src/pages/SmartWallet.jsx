@@ -58,7 +58,7 @@ const SmartWallet = () => {
   const handleRegister = async () => {
     try {
       setMockLoading(true);
-      setStatus("Registering smart wallet with DarkAgent protocol...");
+      setStatus("Registering smart wallet with wardex protocol...");
       await new Promise((resolve) => setTimeout(resolve, 1500));
       
       setMockWalletInfo({
@@ -205,7 +205,7 @@ const SmartWallet = () => {
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-vault-text">Tenderly & Policy Enforcement</h3>
                 <p className="text-vault-slate leading-relaxed text-sm">
-                  Transactions are simulated via <strong>Tenderly</strong> to score risk before execution. Final circuit-breakers and stealth enforcement at the policy level are handled by the DarkAgent execution layer.
+                  Transactions are simulated via <strong>Tenderly</strong> to score risk before execution. Final circuit-breakers and stealth enforcement at the policy level are handled by the wardex execution layer.
                 </p>
               </div>
             </div>
@@ -312,7 +312,7 @@ const SmartWallet = () => {
                         marginBottom: "16px",
                       }}
                     >
-                      Register your Coinbase Smart Wallet with the DarkAgent
+                      Register your Coinbase Smart Wallet with the wardex
                       protocol to enable AI agent verification, spending
                       controls, and emergency freeze capabilities.
                     </p>
@@ -465,7 +465,7 @@ const SmartWallet = () => {
                           <div className="code-preview">
                             <div>
                               <span className="cmt">
-                                {"// Coinbase Smart Wallet + DarkAgent Flow"}
+                                {"// Coinbase Smart Wallet + wardex Flow"}
                               </span>
                             </div>
                             <div>&nbsp;</div>
@@ -482,7 +482,7 @@ const SmartWallet = () => {
                             <div>&nbsp;</div>
                             <div>
                               <span className="kw">Agent</span> →{" "}
-                              <span className="fn">DarkAgent.propose()</span>
+                              <span className="fn">wardex.propose()</span>
                             </div>
                             <div>
                               {"  "}
@@ -493,7 +493,7 @@ const SmartWallet = () => {
                             <div>&nbsp;</div>
                             <div>
                               <span className="kw">ENS</span> →{" "}
-                              <span className="fn">DarkAgent.verify()</span>
+                              <span className="fn">wardex.verify()</span>
                             </div>
                             <div>
                               {"  "}
@@ -887,12 +887,12 @@ const SmartWallet = () => {
                     )}
                   </div>
 
-                  {/* DarkAgent Verification */}
+                  {/* wardex Verification */}
                   <div className="p-6 rounded-2xl border border-vault-slate/20 bg-[#1a1d23]/50 backdrop-blur-xl hover:border-vault-green/30 transition-all duration-300">
                     <div className="flex items-center justify-between mb-6">
                       <div className="text-xl font-bold text-vault-text flex items-center gap-2">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-vault-green"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                        DarkAgent Verification
+                        wardex Verification
                       </div>
                     </div>
                     <div

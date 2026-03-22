@@ -30,7 +30,7 @@ class ShareLinkStore {
     return entries;
   }
 
-  create({ blinkUrl, createdBy = "darkagent", meta = {} }) {
+  create({ blinkUrl, createdBy = "wardex", meta = {} }) {
     const entries = this.readAll();
     const id = crypto.randomBytes(5).toString("hex");
     const entry = {

@@ -12,14 +12,14 @@ function requiredEnv(name) {
 }
 
 async function main() {
-  const darkAgentAddress =
+  const wardexAddress =
     String(process.env.WARDEX_CONTRACT || "").trim() ||
-    String(process.env.DARKAGENT_CONTRACT || "").trim() ||
-    String(process.env.DARKAGENT_PROTOCOL_ADDRESS || "").trim();
+    String(process.env.wardex_CONTRACT || "").trim() ||
+    String(process.env.wardex_PROTOCOL_ADDRESS || "").trim();
 
-  if (!darkAgentAddress || !ethers.isAddress(darkAgentAddress)) {
+  if (!wardexAddress || !ethers.isAddress(wardexAddress)) {
     throw new Error(
-      "Missing or invalid WARDEX_CONTRACT (or DARKAGENT_CONTRACT/DARKAGENT_PROTOCOL_ADDRESS) in .env"
+      "Missing or invalid WARDEX_CONTRACT (or wardex_CONTRACT/wardex_PROTOCOL_ADDRESS) in .env"
     );
   }
 
@@ -30,7 +30,7 @@ async function main() {
 
   console.log("Network:", network.name, "(chainId:", network.chainId.toString() + ")");
   console.log("Signer:", signer.address);
-  console.log("DarkAgent:", darkAgentAddress);
+  console.log("wardex:", wardexAddress);
 
   const feeData = await ethers.provider.getFeeData();
   let nextNonce = await ethers.provider.getTransactionCount(signer.address, "pending");
@@ -49,17 +49,17 @@ async function main() {
     return overrides;
   };
 
-  const darkAgent = await ethers.getContractAt("WARDEX", darkAgentAddress, signer);
+  const wardex = await ethers.getContractAt("WARDEX", wardexAddress, signer);
   let ensResolverAddress = String(process.env.ENS_RESOLVER_ADDRESS || "").trim();
   try {
-    const resolverFromContract = await darkAgent.ensResolver();
+    const resolverFromContract = await wardex.ensResolver();
     if (resolverFromContract && ethers.isAddress(resolverFromContract)) {
       ensResolverAddress = resolverFromContract;
     }
   } catch (error) {
     if (!ensResolverAddress || !ethers.isAddress(ensResolverAddress)) {
       throw new Error(
-        `Could not read ensResolver() from DarkAgent and ENS_RESOLVER_ADDRESS is missing/invalid. ${error.message || error}`
+        `Could not read ensResolver() from wardex and ENS_RESOLVER_ADDRESS is missing/invalid. ${error.message || error}`
       );
     }
     console.warn("ensResolver() call reverted; using ENS_RESOLVER_ADDRESS from .env");
@@ -75,7 +75,7 @@ async function main() {
   const agent = signer.address;
   const user = signer.address;
 
-  // DarkAgent.verify requires active ENS permissions with maxSpend > 0.
+  // wardex.verify requires active ENS permissions with maxSpend > 0.
   const syncTx = await ensResolver.syncPermissions(
     user,
     ethers.parseEther("1"),
@@ -98,13 +98,13 @@ async function main() {
       timestamp: new Date().toISOString(),
     })
   );
-  const proposeTx = await darkAgent.propose(agent, user, actionPayload, txOverrides());
+  const proposeTx = await wardex.propose(agent, user, actionPayload, txOverrides());
   const proposeReceipt = await proposeTx.wait();
 
   const proposedLog = proposeReceipt.logs
     .map((log) => {
       try {
-        return darkAgent.interface.parseLog(log);
+        return wardex.interface.parseLog(log);
       } catch {
         return null;
       }
@@ -116,10 +116,10 @@ async function main() {
     throw new Error("Failed to parse proposalId from ActionProposed event");
   }
 
-  const verifyTx = await darkAgent.verify(proposalId, txOverrides());
+  const verifyTx = await wardex.verify(proposalId, txOverrides());
   const verifyReceipt = await verifyTx.wait();
 
-  const executeTx = await darkAgent.execute(proposalId, txOverrides());
+  const executeTx = await wardex.execute(proposalId, txOverrides());
   const executeReceipt = await executeTx.wait();
 
   const explorerBase = "https://sepolia.basescan.org/tx/";

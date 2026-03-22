@@ -1,5 +1,5 @@
-// DarkAgent Protocol ABI
-export const DARKAGENT_PROTOCOL_ABI = [
+// wardex Protocol ABI
+export const wardex_PROTOCOL_ABI = [
   "function propose(address agent, address user, bytes calldata action) external returns (bytes32)",
   "function verify(bytes32 proposalId) external returns (bool)",
   "function execute(bytes32 proposalId) external",
@@ -44,7 +44,7 @@ export const SMART_WALLET_FACTORY_ABI = [
   "function implementation() external view returns (address)",
 ];
 
-// CoinbaseSmartWalletAgent (DarkAgent adapter) ABI
+// CoinbaseSmartWalletAgent (wardex adapter) ABI
 export const WALLET_AGENT_ABI = [
   "function registerWallet(address smartWallet) external",
   "function createAndRegisterWallet(uint256 nonce) external returns (address)",

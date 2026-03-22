@@ -44,7 +44,7 @@
       "community": 150,
       "unknown": 0
     },
-    "notifyEmail": "alice@darkagent.demo",
+    "notifyEmail": "alice@wardex.demo",
     "executionPolicyId": "bitgo-alice-eth",
     "notes": "Balanced retail profile for social and AI Blink trading.",
     "updatedAt": "2026-03-22T14:53:33.641Z"
@@ -93,7 +93,7 @@
       "community": 150,
       "unknown": 0
     },
-    "notifyEmail": "ops@darkagent.demo",
+    "notifyEmail": "ops@wardex.demo",
     "executionPolicyId": "bitgo-ops-eth",
     "notes": "Frozen profile for emergency demonstrations.",
     "updatedAt": "2026-03-15T00:00:00.000Z"

@@ -37,7 +37,7 @@ I've created `render.yaml` with proper Node.js version pinning:
 ```yaml
 services:
   - type: web
-    name: darkagent-backend
+    name: wardex-backend
     env: node
     region: oregon
     plan: free
@@ -75,10 +75,10 @@ services:
 ### 2. Configure Service
 
 **Basic Settings:**
-- Name: `darkagent-backend`
+- Name: `wardex-backend`
 - Region: Choose closest to you
 - Branch: `main` (or your default branch)
-- Root Directory: `darkagent` (if repo root) or leave blank
+- Root Directory: `wardex` (if repo root) or leave blank
 - Runtime: `Node`
 - Build Command: `npm install`
 - Start Command: `npm start`
@@ -109,7 +109,7 @@ VENICE_COST_USDC=0.001
 
 **Contracts (after deployment):**
 ```
-DARKAGENT_CONTRACT=0x...
+wardex_CONTRACT=0x...
 VERIFIER_CONTRACT=0x...
 AGENT_TREASURY_CONTRACT=0x...
 WSTETH_CONTRACT=0x...
@@ -233,10 +233,10 @@ curl -X POST https://your-app.onrender.com/analyze-blink \
 
 ## 🎯 Next Steps After Deployment
 
-1. ✅ Get your Render URL (e.g., `https://darkagent-backend.onrender.com`)
+1. ✅ Get your Render URL (e.g., `https://wardex-backend.onrender.com`)
 2. ✅ Update frontend `.env`:
    ```
-   VITE_DARKAGENT_API_URL=https://darkagent-backend.onrender.com
+   VITE_wardex_API_URL=https://wardex-backend.onrender.com
    ```
 3. ✅ Redeploy frontend to Vercel
 4. ✅ Test end-to-end flow

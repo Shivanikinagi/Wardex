@@ -1,5 +1,5 @@
 /**
- * DarkAgent 🤝 Fileverse: The Default Audit Trail Layer
+ * wardex 🤝 Fileverse: The Default Audit Trail Layer
  *
  * Problem: Fileverse is decentralized storage, but nobody is using it for 
  *          accountability in DeFi. No killer use case yet.
@@ -15,7 +15,7 @@ require('dotenv').config();
 
 const FILEVERSE_API = process.env.FILEVERSE_API_URL || 'https://api.fileverse.io/v1';
 const API_KEY = process.env.FILEVERSE_API_KEY || '';
-const NAMESPACE = process.env.FILEVERSE_NAMESPACE || 'darkagent';
+const NAMESPACE = process.env.FILEVERSE_NAMESPACE || 'wardex';
 
 /**
  * Store an audit document on Fileverse.
@@ -29,7 +29,7 @@ async function storeAuditDocument(data) {
     timestamp: new Date().toISOString(),
     data,
     metadata: {
-      project: 'darkagent',
+      project: 'wardex',
       network: 'base-sepolia',
     },
   };
@@ -73,7 +73,7 @@ async function storeAuditDocument(data) {
 
 /**
  * Store a complete Verification Receipt on Fileverse.
- * Proves that an execution passed the ENS rules via DarkAgent.
+ * Proves that an execution passed the ENS rules via wardex.
  * Exactly matches requirements: {proposalId, agent, user, action, rulesChecked, timestamp, signature}
  */
 async function storeVerificationReceipt({ proposalId, agent, user, action, rulesChecked, timestamp, signature }) {
@@ -100,7 +100,7 @@ async function listAuditDocuments(agentAddress) {
 
   const params = new URLSearchParams({
     namespace: NAMESPACE,
-    'metadata.project': 'darkagent',
+    'metadata.project': 'wardex',
   });
   if (agentAddress) params.set('data.agent', agentAddress);
 

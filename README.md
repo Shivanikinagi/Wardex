@@ -1,4 +1,4 @@
-﻿# Wardex - Verifiable AI Agent Execution Boundaries
+# Wardex - Verifiable AI Agent Execution Boundaries
 
 Live app: https://wardex.vercel.app
 Demo video: https://loom.com/share/PASTE_AFTER_RECORDING

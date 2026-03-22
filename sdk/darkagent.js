@@ -1,28 +1,28 @@
 /**
- * DarkAgent SDK
+ * wardex SDK
  * 
  * The Verification Infrastructure for AI Agents in DeFi.
  * 
- * 3-line integration for any developer to use DarkAgent 
+ * 3-line integration for any developer to use wardex 
  * as their load-bearing security layer.
  */
 
 const { ethers } = require('ethers');
 
-class DarkAgentSDK {
+class wardexSDK {
   /**
-   * Initializes the DarkAgent SDK
-   * @param {string} darkAgentProtocolAddress - Address of the IDarkAgent contract
+   * Initializes the wardex SDK
+   * @param {string} wardexProtocolAddress - Address of the Iwardex contract
    * @param {ethers.Signer|ethers.Provider} providerOrSigner - Ethers instance
    */
-  constructor(darkAgentProtocolAddress, providerOrSigner) {
+  constructor(wardexProtocolAddress, providerOrSigner) {
     const ABI = [
       "function propose(address agent, address user, bytes calldata action) external returns (bytes32)",
       "function verify(bytes32 proposalId) external returns (bool)",
       "function execute(bytes32 proposalId) external",
       "function isVerified(bytes32 proposalId) external view returns (bool)"
     ];
-    this.protocol = new ethers.Contract(darkAgentProtocolAddress, ABI, providerOrSigner);
+    this.protocol = new ethers.Contract(wardexProtocolAddress, ABI, providerOrSigner);
   }
 
   /**
@@ -32,7 +32,7 @@ class DarkAgentSDK {
    * @param {string} agentAddress - The address of the AI agent
    * @param {string} userENS - The ENS name or address of the user
    * @param {bytes|string} actionData - The payload to be executed
-   * @returns {Promise<boolean>} True if the action is approved by DarkAgent
+   * @returns {Promise<boolean>} True if the action is approved by wardex
    */
   async verify(agentAddress, userENS, actionData) {
     try {
@@ -52,7 +52,7 @@ class DarkAgentSDK {
 
       return await this.protocol.isVerified(proposalId);
     } catch (e) {
-      console.error("DarkAgent Verification Failed:", e);
+      console.error("wardex Verification Failed:", e);
       return false;
     }
   }
@@ -78,4 +78,4 @@ class DarkAgentSDK {
   }
 }
 
-module.exports = DarkAgentSDK;
+module.exports = wardexSDK;

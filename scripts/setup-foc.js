@@ -73,7 +73,7 @@ async function main() {
 
   console.log("\nTesting upload...");
   const testData = {
-    project: "DarkAgent",
+    project: "wardex",
     test: true,
     walletAddress: process.env.FILECOIN_WALLET_ADDRESS || "",
     timestamp: new Date().toISOString(),

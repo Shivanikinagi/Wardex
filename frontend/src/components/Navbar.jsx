@@ -25,7 +25,7 @@ export default function Navbar({ activePage, onNavigate, address, isConnected, i
               <ShieldCheck className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-white font-bold text-xl leading-tight tracking-tight">DarkAgent</h1>
+              <h1 className="text-white font-bold text-xl leading-tight tracking-tight">wardex</h1>
               <p className="text-brand-accent text-xs font-medium">Smart UI</p>
             </div>
           </div>

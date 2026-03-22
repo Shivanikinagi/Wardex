@@ -31,7 +31,7 @@ export const wagmiConfig = createConfig({
   chains: [baseSepolia],
   connectors: [
     coinbaseWallet({
-      appName: "DarkAgent Protocol",
+      appName: "wardex Protocol",
       // preference: 'all' allows both EOA and smart wallet connections
       preference: "all",
       enableMobileWalletLink: true,

@@ -1,8 +1,8 @@
 /**
- * DarkAgent SDK — Agent Registration
+ * wardex SDK — Agent Registration
  * ====================================
  * Handles agent registration with:
- *   - ENS subname creation (trading-agent.darkagent.eth)
+ *   - ENS subname creation (trading-agent.wardex.eth)
  *   - Smart contract registration
  *   - Capability setup
  *   - Spending policy configuration
@@ -21,7 +21,7 @@
 const { ethers } = require("ethers");
 
 // Contract ABI (minimal for registration)
-const DARKAGENT_ABI = [
+const wardex_ABI = [
     "function registerAgent(address agentAddress, string ensName, string[] capabilities, uint256 maxPerTx, uint256 maxPerDay, uint256 alertThreshold) external",
     "function getAgent(address agentAddress) external view returns (address owner, string ensName, bytes32 capabilityHash, string[] capabilities, uint256 reputationScore, uint8 status, bytes32 attestationHash, uint256 attestationTime, uint256 registeredAt)",
     "function updateAttestation(address agentAddress, bytes32 newAttestationHash) external",
@@ -42,13 +42,13 @@ const CAPABILITY_CHECK_ABI = [
 const DEFAULT_CONFIG = {
     rpcUrl: "https://sepolia.base.org",
     chainId: 84532,
-    darkAgentAddress: process.env.DARKAGENT_CONTRACT || "",
+    wardexAddress: process.env.wardex_CONTRACT || "",
     capabilityCheckAddress: process.env.CAPABILITY_CHECK_CONTRACT || "",
-    parentDomain: "darkagent.eth",
+    parentDomain: "wardex.eth",
 };
 
 /**
- * Register a new AI agent on DarkAgent
+ * Register a new AI agent on wardex
  */
 async function registerAgent({
     name,
@@ -62,7 +62,7 @@ async function registerAgent({
     const cfg = { ...DEFAULT_CONFIG, ...config };
 
     console.log("═══════════════════════════════════════════════════════");
-    console.log("  🤖 DarkAgent — Registering New Agent");
+    console.log("  🤖 wardex — Registering New Agent");
     console.log("═══════════════════════════════════════════════════════");
 
     // Setup provider and signer
@@ -82,14 +82,14 @@ async function registerAgent({
     console.log(`   Capabilities: ${capabilities.join(", ")}`);
 
     // Step 2: Register on smart contract
-    console.log("\n━━━ Step 2: Register on DarkAgent Contract ━━━");
-    const darkAgent = new ethers.Contract(
-        cfg.darkAgentAddress,
-        DARKAGENT_ABI,
+    console.log("\n━━━ Step 2: Register on wardex Contract ━━━");
+    const wardex = new ethers.Contract(
+        cfg.wardexAddress,
+        wardex_ABI,
         signer
     );
 
-    const tx = await darkAgent.registerAgent(
+    const tx = await wardex.registerAgent(
         agentWallet.address,
         ensName,
         capabilities,
@@ -122,10 +122,10 @@ async function registerAgent({
     // Step 4: Generate initial attestation
     console.log("\n━━━ Step 4: Set Initial Attestation ━━━");
     const attestationHash = ethers.keccak256(
-        ethers.toUtf8Bytes(`darkagent-attestation-${name}-${Date.now()}`)
+        ethers.toUtf8Bytes(`wardex-attestation-${name}-${Date.now()}`)
     );
 
-    const attTx = await darkAgent.updateAttestation(
+    const attTx = await wardex.updateAttestation(
         agentWallet.address,
         attestationHash
     );
@@ -148,7 +148,7 @@ async function registerAgent({
             alertThreshold: alertThreshold + " ETH",
         },
         contracts: {
-            darkAgent: cfg.darkAgentAddress,
+            wardex: cfg.wardexAddress,
             capabilityCheck: cfg.capabilityCheckAddress,
         },
         network: {
@@ -174,13 +174,13 @@ async function registerAgent({
 async function getAgent(agentAddress, config = {}) {
     const cfg = { ...DEFAULT_CONFIG, ...config };
     const provider = new ethers.JsonRpcProvider(cfg.rpcUrl);
-    const darkAgent = new ethers.Contract(
-        cfg.darkAgentAddress,
-        DARKAGENT_ABI,
+    const wardex = new ethers.Contract(
+        cfg.wardexAddress,
+        wardex_ABI,
         provider
     );
 
-    const agent = await darkAgent.getAgent(agentAddress);
+    const agent = await wardex.getAgent(agentAddress);
 
     return {
         owner: agent[0],
@@ -201,13 +201,13 @@ async function getAgent(agentAddress, config = {}) {
 async function listAgents(config = {}) {
     const cfg = { ...DEFAULT_CONFIG, ...config };
     const provider = new ethers.JsonRpcProvider(cfg.rpcUrl);
-    const darkAgent = new ethers.Contract(
-        cfg.darkAgentAddress,
-        DARKAGENT_ABI,
+    const wardex = new ethers.Contract(
+        cfg.wardexAddress,
+        wardex_ABI,
         provider
     );
 
-    const addresses = await darkAgent.getAllAgents();
+    const addresses = await wardex.getAllAgents();
     const agents = [];
 
     for (const addr of addresses) {
@@ -224,13 +224,13 @@ async function listAgents(config = {}) {
 async function isVerified(agentAddress, config = {}) {
     const cfg = { ...DEFAULT_CONFIG, ...config };
     const provider = new ethers.JsonRpcProvider(cfg.rpcUrl);
-    const darkAgent = new ethers.Contract(
-        cfg.darkAgentAddress,
-        DARKAGENT_ABI,
+    const wardex = new ethers.Contract(
+        cfg.wardexAddress,
+        wardex_ABI,
         provider
     );
 
-    return await darkAgent.isVerifiedAgent(agentAddress);
+    return await wardex.isVerifiedAgent(agentAddress);
 }
 
 module.exports = {
@@ -238,7 +238,7 @@ module.exports = {
     getAgent,
     listAgents,
     isVerified,
-    DARKAGENT_ABI,
+    wardex_ABI,
     CAPABILITY_CHECK_ABI,
     DEFAULT_CONFIG,
 };

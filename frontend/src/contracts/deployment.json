@@ -3,7 +3,7 @@
   "chainId": 84532,
   "deployer": "0x6B845996450ecf86cC2CBc4b92C69d37F87f42d4",
   "contracts": {
-    "DarkAgent": "0x613a42cb5ae4D39E9F2d092a5BF29122500c1D3E",
+    "wardex": "0x613a42cb5ae4D39E9F2d092a5BF29122500c1D3E",
     "ENSAgentResolver": "0xEc1785182D9fae9C14e0D65f4F64c7056ae04E81",
     "Verifier": "0xF6608dCEC728D057CD7Db6593fd0Da422050F34a",
     "CoinbaseSmartWalletAgent": "0x84AFc4E4Cfe8FBDA488dBBe8623496F8395dA031",

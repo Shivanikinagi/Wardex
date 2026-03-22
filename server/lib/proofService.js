@@ -17,7 +17,7 @@ function stableSerialize(value) {
 }
 
 class ProofService {
-  constructor({ store, eventHub, signerPrivateKey = process.env.DARKAGENT_PROOF_SIGNER_PRIVATE_KEY }) {
+  constructor({ store, eventHub, signerPrivateKey = process.env.wardex_PROOF_SIGNER_PRIVATE_KEY }) {
     this.store = store;
     this.eventHub = eventHub;
     this.signer = signerPrivateKey

@@ -19,20 +19,20 @@ TypeError: Cannot destructure property 'arrayify' of 'utils' as it is undefined
 ## 📦 Files Created/Modified
 
 ### Modified:
-- `darkagent/package.json` - Added engines and start script
+- `wardex/package.json` - Added engines and start script
 
 ### Created:
-- `darkagent/render.yaml` - Render configuration
-- `darkagent/RENDER_DEPLOYMENT.md` - Complete deployment guide
-- `darkagent/deploy-to-render.sh` - Bash helper script
-- `darkagent/deploy-to-render.ps1` - PowerShell helper script
-- `darkagent/DEPLOYMENT_FIX_SUMMARY.md` - This file
+- `wardex/render.yaml` - Render configuration
+- `wardex/RENDER_DEPLOYMENT.md` - Complete deployment guide
+- `wardex/deploy-to-render.sh` - Bash helper script
+- `wardex/deploy-to-render.ps1` - PowerShell helper script
+- `wardex/DEPLOYMENT_FIX_SUMMARY.md` - This file
 
 ## 🚀 Quick Fix (3 Steps)
 
 ### Step 1: Commit Changes
 ```bash
-cd darkagent
+cd wardex
 git add .
 git commit -m "Fix Render deployment - ethers v6 compatibility"
 git push
@@ -81,7 +81,7 @@ chmod +x deploy-to-render.sh
 
 Or test manually:
 ```bash
-cd darkagent
+cd wardex
 node -e "const { Wallet, getBytes, keccak256 } = require('ethers'); console.log('✅ Works!');"
 ```
 
@@ -141,7 +141,7 @@ Render Dashboard → Logs → Look for specific error
 ## 🎯 Next Steps
 
 1. **Immediate:** Clear Render cache and redeploy
-2. **After backend works:** Update frontend `VITE_DARKAGENT_API_URL`
+2. **After backend works:** Update frontend `VITE_wardex_API_URL`
 3. **Deploy frontend:** Push to Vercel
 4. **Test:** End-to-end Blink analysis flow
 
@@ -168,13 +168,13 @@ Your deployment is successful when you see:
 ==> Build successful 🎉
 ==> Starting service with 'npm start'...
 Server running on port 8787
-DarkAgent backend ready
+wardex backend ready
 ```
 
 Then test:
 ```bash
 curl https://your-app.onrender.com/
-# Should return: {"status":"ok","service":"darkagent-backend"}
+# Should return: {"status":"ok","service":"wardex-backend"}
 ```
 
 ---

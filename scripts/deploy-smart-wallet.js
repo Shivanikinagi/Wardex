@@ -1,8 +1,8 @@
 /**
  * Deploy CoinbaseSmartWalletAgent contract
  *
- * This script deploys the DarkAgent <-> Coinbase Smart Wallet adapter contract.
- * It requires the DarkAgent contract and Coinbase Smart Wallet Factory to be
+ * This script deploys the wardex <-> Coinbase Smart Wallet adapter contract.
+ * It requires the wardex contract and Coinbase Smart Wallet Factory to be
  * already deployed on the target network.
  *
  * Usage:
@@ -46,16 +46,16 @@ async function main() {
     deployment = { contracts: {} };
   }
 
-  const darkAgentAddress =
-    deployment.contracts?.DarkAgent || process.env.DARKAGENT_CONTRACT;
-  if (!darkAgentAddress) {
+  const wardexAddress =
+    deployment.contracts?.wardex || process.env.wardex_CONTRACT;
+  if (!wardexAddress) {
     throw new Error(
-      "DarkAgent contract address not found. Deploy DarkAgent first or set DARKAGENT_CONTRACT env var.",
+      "wardex contract address not found. Deploy wardex first or set wardex_CONTRACT env var.",
     );
   }
 
   console.log("\n--- Deployment Configuration ---");
-  console.log("DarkAgent contract:", darkAgentAddress);
+  console.log("wardex contract:", wardexAddress);
   console.log("Coinbase Smart Wallet Factory:", COINBASE_SMART_WALLET_FACTORY);
   console.log("");
 
@@ -65,7 +65,7 @@ async function main() {
     "CoinbaseSmartWalletAgent",
   );
   const walletAgent = await CoinbaseSmartWalletAgent.deploy(
-    darkAgentAddress,
+    wardexAddress,
     COINBASE_SMART_WALLET_FACTORY,
   );
   await walletAgent.waitForDeployment();
@@ -89,10 +89,10 @@ async function main() {
   console.log("\n=== Deployment Summary ===");
   console.log("CoinbaseSmartWalletAgent:", walletAgentAddress);
   console.log("Factory:", COINBASE_SMART_WALLET_FACTORY);
-  console.log("DarkAgent:", darkAgentAddress);
+  console.log("wardex:", wardexAddress);
   console.log("\nVerify contract:");
   console.log(
-    `npx hardhat verify --network base_sepolia ${walletAgentAddress} ${darkAgentAddress} ${COINBASE_SMART_WALLET_FACTORY}`,
+    `npx hardhat verify --network base_sepolia ${walletAgentAddress} ${wardexAddress} ${COINBASE_SMART_WALLET_FACTORY}`,
   );
 }
 

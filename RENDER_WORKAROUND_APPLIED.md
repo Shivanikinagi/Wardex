@@ -33,7 +33,7 @@ added 580 packages
 ==> Build successful 🎉
 ==> Running 'npm start'
 Server running on port 8787
-✓ DarkAgent backend ready
+✓ wardex backend ready
 ```
 
 **No more `arrayify` errors!**
@@ -73,7 +73,7 @@ const { Wallet, getBytes, keccak256 } = require("ethers"); // ✅ ethers v6
 Test that the new file works:
 
 ```bash
-cd darkagent
+cd wardex
 node -e "const { ProofService } = require('./server/lib/proofServiceV6'); console.log('✅ Works');"
 ```
 

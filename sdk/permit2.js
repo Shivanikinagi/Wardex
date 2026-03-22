@@ -1,5 +1,5 @@
 /**
- * DarkAgent SDK — Permit2 Integration
+ * wardex SDK — Permit2 Integration
  * ====================================
  * Integrates Uniswap's Permit2 for gasless token approvals.
  * Agents can approve + transfer tokens in a single transaction

@@ -1,5 +1,5 @@
 /**
- * DarkAgent SDK — Policy Management
+ * wardex SDK — Policy Management
  * ====================================
  * Manages spending policies, circuit breaker operations,
  * and compliance verification for AI agents.
@@ -15,7 +15,7 @@
 const { ethers } = require("ethers");
 
 // Contract ABIs
-const DARKAGENT_ABI = [
+const wardex_ABI = [
     "function updateSpendingPolicy(address agentAddress, uint256 maxPerTx, uint256 maxPerDay, uint256 alertThreshold, bool onlyVerified) external",
     "function processTransaction(address agentAddress, uint256 amount, address recipient) external returns (bool)",
     "function fireCircuitBreaker(address agentAddress, string reason, bytes32 invalidAttestationHash) external",
@@ -40,7 +40,7 @@ const VERIFIER_ABI = [
 const DEFAULT_CONFIG = {
     rpcUrl: "https://sepolia.base.org",
     chainId: 84532,
-    darkAgentAddress: process.env.DARKAGENT_CONTRACT || "",
+    wardexAddress: process.env.wardex_CONTRACT || "",
     verifierAddress: process.env.VERIFIER_CONTRACT || "",
 };
 
@@ -64,15 +64,15 @@ async function updateSpendingPolicy({
     const provider = new ethers.JsonRpcProvider(cfg.rpcUrl);
     const signer = new ethers.Wallet(privateKey, provider);
 
-    const darkAgent = new ethers.Contract(
-        cfg.darkAgentAddress,
-        DARKAGENT_ABI,
+    const wardex = new ethers.Contract(
+        cfg.wardexAddress,
+        wardex_ABI,
         signer
     );
 
     console.log(`📝 Updating spending policy for ${agentAddress.slice(0, 10)}...`);
 
-    const tx = await darkAgent.updateSpendingPolicy(
+    const tx = await wardex.updateSpendingPolicy(
         agentAddress,
         ethers.parseEther(maxPerTransaction),
         ethers.parseEther(maxPerDay),
@@ -102,13 +102,13 @@ async function updateSpendingPolicy({
 async function getSpendingInfo(agentAddress, config = {}) {
     const cfg = { ...DEFAULT_CONFIG, ...config };
     const provider = new ethers.JsonRpcProvider(cfg.rpcUrl);
-    const darkAgent = new ethers.Contract(
-        cfg.darkAgentAddress,
-        DARKAGENT_ABI,
+    const wardex = new ethers.Contract(
+        cfg.wardexAddress,
+        wardex_ABI,
         provider
     );
 
-    const info = await darkAgent.getSpendingInfo(agentAddress);
+    const info = await wardex.getSpendingInfo(agentAddress);
 
     return {
         dailySpent: ethers.formatEther(info[0]),
@@ -138,9 +138,9 @@ async function fireCircuitBreaker({
     const provider = new ethers.JsonRpcProvider(cfg.rpcUrl);
     const signer = new ethers.Wallet(privateKey, provider);
 
-    const darkAgent = new ethers.Contract(
-        cfg.darkAgentAddress,
-        DARKAGENT_ABI,
+    const wardex = new ethers.Contract(
+        cfg.wardexAddress,
+        wardex_ABI,
         signer
     );
 
@@ -150,7 +150,7 @@ async function fireCircuitBreaker({
     console.log(`   Agent: ${agentAddress.slice(0, 10)}...`);
     console.log(`   Reason: ${reason}`);
 
-    const tx = await darkAgent.fireCircuitBreaker(
+    const tx = await wardex.fireCircuitBreaker(
         agentAddress,
         reason,
         invalidAttestationHash ||
@@ -189,15 +189,15 @@ async function unfreezeAgent({
     const provider = new ethers.JsonRpcProvider(cfg.rpcUrl);
     const signer = new ethers.Wallet(privateKey, provider);
 
-    const darkAgent = new ethers.Contract(
-        cfg.darkAgentAddress,
-        DARKAGENT_ABI,
+    const wardex = new ethers.Contract(
+        cfg.wardexAddress,
+        wardex_ABI,
         signer
     );
 
     console.log(`🔓 Unfreezing agent ${agentAddress.slice(0, 10)}...`);
 
-    const tx = await darkAgent.unfreezeAgent(agentAddress, newAttestationHash);
+    const tx = await wardex.unfreezeAgent(agentAddress, newAttestationHash);
     const receipt = await tx.wait();
 
     console.log(`✅ Agent unfrozen in block ${receipt.blockNumber}`);
@@ -215,13 +215,13 @@ async function unfreezeAgent({
 async function getCircuitBreakerHistory(agentAddress, config = {}) {
     const cfg = { ...DEFAULT_CONFIG, ...config };
     const provider = new ethers.JsonRpcProvider(cfg.rpcUrl);
-    const darkAgent = new ethers.Contract(
-        cfg.darkAgentAddress,
-        DARKAGENT_ABI,
+    const wardex = new ethers.Contract(
+        cfg.wardexAddress,
+        wardex_ABI,
         provider
     );
 
-    const events = await darkAgent.getCircuitBreakerHistory(agentAddress);
+    const events = await wardex.getCircuitBreakerHistory(agentAddress);
 
     return events.map((event) => ({
         timestamp: Number(event.timestamp),
@@ -261,7 +261,7 @@ async function submitComplianceProof({
 
     const tx = await verifier.submitAndVerifyProof(
         agentAddress,
-        proofData || ethers.toUtf8Bytes("darkagent-compliance-proof"),
+        proofData || ethers.toUtf8Bytes("wardex-compliance-proof"),
         proofType,
         publicInputs || [0, 0]
     );
@@ -334,13 +334,13 @@ async function getVerifierStats(config = {}) {
 async function getAgentStatus(agentAddress, config = {}) {
     const cfg = { ...DEFAULT_CONFIG, ...config };
     const provider = new ethers.JsonRpcProvider(cfg.rpcUrl);
-    const darkAgent = new ethers.Contract(
-        cfg.darkAgentAddress,
-        DARKAGENT_ABI,
+    const wardex = new ethers.Contract(
+        cfg.wardexAddress,
+        wardex_ABI,
         provider
     );
 
-    return await darkAgent.getAgentStatusString(agentAddress);
+    return await wardex.getAgentStatusString(agentAddress);
 }
 
 module.exports = {
@@ -353,7 +353,7 @@ module.exports = {
     queryCompliance,
     getVerifierStats,
     getAgentStatus,
-    DARKAGENT_ABI,
+    wardex_ABI,
     VERIFIER_ABI,
     DEFAULT_CONFIG,
 };

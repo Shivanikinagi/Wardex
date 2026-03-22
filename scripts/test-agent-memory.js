@@ -28,8 +28,8 @@ async function getJson(url) {
 }
 
 async function main() {
-  const baseUrl = process.env.DARKAGENT_BASE_URL || "http://localhost:8787";
-  const ensName = process.env.DARKAGENT_MEMORY_ENS || "alice.eth";
+  const baseUrl = process.env.wardex_BASE_URL || "http://localhost:8787";
+  const ensName = process.env.wardex_MEMORY_ENS || "alice.eth";
 
   const first = await postJson(`${baseUrl}/api/agent-memory/ask`, {
     ensName,

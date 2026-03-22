@@ -3,12 +3,12 @@ const ACTIONS = {
     id: "uniswap-swap",
     title: "Protected Uniswap Swap",
     description:
-      "Base-native Blink routed through DarkAgent, checked against ENS rules, and executed with a fresh stealth address.",
+      "Base-native Blink routed through wardex, checked against ENS rules, and executed with a fresh stealth address.",
     protocol: "uniswap",
     sourceChain: "base",
     settlementChain: "base",
     label: "Execute Swap",
-    iconPath: "/api/assets/darkagent.svg",
+    iconPath: "/api/assets/wardex.svg",
     defaultAmountUsd: 600,
     defaultSlippageBps: 100,
     defaultTokens: {
@@ -28,7 +28,7 @@ const ACTIONS = {
     sourceChain: "base",
     settlementChain: "base",
     label: "Route via 1inch",
-    iconPath: "/api/assets/darkagent.svg",
+    iconPath: "/api/assets/wardex.svg",
     defaultAmountUsd: 250,
     defaultSlippageBps: 75,
     defaultTokens: {
@@ -48,7 +48,7 @@ const ACTIONS = {
     sourceChain: "base",
     settlementChain: "base",
     label: "Supply to Aave",
-    iconPath: "/api/assets/darkagent.svg",
+    iconPath: "/api/assets/wardex.svg",
     defaultAmountUsd: 300,
     defaultSlippageBps: 50,
     defaultTokens: {
@@ -80,7 +80,7 @@ function buildActionMetadata(action, baseUrl) {
       actions: [
         {
           href: `${baseUrl}/api/actions/${action.id}?ensName={ensName}&amountUsd={amountUsd}&account={account}`,
-          label: `${action.label} via DarkAgent`,
+          label: `${action.label} via wardex`,
           parameters: [
             {
               name: "ensName",
@@ -106,7 +106,7 @@ function buildActionMetadata(action, baseUrl) {
 
 function buildManifest(baseUrl) {
   return {
-    name: "DarkAgent Blink Proxy",
+    name: "wardex Blink Proxy",
     version: "1.0.0",
     description:
       "Policy-gated Blink execution for AI agents. ENS is the rulebook and stealth addresses remain mandatory.",
